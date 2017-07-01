@@ -16,21 +16,20 @@ import scipy.io as sio
 from scipy.fftpack import fft
 
 
-pathname=r"/Users/limj2/behavior_data/";
-pathname=r"/Users/limj2/behavior_data/07272014_TK";
-fname="Fish1-2"
+pathname=r"D:\Takashi\SPIM\05242017";
+fname="Fish1-6"
 
 
-full_fname=pathname+"/"+fname+".10chFlt"
+full_fname=pathname+"\\"+fname+".10chFlt"
 print(fname)
 
 fileContent = np.fromfile(full_fname, np.float32)
 
-rootdir=pathname+"//"+fname
+rootdir=pathname+"\\"+fname
 if not os.path.exists(rootdir):
     os.mkdir(rootdir);
     
-outdir=pathname+"//"+fname+"//swim//"
+outdir=pathname+"\\"+fname+"\\swim\\"
 if not os.path.exists(outdir):
     os.mkdir(outdir);
 
