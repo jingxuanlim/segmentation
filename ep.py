@@ -1,5 +1,4 @@
-# coding: utf-8
-
+# -*- coding: utf-8 -*-
 
 def kickAssSwimDetect01(ch1,ch2,thre):
 

@@ -1,4 +1,3 @@
-
 import numpy as np
 import fast_ffts
 import multiprocessing as mp
@@ -632,7 +631,3 @@ def stackRegister_simple(stack, template):
         y[i, :, :] = np.roll(stack[i,:,:],-shift)
     
     return y,shiftlist
-
-
-
-

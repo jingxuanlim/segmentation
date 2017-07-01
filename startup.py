@@ -30,4 +30,3 @@ def clear_all():
     
         del globals()[var]
         del var
-        

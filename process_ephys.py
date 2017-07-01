@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Jan 25 21:16:25 2017
-
-@author: kawashimat
-"""
 
 plt.close("all")
 clear_all()

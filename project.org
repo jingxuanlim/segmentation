@@ -1,0 +1,125 @@
+#+STARTUP: entitiespretty
+
+* Thesis project
+- Misha thinks that the dorsal raphe nucleus stores the motor memory trace so the idea is to shut down the whole brain EXCEPT the dorsal raphe nucleus to see if we can find the memory trace there. If the ramping up activity of the dorsal raphe nucleus goes down immediately, then it is likely that the memory trace is stored somewhere else. If the dorsal raphe nucleus activity lingers on and still spots a decaying activity, which is the stereotyped activity without any shutting down, then we can begin to think of the memory trace as being internally represented in this brain structure.
+- There are three stages to this project:
+  1) Technical demonstration that the optogentics and calcium indicator set up works and is able to carry out the above investigation.
+  2) Look at the resultant dorsal nucleus activity to see if we can find the memory trace there -- as above.
+  3) Find out if the resultant activity is due to a single neuron computation or a network computation. The experiment here is to inactivate half the neurons. If the non-inactivated neurons respond in the same way as before, then this suggest that this might be more of a single neuron computation. If the non-activated neurons respond in a different way, or in a way that suggests that it no longer represents the memory trace, then perhaps the network supports this computation.
+* Rotation project (8 weeks)
+1. Get used to the behaviour paradigm
+2. Check the DRN line for channelrhopsin expression
+3. Check what the phenotype is when DRN is optogenetically stimulated
+* Things to learn / do
+- Fish: taking care of them
+- Computing: Matlab, Python, C#
+- Preparation of fish: paralysis, embedding
+- Fictive swimming
+- Microscopy/optogenetics
+- Knowledge: anatomy, transgenesis
+* 17JUN19 Day 1: tried my hand at electrode preparation, paralysis, fish embedding and fictive behaviour
+** DONE Tried my hand at electrode preparation, paralysis, fish embedding and fictive behaviour
+** DONE Take note of the fictive behaviour and fish maintenance protocols
+CLOSED: [2017-06-19 Mon 22:05] SCHEDULED: <2017-06-19 Mon>
+- State "DONE"       from "TODO"       [2017-06-19 Mon 22:05]
+- State "TODO"       from              [2017-06-19 Mon 20:47]
+** DONE Take down some notes about the voltage imaging that Takashi is doing
+CLOSED: [2017-06-19 Mon 23:32]
+- State "DONE"       from "TODO"       [2017-06-19 Mon 23:32] \\
+  See: [[file:drn_mem.org::*Voltage%20imaging%20using%20a%20artificial%20biosensor][Voltage imaging using a artificial biosensor]]
+- State "TODO"       from              [2017-06-19 Mon 20:48]
+** Voltage imaging using a artificial biosensor
+- GFP and many of the other naturally-occuring biosensors are kind of slow -- about 300 ms.
+- Whole brain imaging of voltage sensors is done at 300 Hz, which means that the sampling is done every 3.3 ms.
+- When sampling at such high speeds, another concern is the level of fluoresence. Because sampling is done so quicky, the exposure time is short and therefore the samples don't quite light up as much.
+- Therefore, better biosensors that perform better on the time resolution must be used.
+- The current voltage sensor that Takashi is testing is very fast ~30 ms.
+* 17JUN20 Performed the whole fictive behaviour experiment on my own and learnt how to make experimental notes
+** Making experimental notes
+- Date of experiment
+- Task structure: basically the experimental paradigm (e.g. 20s switch between low and high gain)
+- Age of fish
+- Gain: setting in the software
+- Adaptation
+- Behaviour: Is the swim good?
+** Lab outing: hike at Great Falls
+* 17JUN21 Practiced the fictive behaviour experiment
+** Practiced pulling the pipette, zebrafish paralysis and recording fictive behaviour
+- Was able to record fictive behaviour in electrode 1 and not so successfully in electrode 2 -- unclear bouts.
+** Director's welcome dinner at Gerry Rubin's place
+* 17JUN22 Practiced the fictive behaviour experiment
+** Got Takashi to fix the loose micromanipulator
+** Practiced pulling the pipette, zebrafish paralysis and recording fictive behaviour
+- Worked with 3-4 fishes, but wasn't successful in completely recording the fictive behaviour.
+- Was able to observe swim bouts in one of the electrodes for two out of the four attempts.
+- Electrode 2 seems to be the problem -- have not successfully recorded from it yet.
+** Misha meeting: discussed project again
+- Told Misha about Takashi's plan for me
+- Misha to implement two slots a day on the light sheet microscope
+- Misha explained the light field microscope to me
+- Misha explained how we could use the new optogenetics-enabled transgenic line by a clever trick: subtracting signals from different channels and with/out the DMD
+** TODO Think about project ideas using the DMD
+- State "TODO"       from              [2017-06-23 Fri 00:13]
+* 17JUN23 Practiced the fictive baheviour experiment and talked to Misha about the optics of the two-photon microscope
+** TODO Note down microscope basics -- two-photon, light sheet -- in [[file:~/universe/optics.org][optics wiki]]
+- State "TODO"       from              [2017-06-23 Fri 19:17]
+** TODO Note down two-photon imaging protocol
+- State "TODO"       from              [2017-06-23 Fri 19:20]
+** TODO Note down Misha's ideas to fix the YFP signal coming out of the zebrafish line we are using
+- State "TODO"       from              [2017-06-23 Fri 22:19]
+* 17JUN24 Got the Anaconda installation right and decided to use Visual Studio IDE for C# programming
+** Davis introduced me to the fictive behaviour recording software
+** TODO Get a stable version of the source code for the fictive behaviour software from Takashi
+- State "TODO"       from              [2017-06-24 Sat 20:01]
+** Couldn't find Anaconda prompt or Anaconda navigator
+** Reinstalled Anaconda to find that Anaconda wasn't properly added to the menu
+** Some people complained that Windows only allowed path variables up to 1024 characters
+- This wasn't my problem because I wasn't even trying to add to the PATH
+- However, this might be a problem for the creation of desktop and start menu shortcuts
+** Reinstalled Anaconda to C:\Anaconda3\ instead of C:\Users\JingXuan\Anaconda3\
+- Despite this, still cannot install, probably Avast blocking its action, thinking that it's an IDP attack...
+- Realised that this was a problem that I also encountered earlier
+** Reinstalled Anaconda but with Avast disabled and succeeded: Anaconda shortcuts are now in the start menu (but not on the desktop)
+- Forgetting about the Desktop
+** Should I still stick to Emacs for C# programming? No, use Visual Studio IDE.
+- Emacs + Omnisharp is the way to go for programming C# on Eamcs. Any other setup probably requires a lot more time and effort to setup.
+- Even with Omnisharp, Emacs still lacks in functionality when compared to Visual Studio IDE. Visual Studio IDE, while being a general Windows IDE, has many functions just made for C#. Emacs doesn't carry those functions.
+- Visual Studio Code is still far away in functionality when compared to Visual Studio IDE. Use Visual Studio IDE.
+- The remaining question now is if I have access to the Professional and Enterprise versions. If not the free Community version seems fine. I should also check with the rest of the group what version they use.
+** TODO Get the denoising script for Takashi
+- State "TODO"       from              [2017-06-24 Sat 20:01]
+* 17JUN25
+** Tried out the old two-photon rig because the resonant two-photon rig's software is broken
+** TODO Note down what are the three main things to change in the code in order to add a GUI tool to change the position of the VR
+- State "TODO"       from              [2017-06-25 Sun 21:07]
+** TODO Finish up recording the protocol for two-photon calcium imaging
+- State "TODO"       from              [2017-06-25 Sun 21:09]
+Quick link: [[file:~/universe/protocols.org::*Zebrafish:%20Two-photon%20calcium%20imaging%20(Ahrens%20Lab)][Zebrafish: Two-photon calcium imaging (Ahrens Lab)]]
+** TODO Note down my understanding of fish species and their crosses
+- State "TODO"       from              [2017-06-25 Sun 21:22]
+** KIV Might be a good idea to tag along in the building of the light field microscope (Kasper) or the second light sheet microscope (no takers) if I do do my thesis research in the Ahrens lab
+- State "KIV"        from              [2017-06-25 Sun 21:34]
+** DONE Confirm with Takashi what the switch at the bottom of machines do -- is it the camera manipulator or the 2-photon microscope?
+CLOSED: [2017-06-26 Mon 23:07] SCHEDULED: <2017-06-26 Mon>
+- State "DONE"       from "TODO"       [2017-06-26 Mon 23:07] \\
+  That's for the galvo! The camera manipulator is permanently switched on.
+- State "TODO"       from              [2017-06-25 Sun 21:53]
+** TODO Find out what is the camera software on the resonant 2-photon microscope, how to collect data, and how to use the ROI function
+- State "TODO"       from              [2017-06-25 Sun 22:18]
+* 17JUN29
+* 17JUN30
+** DONE Further denoised the old 2-photon rig with Takashi
+** Started data analysis process with Takashi
+** Takashi gave me his version of the BehaveAndScan from the old 2-photon rig
+** Quite difficult to analysis data on my personal computer for two reasons: (1) low disk space, (2) slow processing speed
+** TODO Ask Davis about his data analysis pipeline (+ the one he developed with Jeremy Freeman, + use of cluster computing to accelerate data analysis)
+- State "TODO"       from              [2017-06-30 Fri 20:07]
+** TODO Complete discussion of analysis code with Takashi [0/1]
+- State "TODO"       from              [2017-06-30 Fri 20:12]
+- [ ] Ask what is the difference between ~process_ephys.py~ and ~batch_process_ephys.py~
+- [ ] Remind him to set up an account for me on his servers
+** [master fad41ec] removed all previous code and start anew -- added ephys and image files from takashi
+ 5 files changed, 881 insertions(+), 141 deletions(-)
+ create mode 100644 image_register.py
+ create mode 100644 imreg.py
+ create mode 100644 process_ephys_spectrumanalysis.py
