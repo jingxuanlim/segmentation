@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 
+# open common imports
+exec(open("startup.py").read())
+
 # clean all previous matplotlib plots
 plt.close("all")
 clear_all()
 
-import imreg
+# import imreg
 
-fname=r'D:\Takashi\Jing\2P\noradrenergic_00.tif'
+fname=r'Z:\Jing\20170729\noradrenergic_00.tif'
 
 # read image files
 stack=imread(fname)

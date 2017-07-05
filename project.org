@@ -1,5 +1,6 @@
 #+STARTUP: entitiespretty
 
+Jupyter notebook server on the janelia cluster: http://h06u22.int.janelia.org:9999
 * Thesis project
 - Misha thinks that the dorsal raphe nucleus stores the motor memory trace so the idea is to shut down the whole brain EXCEPT the dorsal raphe nucleus to see if we can find the memory trace there. If the ramping up activity of the dorsal raphe nucleus goes down immediately, then it is likely that the memory trace is stored somewhere else. If the dorsal raphe nucleus activity lingers on and still spots a decaying activity, which is the stereotyped activity without any shutting down, then we can begin to think of the memory trace as being internally represented in this brain structure.
 - There are three stages to this project:
@@ -28,7 +29,8 @@ CLOSED: [2017-06-19 Mon 23:32]
 - State "DONE"       from "TODO"       [2017-06-19 Mon 23:32] \\
   See: [[file:drn_mem.org::*Voltage%20imaging%20using%20a%20artificial%20biosensor][Voltage imaging using a artificial biosensor]]
 - State "TODO"       from              [2017-06-19 Mon 20:48]
-** Voltage imaging using a artificial biosensor
+** Discussed voltage imaging using a artificial biosensor with Takashi
+See: [[file:~/universe/imaging.org::*Voltage%20imaging%20using%20a%20artificial%20biosensor][Voltage imaging using a artificial biosensor]]
 - GFP and many of the other naturally-occuring biosensors are kind of slow -- about 300 ms.
 - Whole brain imaging of voltage sensors is done at 300 Hz, which means that the sampling is done every 3.3 ms.
 - When sampling at such high speeds, another concern is the level of fluoresence. Because sampling is done so quicky, the exposure time is short and therefore the samples don't quite light up as much.
@@ -58,7 +60,10 @@ CLOSED: [2017-06-19 Mon 23:32]
 - Misha to implement two slots a day on the light sheet microscope
 - Misha explained the light field microscope to me
 - Misha explained how we could use the new optogenetics-enabled transgenic line by a clever trick: subtracting signals from different channels and with/out the DMD
-** TODO Think about project ideas using the DMD
+** CANCELED Think about project ideas using the DMD
+CLOSED: [2017-07-04 Tue 23:47]
+- State "CANCELED"   from "TODO"       [2017-07-04 Tue 23:47] \\
+  Now working on understanding the oscillations Alireza found
 - State "TODO"       from              [2017-06-23 Fri 00:13]
 * 17JUN23 Practiced the fictive baheviour experiment and talked to Misha about the optics of the two-photon microscope
 ** TODO Note down microscope basics -- two-photon, light sheet -- in [[file:~/universe/optics.org][optics wiki]]
@@ -69,7 +74,10 @@ CLOSED: [2017-06-19 Mon 23:32]
 - State "TODO"       from              [2017-06-23 Fri 22:19]
 * 17JUN24 Got the Anaconda installation right and decided to use Visual Studio IDE for C# programming
 ** Davis introduced me to the fictive behaviour recording software
-** TODO Get a stable version of the source code for the fictive behaviour software from Takashi
+** DONE Get a stable version of the source code for the fictive behaviour software from Takashi
+CLOSED: [2017-07-01 Sat 23:42]
+- State "DONE"       from "TODO"       [2017-07-01 Sat 23:42] \\
+  See: [[file:~/fictive]]
 - State "TODO"       from              [2017-06-24 Sat 20:01]
 ** Couldn't find Anaconda prompt or Anaconda navigator
 ** Reinstalled Anaconda to find that Anaconda wasn't properly added to the menu
@@ -86,7 +94,10 @@ CLOSED: [2017-06-19 Mon 23:32]
 - Even with Omnisharp, Emacs still lacks in functionality when compared to Visual Studio IDE. Visual Studio IDE, while being a general Windows IDE, has many functions just made for C#. Emacs doesn't carry those functions.
 - Visual Studio Code is still far away in functionality when compared to Visual Studio IDE. Use Visual Studio IDE.
 - The remaining question now is if I have access to the Professional and Enterprise versions. If not the free Community version seems fine. I should also check with the rest of the group what version they use.
-** TODO Get the denoising script for Takashi
+** DONE Get the denoising script for Takashi
+CLOSED: [2017-07-01 Sat 23:42]
+- State "DONE"       from "TODO"       [2017-07-01 Sat 23:42] \\
+  Here: [[file:process_ephys_spectrumanalysis.py]]
 - State "TODO"       from              [2017-06-24 Sat 20:01]
 * 17JUN25
 ** Tried out the old two-photon rig because the resonant two-photon rig's software is broken
@@ -106,20 +117,75 @@ CLOSED: [2017-06-26 Mon 23:07] SCHEDULED: <2017-06-26 Mon>
 - State "TODO"       from              [2017-06-25 Sun 21:53]
 ** TODO Find out what is the camera software on the resonant 2-photon microscope, how to collect data, and how to use the ROI function
 - State "TODO"       from              [2017-06-25 Sun 22:18]
+* 17JUN28
+** Solved the sporadic ephys noise issue by changing to a new Axon CNS amplifier
 * 17JUN29
+** Solved the image noise issue on the old 2-photon rig by changing the PMT amplifier
+** Made my first complete recording -- ephys (fictive behaviour) + calcium imaging
 * 17JUN30
-** DONE Further denoised the old 2-photon rig with Takashi
+** DONE Further denoised and tidied up the old 2-photon rig with Takashi
 ** Started data analysis process with Takashi
 ** Takashi gave me his version of the BehaveAndScan from the old 2-photon rig
 ** Quite difficult to analysis data on my personal computer for two reasons: (1) low disk space, (2) slow processing speed
-** TODO Ask Davis about his data analysis pipeline (+ the one he developed with Jeremy Freeman, + use of cluster computing to accelerate data analysis)
+** TODO Ask Davis about his data storage and analysis pipeline (+ the one he developed with Jeremy Freeman, + use of cluster computing to accelerate data analysis)
 - State "TODO"       from              [2017-06-30 Fri 20:07]
 ** TODO Complete discussion of analysis code with Takashi [0/1]
 - State "TODO"       from              [2017-06-30 Fri 20:12]
 - [ ] Ask what is the difference between ~process_ephys.py~ and ~batch_process_ephys.py~
 - [ ] Remind him to set up an account for me on his servers
+** Discussed \Delta{}F/F with Misha over dinner
+See: [[file:~/universe/imaging.org::*Why%20/Delta{}F/F%20instead%20of%20just%20/Delta{}F?][Why \Delta{}F/F instead of just \Delta{}F?]]
 ** [master fad41ec] removed all previous code and start anew -- added ephys and image files from takashi
  5 files changed, 881 insertions(+), 141 deletions(-)
  create mode 100644 image_register.py
  create mode 100644 imreg.py
  create mode 100644 process_ephys_spectrumanalysis.py
+** [master e0c0565] cleaned up the python analysis files
+ 6 files changed, 131 insertions(+), 25 deletions(-)
+** Renamed the ~fictive~ repository to ~ahrens~ and created a separate ~fictive~ repository for the BehaveAndScan code
+* 17JUL02
+** Tried to use Takashi's code but it didn't work because of at least one missing dependnecy
+- ~fast_ffts.py~, a dependency for ~im_reg.py~ was missing.
+- There might be other dependencies that are missing...
+** Davis introduced me to his code, which most of the lab is using
+- Davis added me as a collaborator on three of his github repos so I have access to all of them.
+** Started my own jupyter notebooks on the Janelia cloud
+Instructions: [[file:~/dotfiles/dotwiki.org::*Set%20up%20Jupyter%20Notebook%20on%20a%20cluster%20(and%20work%20locally)][Set up Jupyter Notebook on a cluster (and work locally)]]
+* 17JUL03
+** Recording heartbeat in larval zebrafish
+* 17JUL04
+** TODO Ask Takashi about the inconsistent light sheet scanning movements and how it affects whatever he was trying to do
+- State "TODO"       from              [2017-07-04 Tue 22:09]
+** TODO Copy experimental notes to project
+- State "TODO"       from              [2017-07-04 Tue 22:09]
+** TODO Version control the notebooks and other stuff that's on the cluster
+- State "TODO"       from              [2017-07-04 Tue 22:09]
+* 17JUL05
+** Lab meeting: glia + giving up
+- kosher is better at passing calcium, but don't know about channelrhodopsin.
+- antidepressants improve the performance of the forced swim test; so this is required as a screen for new antidepressent drugs.
+- want to use 'giving up' because the other terms are loaded in the literature and so have to prove it is the same.
+- can try using SSRIs, TK tried and fish swam less.
+- there are strain to strain variability in the forced swim test.
+- might have to redo the factorisation because the task structure were all different, and the factorisation is derived from the whole time series.
+- the factorisation might be a bit noisier because the time series is shorter (if remove unrelated task structures).
+- think that glia is driving neural activity after giving up.
+- suspect that glial cell activity onset can predict better giving up than amplitude of these events.
+- want to establish causality between neuronal and glia activity. we think that neuronal activity is generated from rhythmic activity in glial.
+- should subtract the motor component, which happens in both swim and no swim.
+- you want to deconvolve neurons and not glial; indirect measure in neurons and direct measure in glial
+- if you think the rise time is independent of the decay, then you have to put them independently in the model.
+- want to deconvolve the waist with something above to get a smaller bump in the neuron activity.
+** TODO What is factorisation?
+- State "TODO"       from              [2017-07-05 Wed 11:06]
+** TODO What is the calcium input response function?
+- State "TODO"       from              [2017-07-05 Wed 11:46]
+- need to convolve with the CIRF
+** TODO What is a kernel?
+- State "TODO"       from              [2017-07-05 Wed 11:48]
+** TODO Try plotting time series using ROI using Davis's method
+- State "TODO"       from              [2017-07-05 Wed 15:18]
+** TODO Try out using matplotlib to visualize the electrophy data
+- State "TODO"       from              [2017-07-05 Wed 15:28]
+** TODO Try visualzing the images using pyQt
+- State "TODO"       from              [2017-07-05 Wed 15:29]
