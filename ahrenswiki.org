@@ -1,0 +1,11 @@
+#+STARTUP: entitiespretty
+
+* Computing services
+** Compute
+- Janelia Compute Cluster: ~/groups/ahrens/home/limj2~
+- Ahrens lab: cezanne
+- Ahrens lab: picasso
+** Storage
+- dm11: ~/groups/ahrens/ahrenslab/jing/~
+- ws1
+- ws2
