@@ -1,0 +1,172 @@
+#+STARTUP: entitiespretty
+
+* 17APR22 Skype meeting: confirmation of rotation and discussion of project
+*** Logistics
+- Dates: 19 Jun - 11 Aug (8 weeks)
+- Housing is a bit tight but shouldn't run into problems. The worst thing that can happen is to have to move out of one apartment into another.
+- "Once Misha and HR have agreed on your employment, a letter of offer will be prepared." Misha will let HR know that he is agreeable to this, the director of Janelia has to agree (sign on the dotted line) and then HR will produce the offer letter. Misha thinks that I can expect to hear back next week.
+*** Project
+- I would be interested something to do something involves light sheet microscopy.
+- The project we agreed on ("that has the potential to become very interesting") is to look at decision-making in the zebrafish. By providing the zebrafish with conflicting and varied signals, we can investigate the properties of the stimuli to cause the zebrafish to make one decision or the other, for example to turn left or to turn right. Once we know how to control the decision-making process of the zebrafish, we will be able to influence their decision-making at will, which will be helpful later when looking for their neural correlates.
+- We want to provide conflicting signals after the animal has decided to move left or right, such as arrows pointing the other direction. The zebrafish doesn't like dark stimulus. We can vary the intensity of the original stimulus (the "darkness") to see how it affects the zebrafish's commitment to the initial stimulus, as compared to the standard conflicting one (the arrows).
+- If I get far enough, I will be able to use light sheet microscopy to investigate the neural correlates of decision-making. While we vary the sensory stimulus to cause the animal to have a change in decision, there should be a point where the analog representation of the stimulus becomes digital: turn left or turn right. Misha thinks that this happens somewhere in the hindbrain, but he wouldn't put too much money on it.
+*** Homework
+- Learn C#: In order to be able have to closed-loop system that controls the behaviour of the zebrafish, we need to be able to change the visual stimulus quickly right after the animals has made a commitment to move in a certain direction. To do that, the lab uses C# to understand the behaviour of the animal and change the visual stimulus accordingly.
+* 17JUN03 Skype meeting: discussion potential projects
+*** Agenda [1/2]
+- [X] Confirm project
+- [ ] Find out the dates that Misha will be away
+*** Project
+- Misha propsed two projects, one that we went through the other time (regarding decision-making with conflicting stimuli) and the other is the one described below.
+- Misha thinks this second project has a higher risk because it requires a great deal of technical know-how. He gave me a choice -- high risk, high return. I guess I was never deterred to do highly technical projects, maybe because I haven't been exposed to one, but maybe also because I tend not to think so much about the consequences/failing.
+- He told me that he doesn't want me to be unhappy / have a bad time doing the project, but if I was not risk-averse, it's actually a very interesting project to take on. I told him I would treat it as an experience if it were to fail so there's nothing he has to worry about.
+- I told him I would be more interested to work on the newly propsed project (see details below) since it's got to do with mechanisms, dynamics and computations.
+- Misha thinks that the dorsal raphe nucleus stores the motor memory trace so the idea is to shut down the whole brain EXCEPT the dorsal raphe nucleus to see if we can find the memory trace there. If the ramping up activity of the dorsal raphe nucleus goes down immediately, then it is likely that the memory trace is stored somewhere else. If the dorsal raphe nucleus activity lingers on and still spots a decaying activity, which is the stereotyped activity without any shutting down, then we can begin to think of the memory trace as being internally represented in this brain structure.
+- There are three stages to this project:
+  1) Technical demonstartion that the optogentics and calcium indicator set up works and is able to carry out the above investigation.
+  2) Look at the resultant dorsal nucleus activity to see if we can find the memory trace there -- as above.
+  3) Find out if the resultant activity is due to a single neuron computation or a network computation. The experiment here is to inactivate half the neurons. If the non-inactivated neurons respond in the same way as before, then this suggest that this might be more of a single neuron computation. If the non-activated neurons respond in a different way, or in a way that suggests that it no longer represents the memory trace, then perhaps the network supports this computation.
+- Things to do and learn: 
+  - The first thing to do is to be able to work with zebrafishes and to use it to carry out motor learning tasks. It takes about a week (often more) to be comfortable with working with these fishes.
+  - There's also python to learn; not so much C sharp now since the code for the VR part of this experiment has already been written.
+* 17JUN19 What have I brought to my work desk?
+- [ ] 2X US adaptors
+- [ ] Surface Pro charger
+- [ ] Z3 charger
+- [ ] logitech MX Master
+- [ ] logitech K380 keyboard
+* 17JUN20 Reminder to complete employment administrative matters
+*** URGENT Complete Workday action items, especially the direct credit authorization form
+SCHEDULED: <2017-06-20 Tue>
+- State "URGENT"     from "TODO"       [2017-06-22 Thu 09:49]
+- State "TODO"       from              [2017-06-20 Tue 09:48]
+* 17JUN22 Reminder to complete my administrative tasks
+*** DONE Complete Certification of HHMI's Policies by 7/3/2017 (see email)
+CLOSED: [2017-06-22 Thu 21:36] SCHEDULED: <2017-06-22 Thu>
+- State "DONE"       from "TODO"       [2017-06-22 Thu 21:36] \\
+  Only viewable over Janelia's network; but completed.
+- State "TODO"       from              [2017-06-22 Thu 09:50]
+*** DONE Complete time sheets on myHHMI
+CLOSED: [2017-06-23 Fri 08:57] SCHEDULED: <2017-06-23 Fri>
+- State "DONE"       from "TODO"       [2017-06-23 Fri 08:57]
+- State "TODO"       from              [2017-06-22 Thu 09:51]
+* 17JUN23 Reminder to make an appointment to do the eye exam
+*** DONE Make an appointment to do the free eye exam
+CLOSED: [2017-06-26 Mon 21:34]
+- State "DONE"       from "STARTED"    [2017-06-26 Mon 21:34] \\
+  Going for one at 11 Jul
+- State "STARTED"    from "TODO"       [2017-06-23 Fri 20:39] \\
+  Asked if I am eligible for the free eye exam...
+- State "TODO"       from              [2017-06-23 Fri 19:20]
+*** DONE Finish setting up Janelia VPN
+CLOSED: [2017-06-23 Fri 20:31]
+- State "DONE"       from "TODO"       [2017-06-23 Fri 20:31] \\
+  Finished setting up VPN and also realize that I have access to the SECURE network just by using my janelia username and password
+- State "TODO"       from              [2017-06-23 Fri 19:21]
+* 17JUN26 Organisational lab meeting
+*** Lab meeting: Revamping the organisational structure of lab function
+**** Code repository
+- Github account: ahrens-lab:teamfish@2016
+**** Building a new microscope
+- considering SCAPE versus regular light sheet microscope, but SCAPE is not possible
+- Should go down to look at ID&F's lattice light sheet microscope as an inspiration for building something very compact
+- Davis: we need more chambers | everyone think throne in chamber 2 is the best
+**** Fish maintenance
+- Discard the fishes properly
+- Pipette aid filter can be bought in the fishy store
+- AB fish vs WIK fish; not doing crosses within siblings
+- Fishes should last for ~4 hours during experiments; any less and they might be unhealthy
+- If you're doing experiments at midnight, you might want to use fishes that are adaptaed to a reverse light cycle. They wake up with light but their behaviour might not be normal.
+- Reducing fishes: At day 2/3 you can start throwing out the pigmented fish.
+- Use the fishes that are not easily caught with a pipette. So try catching them first, and use the ones that you cannot catch.
+- Still a good idea to screen before the experiment -- those bright at day 3 are not necessarily going to be bright at day 6.
+- You should also check that the motor adaptation works before starting the experiments.
+- If you have a bunch of bad fish, whine and get fishes from someone else.
+**** Misha's meeting notes
+_organization of code using lab github_
+- lab has paid account
+- individuals contribute to private lab repositories by being collaborators
+- individuals don’t have their own repositories
+- davis will check that everything is private
+- davis will make repositories on lab account for each person
+- include behaveandscan repository, organized into branches (e.g. behaveandscan_spim)
+
+_light sheet schedule_
+- start ~6 am, end ~3 am
+- two (or three) slots per day
+- I realize these are early starts and late nights, but please can everyone follow such schedules to maximize the time for other people.
+(i.e. if you start at 9 instead of 6 then treat it was 3 hours lost for someone else.)
+- ** I (Misha) will be there for anyone who wants help or company or wants a fellow sufferer at 6 am or 3 am **
+- people with preferences: Takashi: morning, Virginia: morning, Jing: night, En: night, Maarten: daytime b/c shuttle
+- ** if you don’t have enough time on the microscope, talk to Misha **
+- important: *** use reverse-lightcycle incubator for late experiments ***
+- to save time: new person prepares fish while previous person is finishing
+- we use the slack channel #equipment_sharing for such scheduling
+- we need more chambers - Davis will revive lost art of making chambers, everyone needs their own chamber (throne in chamber 2)
+- we may want to build a new microscope, but someone needs to dedicate themselves to it. Ideas include
+- a compact light-sheet (with help of ID&F)
+- SCAPE (can ask E. Hillman for design)
+- light field
+
+_organization_
+- make sure rigs don’t change by moving equipment, otherwise alert people through #equiment_sharing
+- in general: tidy up, leave in the same or better state as how you found it, including fish feeding area, euthanasia flask, and screening scope
+- need to tidy up behavior room, but need new furniture, space; next to the sink withs splash screen? order transparent drawers?
+- ask Sarah-Ann for spare room for optics equipment
+
+_fish care_
+- get WIK fish for outcrosses
+- density of embryos: 30 fish/dish, throw away embryos if needed, or use bigger dish
+- reverse light cycle incubator for late experiments
+- screen twice (~3 dpf, and just before experiment) and select for good swimming fish
+- use motor adaptation for testing good behavior
+- make sure you don’t use lame, easy to catch fish
+- fish swimming near the water surface are often better
+- put water bottle back in incubator
+
+_lab fruit_
+- each person buys when they want, puts it on Yu Mu’s or Alireza’s desk, and asks Sarah-Ann for reimbursement from morale budget
+(if it becomes too expensive we’ll deal with it then)
+- an apple a day keeps the doctor away
+*** TODO Ask for introduction on microscope designs
+- State "TODO"       from              [2017-06-26 Mon 10:13]
+*** DONE Subscribed to the Python and Neurotheory and Engineering mailing lists
+*** TODO Figure out a way to subscribe to the J-Theory Group meetings, Neurotheory & Engin and System Neuroscience Seminars
+- State "TODO"       from              [2017-06-26 Mon 22:32]
+- J-Theory: http://wiki.int.janelia.org/wiki/display/public/J-Theory+Group
+- Neurotheory and Engineering: http://wiki.int.janelia.org/wiki/display/public/Neurotheory+and+Engineering
+- System Neuroscience: http://wiki.int.janelia.org/wiki/display/public/Systems+Neuroscience+Seminar
+- Main events calendar: http://wiki.int.janelia.org/wiki/display/intranet/Events+Calendar
+* 17JUN28 Combined lab meeting
+*** TODO Find out what regressors are 
+- State "TODO"       from              [2017-06-28 Wed 11:04]
+*** TODO Find out what Davis meant by using ephys as master controller
+- State "TODO"       from              [2017-06-28 Wed 11:45]
+*** TODO Find out what is trigger average
+- State "TODO"       from              [2017-06-28 Wed 11:45]
+* 17JUL03 Monday lab meeting
+*** Technical lab meeting
+- One fish year is two human days
+- Try not to use terms that are already in the literature because then you will need to prove it
+- Talk to Alirazar for his data
+- Need to do near field stimulation or underwater speaker
+- Misha suggested that we could just put a rod in
+- gtacr experiment
+- Also, put a drop of hot water -- it should affect the heart more than the brain
+- Also try the experiment with the heart arrhythmia
+- Poke into the heart during the experiment to slow it down
+- 10 planes at 12 Hz, 15-100 ms for a reset is reasonable
+- what is kosher?
+- NMDA channels put into the inhibitory ramp cells
+- Ex \twosides In \to premotor area
+- Use mika code based on activity and TK based on shape
+* 17JUL05
+** [master 83be02c] commit before cloning on the janelia cluster
+** [master e84a7f2] moved takashi's file into a dedicated folder
+ 6 files changed, 0 insertions(+), 0 deletions(-)
+ rename ep.py => takashi/ep.py (100%)
+ rename image_register.py => takashi/image_register.py (100%)
+ rename imreg.py => takashi/imreg.py (100%)
+ rename process_ephys.py => takashi/process_ephys.py (100%)
+ rename process_ephys_spectrumanalysis.py => takashi/process_ephys_spectrumanalysis.py (100%)
+ rename startup.py => takashi/startup.py (100%)
