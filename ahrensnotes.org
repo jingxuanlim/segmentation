@@ -170,3 +170,4 @@ _lab fruit_
  rename process_ephys.py => takashi/process_ephys.py (100%)
  rename process_ephys_spectrumanalysis.py => takashi/process_ephys_spectrumanalysis.py (100%)
  rename startup.py => takashi/startup.py (100%)
+** [master 7bcee60] added ahrensnotes.org and moved all the ahrens admin notes from hopkins.org
