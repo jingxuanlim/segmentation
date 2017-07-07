@@ -172,3 +172,4 @@ _lab fruit_
  rename startup.py => takashi/startup.py (100%)
 ** [master 7bcee60] added ahrensnotes.org and moved all the ahrens admin notes from hopkins.org
 ** [master eabfe12] added analysis notebooks originally on the janelia cluster
+** [master 3183fa2] plotted the imaging frames by finding the derivative of channel 3
