@@ -99,7 +99,7 @@ CLOSED: [2017-07-01 Sat 23:42]
 - State "DONE"       from "TODO"       [2017-07-01 Sat 23:42] \\
   Here: [[file:process_ephys_spectrumanalysis.py]]
 - State "TODO"       from              [2017-06-24 Sat 20:01]
-* 17JUN25
+* 17JUN25 First try on the old two-photon rig
 ** Tried out the old two-photon rig because the resonant two-photon rig's software is broken
 ** TODO Note down what are the three main things to change in the code in order to add a GUI tool to change the position of the VR
 - State "TODO"       from              [2017-06-25 Sun 21:07]
@@ -117,12 +117,12 @@ CLOSED: [2017-06-26 Mon 23:07] SCHEDULED: <2017-06-26 Mon>
 - State "TODO"       from              [2017-06-25 Sun 21:53]
 ** TODO Find out what is the camera software on the resonant 2-photon microscope, how to collect data, and how to use the ROI function
 - State "TODO"       from              [2017-06-25 Sun 22:18]
-* 17JUN28
+* 17JUN28 Replaced the old Axon CNS amplifier to a new one on the old two-photon rig
 ** Solved the sporadic ephys noise issue by changing to a new Axon CNS amplifier
-* 17JUN29
+* 17JUN29 Replaced the PMT amplifier and made my first complete recordings on the old two-photon rig
 ** Solved the image noise issue on the old 2-photon rig by changing the PMT amplifier
 ** Made my first complete recording -- ephys (fictive behaviour) + calcium imaging
-* 17JUN30
+* 17JUN30 Got started with data analysis by setting up my PC
 ** DONE Further denoised and tidied up the old 2-photon rig with Takashi
 ** Started data analysis process with Takashi
 ** Takashi gave me his version of the BehaveAndScan from the old 2-photon rig
@@ -143,25 +143,80 @@ See: [[file:~/universe/imaging.org::*Why%20/Delta{}F/F%20instead%20of%20just%20/
 ** [master e0c0565] cleaned up the python analysis files
  6 files changed, 131 insertions(+), 25 deletions(-)
 ** Renamed the ~fictive~ repository to ~ahrens~ and created a separate ~fictive~ repository for the BehaveAndScan code
-* 17JUL02
-** Tried to use Takashi's code but it didn't work because of at least one missing dependnecy
+* 17JUL02 Switched to Davis' data analysis setup
+** Tried to use Takashi's code but it didn't work because of at least one missing dependency
 - ~fast_ffts.py~, a dependency for ~im_reg.py~ was missing.
 - There might be other dependencies that are missing...
 ** Davis introduced me to his code, which most of the lab is using
 - Davis added me as a collaborator on three of his github repos so I have access to all of them.
 ** Started my own jupyter notebooks on the Janelia cloud
 Instructions: [[file:~/dotfiles/dotwiki.org::*Set%20up%20Jupyter%20Notebook%20on%20a%20cluster%20(and%20work%20locally)][Set up Jupyter Notebook on a cluster (and work locally)]]
-* 17JUL03
+* 17JUL03 Started investigating oscillations in the waist area and if it has anything to do with the heart beat
 ** Recording heartbeat in larval zebrafish
+*** fish2-heart_06
+- mode: gratings
+
+_0 - 415 s_
+- set 1: gain 0.005 vel 0.5 time 10
+- set 2: gain 0.005 vel 0.5 time 10
+
+_415 - s_
+- set 1: gain 0 vel 0 time 10
+- set 2: gain 0.005 vel 0.5 time 10
+
+- behaveandscan crashed at around 600s
+
+*** fish2-heart_08
+- mode: gratings
+- set 1: gain 0 vel 0 time 20
+- set 2: gain 0 vel 0.5 time 20
+- see 1 Hz oscilations in the axon bundles of the waist area
+- heart rate is slightly higher than 1 Hz (~1.5 Hz)
+
+*** fish2-heart_10
+- mode: texture
+- set 1: gain 0.005 vel 0 time 10
+- set 2: gain 0.005 vel 0.5 time 10
+- big group of cells in the top right of the waist area
+- oscillations not obvious (due to differnet stimulus?)
+
+*** fish2-heart_11
+- mode: gratings
+- set 1: gain 0.005 vel 0 time 10
+- set 2: gain 0.005 vel 0.5 time 10
+- oscillations not immediately obvious now
+- heartbeat is also weakened
+
+*** fish2-heart_12
+- mode: gratings
+- set 1: gain 0 vel 0 time 10
+- set 2: gain 0 vel 0.5 time 10
+- right after adding 0.8 ml of hot water
+- at around 30s, improved recording quality by adding negative pressure
+- heartbeat seemed to increased slightly to about 2Hz
+
+*** fish2-heart_13
+- mode: graings
+- set 1: gain 0 vel 0 time 10
+- set 2: gain 0 vel 0.5 time 10
+- the heartrate is faster than before, but oscillations cannot be found
+
+*** fish2-heart_14
+- mode: texture
+- set 1: gain 0 vel 0 time 10
+- set 2: gain 0 vel 0.5 time 10
 * 17JUL04
 ** TODO Ask Takashi about the inconsistent light sheet scanning movements and how it affects whatever he was trying to do
 - State "TODO"       from              [2017-07-04 Tue 22:09]
-** TODO Copy experimental notes to project
+** DONE Copy experimental notes to project
+CLOSED: [2017-07-06 Thu 20:04]
+- State "DONE"       from "TODO"       [2017-07-06 Thu 20:04] \\
+  See: [[file:project.org::*Recording%20heartbeat%20in%20larval%20zebrafish][Recording heartbeat in larval zebrafish]]
 - State "TODO"       from              [2017-07-04 Tue 22:09]
 ** TODO Version control the notebooks and other stuff that's on the cluster
 - State "TODO"       from              [2017-07-04 Tue 22:09]
-* 17JUL05
-** Lab meeting: glia + giving up
+* 17JUL05 Tried to compute imaging times from my recent data
+** Lab meeting, Mika's progress report: glia + giving up
 - kosher is better at passing calcium, but don't know about channelrhodopsin.
 - antidepressants improve the performance of the forced swim test; so this is required as a screen for new antidepressent drugs.
 - want to use 'giving up' because the other terms are loaded in the literature and so have to prove it is the same.
@@ -185,7 +240,25 @@ Instructions: [[file:~/dotfiles/dotwiki.org::*Set%20up%20Jupyter%20Notebook%20on
 - State "TODO"       from              [2017-07-05 Wed 11:48]
 ** TODO Try plotting time series using ROI using Davis's method
 - State "TODO"       from              [2017-07-05 Wed 15:18]
-** TODO Try out using matplotlib to visualize the electrophy data
+** DONE Try out using matplotlib to visualize the electrophy data
+CLOSED: [2017-07-06 Thu 00:30]
+- State "DONE"       from "TODO"       [2017-07-06 Thu 00:30]
 - State "TODO"       from              [2017-07-05 Wed 15:28]
 ** TODO Try visualzing the images using pyQt
 - State "TODO"       from              [2017-07-05 Wed 15:29]
+** A stab at pywidgets
+#+BEGIN_SRC 
+from IPython.html.widgets import *
+
+def seek(f):
+    fig,ax = plt.subplots(figsize=(15,6))
+    ax.plot(ep[0])
+    ax.set_xlim([0+f*600, 6000+f*600])
+    plt.show()
+
+interact(seek, f=(0, 3500000/600, 1))
+# interact(seek, tmax=(1, 3500000, 1))
+#+END_SRC
+* 17JUL06
+** Figured out how to compute imaging times with Misha
+** Used Davis' code to figure out swim times
