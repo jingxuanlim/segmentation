@@ -9,3 +9,11 @@
 - dm11: ~/groups/ahrens/ahrenslab/jing/~
 - ws1
 - ws2
+* old 2-photon circle position
+_8 Jul 2017_
+1: 1.49
+2: -11.38
+
+_9 Jul 2017_
+1: 1.13
+2: -10.91
