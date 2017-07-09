@@ -1,0 +1,10 @@
+* 17JUL09: osc_04
+_Set 1_
+Gain: 0.0016
+Vel: 0.5
+Time: 30
+
+_Set 2_
+Gain: 0
+Vel: 0
+Time: 30
