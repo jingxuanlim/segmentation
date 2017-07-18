@@ -459,7 +459,7 @@ interact(seek, f=(0, 3500000/600, 1))
 * 17JUL06 Compute imaging and swim times with my data
 ** Figured out how to compute imaging times with Misha
 ** Used Davis' code to figure out swim times
-* 17JUL09
+* 17JUL09 Plotted the imaging times by finding the derivative of channel 3
 ** DONE Fill in timesheet for Janelia and tell Sarah-Ann about this
 CLOSED: [2017-07-10 Mon 19:08] SCHEDULED: <2017-07-09 Sun>
 - State "DONE"       from "TODO"       [2017-07-10 Mon 19:08] \\
@@ -484,7 +484,7 @@ CLOSED: [2017-07-12 Wed 13:45]
 - State "CANCELED"   from "TODO"       [2017-07-12 Wed 13:45] \\
   Median filtering is not the right way to deal with the "noise" in my data. I just needed to limit the range of data i'd like to view with the ~clim~ argument of ~imshow()~ to ignore the super high values.
 - State "TODO"       from              [2017-07-10 Mon 21:27]
-* 17JUL11
+* 17JUL11 Better directory listing
 ** DONE Print all files in directory, and their file sizes
 CLOSED: [2017-07-11 Tue 11:43]
 - State "DONE"       from "TODO"       [2017-07-11 Tue 11:43]
@@ -505,7 +505,7 @@ CLOSED: [2017-07-11 Tue 11:43]
 - State "TODO"       from              [2017-07-11 Tue 18:25]
 ** TODO Register my image before calculaing delta F over F
 - State "TODO"       from              [2017-07-12 Wed 13:48]
-* 17JUL12
+* 17JUL12 Started to work with modifying Davis' ROI drawing module
 ** Lab meeting: Minoru presents journal club
 - feedforward circuit in the hindbrain brain allows sharpening of the output response by an addition of a feedforward circuit
 - retinal ganglion cells: humans (0.1-0.2 deg), rabbits (3 deg), but there are other that enable you to see the whole field of view
@@ -520,7 +520,7 @@ CLOSED: [2017-07-13 Thu 23:25]
 - State "TODO"       from              [2017-07-12 Wed 22:34]
 ** TODO Modify RoiDrawing so that the lines, instead of the mask is plotted and overlaid over the image
 - State "TODO"       from              [2017-07-12 Wed 22:34]
-* 17JUL13
+* 17JUL13 Implemented rectangular ROI on Davis' ROI drawing module
 ** Better to use the standard sized cell in jupyter
 
 This is what you have to do to have full-sized ones though:
@@ -535,7 +535,7 @@ display(HTML("<style>.container { width:100% !important; }</style>"))
 - very buggy but works (for now)
 - don't completely understand the behaviour of ~Button.on_clicked~ -- it doesn't allow me to invoke a rectangle selection tool but didn't block plotting
 - the workaround / temp solution to this was to implement a second "activator", which is to click once more on the axes -- before the selector is activated
-* 17JUL14
+* 17JUL14 Implemented baseline filtering on the electrophysiology data
 ** DONE Perform baseline filtering on ephys data
 CLOSED: [2017-07-15 Sat 00:06]
 - State "DONE"       from "TODO"       [2017-07-15 Sat 00:06] \\
@@ -543,3 +543,21 @@ CLOSED: [2017-07-15 Sat 00:06]
 - State "TODO"       from              [2017-07-14 Fri 14:35]
 ** TODO Implement easy way to do high, low and band pass filtering for any signal
 - State "TODO"       from              [2017-07-14 Fri 14:36]
+
+* 17JUL15 Did experiments but didn't collect much data because fishes were too old (8 days)
+** More two-photon experiments: oscillattion-hunting failed
+- Start: [[file:ahrensexpt.org::*17JUL15%20fish01_osc00][17JUL15 fish01_osc00]]
+* 17JUL16 Did experiments and collected some interesting data
+** More two-photon experiments: waist area and forebrain oscillations
+- Start: [[file:ahrensexpt.org::*17JUL16%20fish00_osc00][17JUL16 fish00_osc00]]
+* 17JUL17 Analysed and took down notes for all the data I collected so far
+** [master 8788d4b] started analysing all my data files and combined projects.org into ahrensnotes.org
+** TODO Don't downsample the ephys data! Space the imaging data further apart!
+SCHEDULED: <2017-07-18 Tue>
+- State "TODO"       from              [2017-07-17 Mon 23:01]
+** TODO Look at [[file:ahrensexpt.org::*17JUL16%20fish01_osc04][17JUL16 fish01_osc04]]
+SCHEDULED: <2017-07-18 Tue>
+- State "TODO"       from              [2017-07-17 Mon 23:01]
+** TODO Clean up my ipython notebook -- some cells I never run and some cells I run but not necessary
+SCHEDULED: <2017-07-18 Tue>
+- State "TODO"       from              [2017-07-17 Mon 23:02]
