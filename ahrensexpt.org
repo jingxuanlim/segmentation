@@ -290,7 +290,7 @@ _Set 2_
 
 Mode: Gratings
 ** Observations
-* 17JUL16 fish00_osc00
+* 17JUL16 fish00_osc00                                        :goodbehaviour:
 ** Fish
 x
 10 Jul: 6 day old
@@ -316,7 +316,7 @@ Mode: Gratings
 ** Analysis notes
 - Oscillations are not as obvious than in previous recordings. Might be difficult to tell because I recorded both sides of the brain at the same resolution 100 x 1500 so I might be losing a lot of information.
 - Time-locking of swim bouts to calcium signal might still be evident in the middle traces...
-* 17JUL16 fish00_osc01
+* 17JUL16 fish00_osc01                                        :goodbehaviour:
 ** Fish
 x
 10 Jul: 6 day old
@@ -338,6 +338,8 @@ _Set 2_
 Mode: Gratings
 ** Observations and notes
 - Behave&Scan crashed before the end of recordings
+** Analysis notes
+- Kind of hard to see the oscillations but can see that some swim bouts happen at the upswing of the oscillations.
 * 17JUL16 fish00_osc02
 ** Fish
 x
@@ -360,7 +362,7 @@ _Set 2_
 Mode: Texture
 ** Observations and notes
 - Off writing \to Off Ephys leads to no ephys file being produced...
-* 17JUL16 fish01_osc00                                        :goodbehaviour:
+* 17JUL16 fish01_osc00                                          :baddatafile:
 ** Fish
 x
 10 Jul: 6 day old
@@ -383,6 +385,7 @@ Mode: Gratings
 ** Observations and notes
 - FIsh with very gpod behaviour
 - Swam twice as much when vel=1 (23 vs 11 swim bouts)
+- Looks like the data file is crap
 * 17JUL16 fish01_osc01                                        :goodbehaviour:
 ** Fish
 x
@@ -406,7 +409,9 @@ Mode: Gratings
 ** Observations and notes
 - swam less than before (i.e. lower frequency of swim bouts), but swim bouts were longer (2x)
 - started swimming alot more at 260 sec!
-* 17JUL16 fish01_osc02
+** Analysis notes
+- Oscillations strong in the second to last trace; can also see that the swim bouts are time locked.
+* 17JUL16 fish01_osc02                                          :baddatafile:
 - Missing dataset -- what is this?!
 * 17JUL16 fish01_osc03
 ** Fish
@@ -416,7 +421,7 @@ x
 x: -1.19
 y: -10.50
 z: 16.40
-** Params
+** Params: giving up
 _Set 1_
 - Gain: 0.015
 - Vel: 1
@@ -431,6 +436,8 @@ Mode: Gratings
 ** Observations and notes
 - Fish try a lot harder -- swim bouts from frequent and longer -- at 330 s and 360 s; feels like there is a lot more swimming when gain=0
 - Fish still tries at the end of the 240s when gain=0
+** Analysis notes
+- Don't see any correlation between the swims and calcium signal...
 * 17JUL16 fish01_osc04
 ** Fish
 x
@@ -439,7 +446,7 @@ x
 x: -1.19
 y: -10.50
 z: 16.37
-** Params
+** Params: giving up
 _Set 1_
 - Gain: 0.015
 - Vel: 1
