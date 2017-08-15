@@ -1,6 +1,8 @@
 #+STARTUP: entitiespretty
 
 * Computing services
+** Monitoring
+- http://lsf1.int.janelia.org/cluster_status/
 ** Compute
 - Janelia Compute Cluster: ~/groups/ahrens/home/limj2~
 - Ahrens lab: cezanne
@@ -9,3 +11,109 @@
 - dm11: ~/groups/ahrens/ahrenslab/jing/~
 - ws1
 - ws2
+* Mauthner neuron
+** Teleost fast start (startle response)
+- The fish controls how far it turns by varying the activity of motor neurons supplying the trunk muscles. However, direct electrical stimulation of the Mauthner neuron consistently results in a short and simple muscle potential. Hence, the size of the C-like turn must be controlled by other interneurons that are active in parallel with the Mauthner neuron.
+- The cell body and the dendrites usm the synaptic potentials which are generate dby inputs from the sensory neurons. The most studied of which arise from the auditory system.
+- Auditory stimulus, such as that coming from a loudspeaker or a high-pressure jet of water, shows that auditory stimuli are certainly capable of initiating fast starts.
+- Visual stimuli and input to the lateral line may augment the auditory stimulus, but do not appear to be capable of triggering a spike in the Mauthner neuron on their own. For example, in the above experiment where a ball was dripped on the water, the goldfish could see the ball coming but a fast start was not initiated until serveral milliseconds after the ball hit the water.
+- Both the large diameter of the Mauthner neuron axon and the axon's extensive insulation with myelin ensure that, once initiated, a spike travels rapidly down the spinal cord. Consequently, all the motor neurons to the trunk muscles on that side of the body are excited virtually simulataneously.
+- The motor axons travel a relatively short distance to the trunk muscles, where they have normal chemically transmitting synaptic endings on the muscle surface. This short and direct pathway is responsible for the short delay of about 2 ms between a Mauthner neuron spike and the onset of a spike in the trunk muscles.
+- A spike in the Mauthner axon inhibits the spinal motor neurons contralateral to the axon at the same time as it excites those ipsilateral to the axon. The inhibition appears to be mediated by inhibitory interneurons that cross the midline and are activated by electrical synapses from the Mauthner axon.
+- A spike in the Mauthner axon inhibits the spinal motor neurons contralateral to the axon at the same time as it excitest those ipsilateral to the axon. If only a short interval in time separates spikes in the left and right Mauthner neurons, only the earlier of the two Mauthner spikes is able to fire its motor neurons. if the two Mauthner neruons spikes simultaneously, the crossed inhibition prevents any motor output at all.
+- Mauthner neurons also excite a number of cranial relay neurons, which in turn excite a group of interneurons that inhibit both the left and right Mauthner neurons. Some of these interneurons exert an unusual form of electrical inhibition: they have axons coiled tightly round the origin of the Mauthner axon, contributing to the axon cap. When a spike is generated in one of these axons wrapped around the Mauthner neuron, it makes the outside of the Mauthner neuron locally more positive, which has the same effect as driving the Mauthner intracellular voltage more negative, exerting a kind of brief vetoing stranglehold right at the zone where its spikes are initiated. The electrical inhibition follows a Mauthner spike with a delay of about 1ms and it helps to prevent the Mauthner neuron from firing twice in response to a stimulus. Furthermore, the Mauthner inhibitor neurons are excited by branches of both the left and right Mauthner axons, so the activation of either Mauthner neuron causing both neurons to fire in succession to it.
+- The electrical inhibition of both Mauthner neuros is a brief event, lasting no more than about 2ms, but it is followed by inhibition through chemical synapses that lasts much longer. The result of the inhibitory mechanisms is not only that the active Mauthner neuron and its contralateral partner are shut down as soon as a spike has been generated, but also that they are kept shut down long enough for the startle response to go to completion.
+* How to open a Jupyter Notebook on the Janelia cluster?
+** 1. Submit an interactive job to the cluster
+#+BEGIN_SRC 
+bsub -Is -n5 /bin/bash
+#+END_SRC
+** 2. Set up and run a public notebook server
+#+BEGIN_SRC 
+jupyter notebook
+#+END_SRC
+** 3. Access the public server
+Pointing your browser to https://your.host.com:9999 where your.host.com is your public server’s domain.
+* How to open a Juptyter Notebook with Spark on the Janelia cluster?
+** 1. Request for Spark nodes and login
+#+BEGIN_SRC 
+spark-janelia-lsf launch-in -n32
+#+END_SRC
+** 2. Start public notebook server on those nodes
+#+BEGIN_SRC 
+spark-janelia-lsf start -b
+#+END_SRC
+
+If want to just start spark intereactively:
+#+BEGIN_SRC 
+spark-janelia-lsf start
+#+END_SRC
+* Mika's cell segmentation code on the Janelia cluster
+** 1. Start an interactive job
+#+BEGIN_SRC 
+bsub -Is -n1 /bin/bash
+#+END_SRC
+** 2. Start and login to spark jobs
+You can:
+#+BEGIN_SRC 
+spark-janelia-lsf launch -n20
+spark-janelia-lsf login
+#+END_SRC
+
+or do it in a single step:
+#+BEGIN_SRC 
+spark-janelia-lsf launch-in -n20
+#+END_SRC
+
+** 3. Check that MASTER is correct
+#+BEGIN_SRC 
+echo $MASTER
+#+END_SRC
+** 4. Run mypyspark script
+#+BEGIN_SRC 
+./mypyspark
+#+END_SRC
+
+To check that Spark is indeed running:
+#+BEGIN_SRC 
+sc.parallelize([1,2,3,4]).collect()
+#+END_SRC
+
+** 5. Configure and run ~z__parameters.py~
+** 6. Navigate to output directory
+Easily done in the Canopy interactive Python interpreter
+#+BEGIN_SRC 
+cd OUTPUT_DIR
+#+END_SRC
+** 7. Configure and run ~z__main.py~ step by step
+1. Load params
+2. Preparation and alignment (motion correction)
+---------- Parallel processing no longer needed; Spark jobs can be closed ----------
+3. Series conversion
+4. Delete nii images but keep transform
+5. Cell detection
+6. Cell collection into a single file
+** 8. Stop spark jobs
+#+BEGIN_SRC 
+spark-janelia-lsf stopcluster
+#+END_SRC
+* Mika's clean and cluster code on the Janelia cluster
+** 1. Start interactive matlab on the compute cluster
+#+BEGIN_SRC 
+bsub -XF -n32 -R"rusage[matlab=1]" /usr/local/matlab-2017a/bin/matlab -desktop
+#+END_SRC
+** 2. Discard cells with low timeseries power
+Run ~a1_clean.m~
+
+It will ask you to determine the probability of signal vs noise (based on the power histogram):
+- probability of 0 means that all signal is preserved
+- probability of 1 means all signal is thrown out
+
+You can try 0.5, or 0.25 if you want to be more conservative.
+
+** 3. Activate MATLAB parallel computing toolbox
+#+BEGIN_SRC 
+parpool(16) OR parpool(32)
+#+END_SRC
+** 4. Estimates the delta f/f
+Run ~a2_cluster.m~

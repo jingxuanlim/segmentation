@@ -1,0 +1,22 @@
+* Oscillations in the waist area
+- Misha thinks that the oscillations (the upstates) are actually inhibiting the generation of swim bouts.
+- I should look at the stop times in addition to the start times, because the oscillations might not be just inhibiting the start of swims but activating the stop of swims. Because the drive to swim is constant, the swim will just swim at the next available window, which is after the inhibition on swim is lifted.
+* 17AUG09 Progress report
+** Introduction
+- Oscillations in the brain
+- Have people found oscillations in the zebrafish?
+** Alireza found oscillations (YuMu's LS data)
+- Method development: multitaper PSD, clustering etc
+- Alireza found oscillations in the zebrafish brain, mostly notably the waist area (and anitiphase cells around the waist area) and the forebrain
+** Jing tried to relate oscillations to heart beat and behaviour (Jing's 2P data)
+*** Waist area
+- Are oscillations in the waist area related to heart beat?
+  - Quantify heart rate vs rate of oscillations (number of peaks): heart rate 3x of oscillations
+  - heartbeat-triggered average fluorescence: 
+- Are oscillations related to swim bouts?
+  - raw data: swim bouts seem to happen during at some oscillatory peaks
+  - swim-triggered average fluorescence: amplitude seems to rise before swim and std tapers after swims -- seems to have a feedback loop
+  - measure the phase at which swim bouts happen: hilbert transform
+*** Cerebellum
+- neuropil area above cerebellum response to swim bouts
+*** Forebrain area

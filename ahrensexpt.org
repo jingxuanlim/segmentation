@@ -10,7 +10,8 @@
 * data analysis procedure
 1. Good to restart the kernel before rerunning analyses
 2. Update date_dir and fnames
-3. Remove blank frames at the front of the stack
+3. Set ~cthresh~ and ~cmax~ to remove noise and to visualize better respectively
+4. Remove blank frames at the front and at the back of the stack
 * 17JUN29: noradrenergic_04
 file: E:\Jing\20170729\noradrenergic_04
 task: auto-switch
@@ -44,7 +45,7 @@ set 1: gain 0.1, vel 1, time 20, contrast 120
 set 2: gain 0.1, ve1 5, time 20, contrast 120
 
 - there might indeed be a problem with the stimulus
-* 17JUL03: fish2-heart_06                                       :interesting:
+* DONE 17JUL03: fish2-heart_06                    :interesting:useable:waist:
 - mode: gratings
 
 _0 - 415 s_
@@ -61,7 +62,7 @@ _415 - s_
 - Start of swim bouts seem to happen at a particular time during an oscillatory wave
 - Seems like there could be some phase precession?
 - The ends of the waist (what's their name?) also seem to be oscillating at similar frequencies, and swim bouts are time locked to the oscillations at those frequencies. However, they also appear to be oscillating at a slower frequency of maybe 0.04 Hz, which might have nested some of the smaller but faster oscillations, which might have made some of the time-locking events harder to spot.
-* 17JUL03: fish2-heart_08                                       :interesting:
+* DONE 17JUL03: fish2-heart_08                    :interesting:useable:waist:
 - mode: gratings
 - set 1: gain 0 vel 0 time 20
 - set 2: gain 0 vel 0.5 time 20
@@ -144,7 +145,7 @@ _Set 2_
 Gain: 0
 Vel: 0
 Time: 30
-* 17JUL09: fish-2_osc-06
+* DONE 17JUL09: fish-2_osc-06                            :useable:cerebellum:
 - imaged in the top part of the left cerebellum
 - crashed at ~ 600 sec
 _Set 1_
@@ -172,7 +173,7 @@ Gain: 0
 Vel: 0
 Time: 30
 ** Analysis notes
-- Swim bouts are not consistent across trials, so maybe behave is bad...
+- Swim bouts are not consistent across trials, so maybe behaviour is bad...
 - As before, the cerebellum doesn't seem to be oscillating.
 - When swim does happen, cerebellum doesn't seem to be doing all the much either.
 * 17JUL09: fish-2_osc-09
@@ -190,7 +191,7 @@ _Set 2_
 Gain: 0
 Vel: 0
 Time: 30
-* 17JUL09: fish-2_osc-10                                        :interesting:
+* DONE 17JUL09: fish-2_osc-10                :interesting:useable:cerebellum:
 - imaged in the mid part of the right cerebellum; repeated because the ephys file wasn't saved in the previous recording.
 - Mode: texture
 
@@ -290,7 +291,7 @@ _Set 2_
 
 Mode: Gratings
 ** Observations
-* 17JUL16 fish00_osc00                                        :goodbehaviour:
+* DONE 17JUL16 fish00_osc00                             :goodbehaviour:waist:
 ** Fish
 x
 10 Jul: 6 day old
@@ -316,7 +317,7 @@ Mode: Gratings
 ** Analysis notes
 - Oscillations are not as obvious than in previous recordings. Might be difficult to tell because I recorded both sides of the brain at the same resolution 100 x 1500 so I might be losing a lot of information.
 - Time-locking of swim bouts to calcium signal might still be evident in the middle traces...
-* 17JUL16 fish00_osc01                                        :goodbehaviour:
+* DONE 17JUL16 fish00_osc01                                    :goodbehaviour:waist:
 ** Fish
 x
 10 Jul: 6 day old
@@ -386,11 +387,11 @@ Mode: Gratings
 - FIsh with very gpod behaviour
 - Swam twice as much when vel=1 (23 vs 11 swim bouts)
 - Looks like the data file is crap
-* 17JUL16 fish01_osc01                                        :goodbehaviour:
+* DONE 17JUL16 fish01_osc01                             :goodbehaviour:waist:
 ** Fish
 x
 10 Jul: 6 day old
-** Microscope position and plane: forebrain
+** Microscope position and plane: waist area
 x: -1.19
 y: -10.50
 z: 16.40
@@ -413,7 +414,7 @@ Mode: Gratings
 - Oscillations strong in the second to last trace; can also see that the swim bouts are time locked.
 * 17JUL16 fish01_osc02                                          :baddatafile:
 - Missing dataset -- what is this?!
-* 17JUL16 fish01_osc03
+* DONE 17JUL16 fish01_osc03                               :useable:forebrain:
 ** Fish
 x
 10 Jul: 6 day old
@@ -461,3 +462,40 @@ Mode: Gratings
 ** Observations and notes
 - Swim bouts are a lot longer than in previous trials
 - At one point, the forebrain went crazy and all the cells showed a calcium reponse! Is this due to giving up?! Heart rate at this ponts is slower at ~2 Hz.
+* 17JUL30 fish00_osc00
+** Fish
+24 Jul: 6 day old
+** Params
+- Gain 0.015
+- Vel: 0.5
+** Observations and notes
+- fish not swimming
+* 17JUL30 fish01_osc00
+- Looks good at first but not sure if the fish stopped swimming due to the laser
+- Also now thinking that if the task is always closed loop with forward gratings that the fish might tire out
+* 17JUL30 fish01_osc01-03
+- tried to reduce the width of the front laser so don't get into eyes, but seems like the fish stops swimming as long as there is a laser
+* 17JUL30 fish01_osc04
+- should be another reasonable dataset
+* 17JUL30 fish01_osc05
+- reduced the velocity to 0.5 -- don't want to tire the fish out
+* 17JUL30 fish01_osc06-11
+- tried to reduce the width of the two lasers as much as posible, but seems like the fish still stops swimming
+* 17JUL30 fish01_osc12
+- should be another good dataset if not for the lack of swimming
+- also seems like the signal is a lot noiser when the laser is on
+- also think that the gain is not sufficient -- should try 0.05 the next time
+* 17JUL31 6dpf_2026x2061_fish00_osc01_20170731_232605    :useable:fitzgerald:
+** Observations and notes
+- Parameterized by Misha
+** Analysis notes
+- Channel 2 looks unuseable.
+- Channel 1 looks ok (swim power is alright) but it is difficult to find clear swim bouts.
+* 17AUG01 7dpf_2026x2061_fish00_osc04_20170802_020923            :fitzgerald:
+* 17AUG03 6dpf_fish00_osc00_20170804_015530
+* 17AUG03 6dpf_fish00_osc01_20170804_023317
+* 17AUG11 6dfp_fish01_osc01_20170811_190447                       :justwaist:
+* 17AUG11 6dfp_fish01_osc02_20170811_195525                       :justwaist:
+* 17AUG11 6dfp_fish01_osc03_20170811_204107                       :justwaist:
+* 17AUG11 6dfp_fish02_osc00_20170811_221042                       :justwaist:
+* 17AUG11 6dfp_fish02_osc01_20170811_232051                       :justwaist:
