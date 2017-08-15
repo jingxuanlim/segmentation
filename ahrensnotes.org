@@ -1,6 +1,5 @@
 #+STARTUP: entitiespretty
 
-Jupyter notebook server on the janelia cluster: http://h06u22.int.janelia.org:9999
 * Thesis project
 - Misha thinks that the dorsal raphe nucleus stores the motor memory trace so the idea is to shut down the whole brain EXCEPT the dorsal raphe nucleus to see if we can find the memory trace there. If the ramping up activity of the dorsal raphe nucleus goes down immediately, then it is likely that the memory trace is stored somewhere else. If the dorsal raphe nucleus activity lingers on and still spots a decaying activity, which is the stereotyped activity without any shutting down, then we can begin to think of the memory trace as being internally represented in this brain structure.
 - There are three stages to this project:
@@ -48,7 +47,8 @@ Jupyter notebook server on the janelia cluster: http://h06u22.int.janelia.org:99
   - The first thing to do is to be able to work with zebrafishes and to use it to carry out motor learning tasks. It takes about a week (often more) to be comfortable with working with these fishes.
   - There's also python to learn; not so much C sharp now since the code for the VR part of this experiment has already been written.
 * 17JUN19 Day 1: tried my hand at electrode preparation, paralysis, fish embedding and fictive behaviour
-** What have I brought to my work desk?
+** URGENT What have I brought to my work desk?
+- State "URGENT"     from              [2017-08-14 Mon 15:45]
 - [ ] 2X US adaptors
 - [ ] Surface Pro charger
 - [ ] Z3 charger
@@ -65,7 +65,7 @@ CLOSED: [2017-06-19 Mon 23:32]
   See: [[file:drn_mem.org::*Voltage%20imaging%20using%20a%20artificial%20biosensor][Voltage imaging using a artificial biosensor]]
 - State "TODO"       from              [2017-06-19 Mon 20:48]
 ** Discussed voltage imaging using a artificial biosensor with Takashi
-See: [[file:~/universe/imaging.org::*Voltage%20imaging%20using%20a%20artificial%20biosensor][Voltage imaging using a artificial biosensor]]
+See: [[file:~/universe/academic/imaging.org::*Voltage%20imaging%20using%20a%20artificial%20biosensor][Voltage imaging using a artificial biosensor]]
 - GFP and many of the other naturally-occuring biosensors are kind of slow -- about 300 ms.
 - Whole brain imaging of voltage sensors is done at 300 Hz, which means that the sampling is done every 3.3 ms.
 - When sampling at such high speeds, another concern is the level of fluoresence. Because sampling is done so quicky, the exposure time is short and therefore the samples don't quite light up as much.
@@ -133,7 +133,10 @@ CLOSED: [2017-06-23 Fri 20:31]
 - State "TODO"       from              [2017-06-23 Fri 19:17]
 ** TODO Note down two-photon imaging protocol
 - State "TODO"       from              [2017-06-23 Fri 19:20]
-** TODO Note down Misha's ideas to fix the YFP signal coming out of the zebrafish line we are using
+** CANCELED Note down Misha's ideas to fix the YFP signal coming out of the zebrafish line we are using
+CLOSED: [2017-07-30 Sun 21:45]
+- State "CANCELED"   from "TODO"       [2017-07-30 Sun 21:45] \\
+  explained to me too long ago so don't remember... In any case, I understood the logic and this is not important for my current project so I'm going to cancel it.
 - State "TODO"       from              [2017-06-23 Fri 22:19]
 * 17JUN24 Got the Anaconda installation right and decided to use Visual Studio IDE for C# programming
 ** Davis introduced me to the fictive behaviour recording software
@@ -248,7 +251,10 @@ _lab fruit_
 ** TODO Ask for introduction on microscope designs
 - State "TODO"       from              [2017-06-26 Mon 10:13]
 ** DONE Subscribed to the Python and Neurotheory and Engineering mailing lists
-** STARTED Figure out a way to subscribe to the J-Theory Group meetings, Neurotheory & Engin and System Neuroscience Seminars
+** CANCELED Figure out a way to subscribe to the J-Theory Group meetings, Neurotheory & Engin and System Neuroscience Seminars
+CLOSED: [2017-07-29 Sat 16:58]
+- State "CANCELED"   from "STARTED"    [2017-07-29 Sat 16:58] \\
+  Will not happen. Help desk couldn't solve the problem and finally recommended me not to subsribe to Janelia calendars because they won't be updated whenever new changes are made...
 - State "STARTED"    from "TODO"       [2017-07-13 Thu 23:29] \\
   - I don't think there's an actual way to do that... The calendars are all separate and I don't think there's a way to subscribe to them...
   - Emailed support to ask for help on this!
@@ -497,13 +503,22 @@ CLOSED: [2017-07-11 Tue 11:43]
 ** [master 4b3dba6] used glob list directory to separate between imaging and ephys files
 ** [master 893f6cf] do not index / use an identical index for selecting ep and im files
 ** [master 730ce65] cleaned up code: forget about listdir
-** TODO When filling up the stacks for each swim (i.e. swim-triggered image stacks), should use the last image instead of the first image
+** CANCELED When filling up the stacks for each swim (i.e. swim-triggered image stacks), should use the last image instead of the first image
+CLOSED: [2017-08-14 Mon 17:15]
+- State "CANCELED"   from "TODO"       [2017-08-14 Mon 17:15] \\
+  Too late: already done with my progress report presentation
 - State "TODO"       from              [2017-07-11 Tue 14:31]
-** TODO Watch video about CRISPR: https://www.youtube.com/watch?v=2pp17E4E-O8
-- State "TODO"       from              [2017-07-11 Tue 14:56]
-** TODO Calculate delta F over F
+** DONE Calculate delta F over F
+CLOSED: [2017-08-14 Mon 17:09]
+- State "DONE"       from "CANCELED"   [2017-08-14 Mon 18:07] \\
+  I think I did implement it afterall!
+- State "CANCELED"   from "TODO"       [2017-08-14 Mon 17:09] \\
+  Too late: already done with my progress report presentation
 - State "TODO"       from              [2017-07-11 Tue 18:25]
-** TODO Register my image before calculaing delta F over F
+** CANCELED Register my image before calculaing delta F over F
+CLOSED: [2017-08-14 Mon 17:09]
+- State "CANCELED"   from "TODO"       [2017-08-14 Mon 17:09] \\
+  Unnecessary and also too late: already done with my progress report presentation
 - State "TODO"       from              [2017-07-12 Wed 13:48]
 * 17JUL12 Started to work with modifying Davis' ROI drawing module
 ** Lab meeting: Minoru presents journal club
@@ -518,7 +533,11 @@ CLOSED: [2017-07-11 Tue 11:43]
 ** DONE Modify RoiDrawing so can select between between rectangle and lasso selection tool
 CLOSED: [2017-07-13 Thu 23:25]
 - State "TODO"       from              [2017-07-12 Wed 22:34]
-** TODO Modify RoiDrawing so that the lines, instead of the mask is plotted and overlaid over the image
+** CANCELED Modify RoiDrawing so that the lines, instead of the mask is plotted and overlaid over the image
+CLOSED: [2017-08-14 Mon 17:10]
+- State "CANCELED"   from "TODO"       [2017-08-14 Mon 17:10] \\
+  - Unnecessary: the mask provides all the information that is needed to visualize where the calcium dynamics is from
+  - Too late: already done with my progress report presentation
 - State "TODO"       from              [2017-07-12 Wed 22:34]
 * 17JUL13 Implemented rectangular ROI on Davis' ROI drawing module
 ** Better to use the standard sized cell in jupyter
@@ -552,12 +571,539 @@ CLOSED: [2017-07-15 Sat 00:06]
 - Start: [[file:ahrensexpt.org::*17JUL16%20fish00_osc00][17JUL16 fish00_osc00]]
 * 17JUL17 Analysed and took down notes for all the data I collected so far
 ** [master 8788d4b] started analysing all my data files and combined projects.org into ahrensnotes.org
-** TODO Don't downsample the ephys data! Space the imaging data further apart!
-SCHEDULED: <2017-07-18 Tue>
+** DONE Don't downsample the ephys data! Space the imaging data further apart!
+CLOSED: [2017-07-20 Thu 11:12] SCHEDULED: <2017-07-18 Tue>
+- State "DONE"       from "URGENT"     [2017-07-20 Thu 11:12]
+- State "URGENT"     from "TODO"       [2017-07-20 Thu 10:33]
 - State "TODO"       from              [2017-07-17 Mon 23:01]
-** TODO Look at [[file:ahrensexpt.org::*17JUL16%20fish01_osc04][17JUL16 fish01_osc04]]
-SCHEDULED: <2017-07-18 Tue>
+** DONE Look at [[file:ahrensexpt.org::*17JUL16%20fish01_osc04][17JUL16 fish01_osc04]]
+CLOSED: [2017-07-20 Thu 10:33] SCHEDULED: <2017-07-18 Tue>
+- State "DONE"       from "TODO"       [2017-07-20 Thu 10:33] \\
+  Data difficult to analyze because of the abrupt wave of activity towards the end...
 - State "TODO"       from              [2017-07-17 Mon 23:01]
-** TODO Clean up my ipython notebook -- some cells I never run and some cells I run but not necessary
-SCHEDULED: <2017-07-18 Tue>
+** DONE Clean up my ipython notebook -- some cells I never run and some cells I run but not necessary
+CLOSED: [2017-07-19 Wed 16:02] SCHEDULED: <2017-07-18 Tue>
+- State "DONE"       from "TODO"       [2017-07-19 Wed 16:02] \\
+  Cleaned up my analysis code yesterday...
 - State "TODO"       from              [2017-07-17 Mon 23:02]
+* 17JUL18 Ensured that the analysis code flows ok: indexes obtained from an array should be used on the same array
+** [master ec1d0be] tried hilbert transform and interaction rectangle selection tool
+ 13 files changed, 26282 insertions(+), 8338 deletions(-)
+ create mode 100644 analysis/.ipynb_checkpoints/affine_reg_test-checkpoint.ipynb
+ create mode 100644 analysis/.ipynb_checkpoints/buttons_test-checkpoint.ipynb
+ create mode 100644 analysis/.ipynb_checkpoints/filter_test-checkpoint.ipynb
+ create mode 100644 analysis/.ipynb_checkpoints/hilbert_test-checkpoint.ipynb
+ create mode 100644 analysis/.ipynb_checkpoints/jupyter_magic-checkpoint.ipynb
+ create mode 100644 analysis/.ipynb_checkpoints/rect_sel_test-checkpoint.ipynb
+ create mode 100644 analysis/.ipynb_checkpoints/swim_triggered_average-checkpoint.ipynb
+ create mode 100644 analysis/.ipynb_checkpoints/sym_diffeo_reg_test-checkpoint.ipynb
+ create mode 100644 analysis/.ipynb_checkpoints/view_image-checkpoint.ipynb
+ rewrite analysis/buttons_test.ipynb (71%)
+ create mode 100644 analysis/hilbert_test.ipynb
+ rewrite analysis/swim_triggered_average.ipynb (94%)
+** [master 22aa361] accidentally added the ipynb checkpoint files so removing them
+ 9 files changed, 21738 deletions(-)
+ delete mode 100644 analysis/.ipynb_checkpoints/affine_reg_test-checkpoint.ipynb
+ delete mode 100644 analysis/.ipynb_checkpoints/buttons_test-checkpoint.ipynb
+ delete mode 100644 analysis/.ipynb_checkpoints/filter_test-checkpoint.ipynb
+ delete mode 100644 analysis/.ipynb_checkpoints/hilbert_test-checkpoint.ipynb
+ delete mode 100644 analysis/.ipynb_checkpoints/jupyter_magic-checkpoint.ipynb
+ delete mode 100644 analysis/.ipynb_checkpoints/rect_sel_test-checkpoint.ipynb
+ delete mode 100644 analysis/.ipynb_checkpoints/swim_triggered_average-checkpoint.ipynb
+ delete mode 100644 analysis/.ipynb_checkpoints/sym_diffeo_reg_test-checkpoint.ipynb
+ delete mode 100644 analysis/.ipynb_checkpoints/view_image-checkpoint.ipynb
+** Retring some code
+#+BEGIN_SRC 
+# if the original signal is binary (i.e. 1 and 0), there should only be 3 derivatives: n: up slope 0: no slope -n: down slope
+
+print((epp[3]>1).sum())
+print((epp[3]>1.5).sum())
+print((epp[3]>2).sum())
+print((epp[3]>2.5).sum())
+print((epp[3]>3).sum())
+print((epp[3]>3.5).sum())
+
+# due to the analog nature of the original signal, incomplete transitions (and more than 3 derivatives) could be found
+
+im_count = 0
+for i, d in enumerate(epp[3][1:]):
+    
+    # up slope threshold required because there's jitter in the baseline signal
+    thresh = 0.1
+    
+    if d - epp[3][1:][i-1] > thresh and d > epp[3][1:][i+1]: im_count += 1  
+        
+print(im_count)
+#+END_SRC
+** Making sure that the ephys and im arrays are sliced first before doing anything else
+_Raw data files_
+ep
+im \to removed pixels above cthresh
+
+im_init: remove unwanted frames before (imaging starts after recording starts) and after (imaging ends before recording ends)
+
+imt_jumps: imaging start times
+
+ep_cleaned: ephys only for the times we have images and ephys for
+im_cleaned: im only for the times we have images and ephys for
+
+imtc_jumps: imaging starts times after alignment
+** [master 5ae55dc] fixed alignment issues due to slicing out blank and extra image frames
+* 17JUL19 Found out a whole lot about Alireza's analysis and about Hilbert's transform
+** Zebrafish labs meeting: Minoru's Progress Report
+- contralateral projection cells appear early in devleopment, probably because it is necessary for escape which is crucial for survival.
+- progenitor cells in the hind brain are located dorsally
+- reorganisation and mixing of early born neurons with later born neurons
+- New born neurons stop popping up at 3 days
+- The hindbrain still increases in size, but these are increases in axon and dendrite volume
+- The number of neuorns stays roughly the same (~1000-2000 neurons) and these are controlling the motion even in the adult zebrafish
+- The neurons in the outer layers control slow response, whereas the cells in the core controls stronger respnse (e.g. startle)
+** DONE Compute the phases of the swim starts using Hilbert Transform
+CLOSED: [2017-07-20 Thu 17:30]
+- State "DONE"       from "TODO"       [2017-07-20 Thu 17:30] \\
+  See: [[file:ahrensnotes.org::*Perform%20Hilbert%20transform%20on%20the%20calcium%20imaging%20data,%20and%20plot%20a%20histogram%20of%20the%20angles%20during%20swim%20bouts][Perform Hilbert transform on the calcium imaging data, and plot a histogram of the angles during swim bouts]]
+- State "TODO"       from              [2017-07-19 Wed 16:05]
+** DONE Note down what Mika explained to me about factorisation and look at NMF
+CLOSED: [2017-07-22 Sat 21:13] SCHEDULED: <2017-07-19 Wed>
+- State "DONE"       from "TODO"       [2017-07-22 Sat 21:13]
+- State "TODO"       from              [2017-07-19 Wed 16:52]
+** TODO Read the paper that Misha sent (Alireza: theta oscillations)
+- State "TODO"       from              [2017-07-19 Wed 16:53]
+** Omics journal club: Mark Cembrowski is presenting "Parallel hippocampal outputs via distinct classes of cells in the subiculum”
+*** CA1
+- The hippocampus is also involved in anxiety. Rodents like to hang out in the closed arm of a plus maze, but if you lesion it, they longer do so...
+- When popRNA seq was done between the proximal and distant hippocampal CA1 neurons, no marker genes were found.
+- Dorsal: memory and spatial cognition; ventral: emotion
+- Drosal vs ventral: 100+ genes that were differentially express
+- physically intermediate CA1 does correlate with transcriptionally intermediate, but there's no one strongly discriminating factor to form a real group (i.e. there aren't any marker genes for the intermediate regions)
+- there are markers in the intermediate that are 'OFF' not 'ON', and these genes increases as it leaves the physical intermediate
+*** Subiculum
+- First used beads injected in different ares -- RSC vs NAc -- which go back to cells that are segregated in the dorsal ventral axis
+- Dorsal vs ventral: many genes that are differentially expressed -- but that's not surprising, since projection is one big factor of cell types
+- different transcriptomes, intrinsic firing properties, projections
+- cell type and behavioural data suggests that Jim Knerim's hypothesis of hippocampal processing is true
+* 17JUL20 Plotted phase of swim bouts vs heart rate
+** DONE Also compare heart rate with oscillations
+CLOSED: [2017-07-22 Sat 23:33]
+- State "DONE"       from "TODO"       [2017-07-22 Sat 23:33] \\
+  plotted this in the summary graph
+- State "TODO"       from              [2017-07-20 Thu 10:34]
+** DONE Perform Hilbert transform on the calcium imaging data, and plot a histogram of the angles during swim bouts
+CLOSED: [2017-07-20 Thu 17:29]
+- State "DONE"       from "TODO"       [2017-07-20 Thu 17:29] \\
+  this analysis can only be done on downsampled data and not for swim starts, which would be ideal...
+- State "TODO"       from              [2017-07-20 Thu 10:35]
+** [master 91eac05] plotted phase of swim bouts and heart rate
+ 2 files changed, 8131 insertions(+), 3154 deletions(-)
+** Alignment problems
+Conclusion: one extra image in front and two extra ephys pulses behind
+** [master 0c86000] debugged the alignment problem
+* 17JUL21 First attempt on the light sheet
+** Yumu showed me how he does fish embedding
+** Shadowed Virginie for light sheet but was working for almost the whole time on the poker and ran into problems with the software towards the end
+** DONE Re-figure out what actually happened to the alignment on the old two-photon microscope
+CLOSED: [2017-07-22 Sat 23:11]
+- State "DONE"       from "TODO"       [2017-07-22 Sat 23:11]
+- State "TODO"       from              [2017-07-21 Fri 10:56]
+
+The root of all evil is the Behave&Scan sofrware. So it seems that the number of images taken by the two-photon and the number of images the two-photon said it took is always different. It is common to have the software report a higher number of images taken than it actually took, but the reverse can also happen. I've also noticed in some cases that there is no discrepancy, but as you will find out later, this is not true.
+
+Misha figured that there might be various sources of the problem, but it is most likely caused by improper threading of the image and elctrophysiology threads done by the Behave&Scan software. Other issues also arise as I accured more time with the software. It would crash during recordings, a problem Takashi attributed to the writing of the data file to disk.
+
+While we knew that the problem was due to the software, we needed to know where the problem was. Unfortunately, this was much harder to determine and Misha thought it would be easier to instead find a way to align the imaging and electrophysiology data. His idea was to disrupt the imaging and electrophysiolgy recordings with a single stimulus at the same time. And so what he did was to artificially connect the imaging amplifier to the electrophysiology amplifier, and momentarily disconnect them, causing disruptions in both recordings at once.
+
+By taking a ROI at the point of the imaging at which the disruption was evident, we plotted the fluorescence vs the ephys trace. Interestingly, the ephys from channel 1 showed us the imaging pulses when it is not occluded by noise. We started imaging way before the start of the disruption, this offered us a way to visualize both the noise and the disruption in a single trace. In any case, it was found that at while the frame that had the disruption happened at the 72536 time point, the electrophysiology trace show the same event happening at time point 72265. This suggests to us tha [[file:gif/20170721_alignment_issue.png][imaging is slower than the electrophys]], and so to align the two traces, we would have to move the images one frame back in time.
+
+Why was this the case? Was there one extra image or one missing ephys data point? Could it be a threading issue? Looking at the imaging itself gave us the answer. It seemed that every time the two-photon communicated to the software the times it takes an image, it flashes in the top 1/5 of the image. Although this was considered to be undesirable (because it is really not what we intended to image), this actually helped us solve this mystery. It appeared that the very first frame did not have the flash of light, which means that there's an extra frame of image taken which is not recorded in the electrophysiology trace. So for datasets with one extra imaging pulse, there's actually two extra. Those with one more image as compared to image pulse should have the correct number of imaging pulses, and so on...
+
+So what we have to do now is to remove the very first electrophysiology trace -- then both traces will start at the same time!
+** DONE Completed HughesTime for the previous 2 weeks
+** Code from debugging alignment problems
+#+BEGIN_SRC 
+from fish.image.roi import RoiDrawing
+draw_fig, draw_ax = plt.subplots()
+plt.subplots_adjust(bottom=0.2)
+sample = np.mean(im, axis=0)
+draw_ax.imshow(sample, cmap='Greys_r', aspect=5.5, clim=(0, 5000)) # maximum intensity projection
+# drawing = RoiDrawing(draw_ax, sample)
+#+END_SRC
+
+#+BEGIN_SRC 
+from fish.image.roi import drawROI
+drawing = drawROI(draw_ax, sample)
+#+END_SRC
+
+#+BEGIN_SRC 
+roii_fig, roii_axs = plt.subplots(nrows=1,ncols=len(drawing.rois))
+for i, r in enumerate(drawing.rois):
+    if len(drawing.rois) == 1:
+        roii_axs.imshow(sample, cmap='Greys_r', aspect=5.5, clim=(0, cmax))
+        roii_axs.imshow(r.get_mask(), cmap='inferno', aspect=5.5, alpha=0.4)
+    else:
+        roii_axs[i].imshow(sample, cmap='Greys_r', aspect=5.5, clim=(0, cmax))
+        roii_axs[i].imshow(r.get_mask(), cmap='inferno', aspect=5.5, alpha=0.4)
+#+END_SRC
+
+#+BEGIN_SRC 
+blci_fig, blci_ax = plt.subplots(figsize=(7.5, 3*len(drawing.rois)), nrows=len(drawing.rois), ncols=1)
+
+for i, r in enumerate (drawing.rois):
+
+    coords = np.where(r.get_mask())
+    fluor = im_cleaned[:,coords[0], coords[1]].mean(1)
+    blci_ax.plot(imtc_times, fluor-440)
+    blci_ax.plot(ep_cleaned[0]*100)
+#+END_SRC
+* 17JUL22 Fixed alignment problems
+** CANCELED Seems like Davis' detectswims is one time point off: either ask Davis about it or fix it yourself
+CLOSED: [2017-08-14 Mon 17:11]
+- State "CANCELED"   from "TODO"       [2017-08-14 Mon 17:11] \\
+  - Too late: already done with my progress report presentation
+  - Don't think Davis is too keen on fixing that anyway...
+- State "TODO"       from              [2017-07-23 Sun 00:50]
+** [master fd06fcd] fixed alignment problems -- removed first image -- and redid analysis for forebrain data
+* 17JUL24 Trying to understand what is wrong with using Hilbert transform in my analysis
+** Lab meeting
+*** Oscillations project discussion
+- Yumu found that the gabaergic neurons spiked right after swim bouts
+- Negatively-correlated with inter-swim interval
+- Yumu: oscillations might create variability in the escape behaviour (e.g. snake vs fish C response)
+**** ONHOLD Check the movement of the piezo with the oscilloscope
+- State "ONHOLD"     from "TODO"       [2017-07-25 Tue 19:05] \\
+  Misha thinks I should just try and get data instead
+- State "TODO"       from              [2017-07-24 Mon 10:18]
+**** DONE Make recordings from single planes or triplets at 20 Hz
+CLOSED: [2017-07-29 Sat 17:00]
+- State "DONE"       from "TODO"       [2017-07-29 Sat 17:00] \\
+  20 Hz is not possible; 15 Hz is already pushing it -- but have been making progress ever since :)
+- State "TODO"       from              [2017-07-24 Mon 10:20]
+**** TODO Perform Hilbert transform for only the data before swims -- if the swims are affecting the oscillations, the directionality should go away
+- State "TODO"       from              [2017-07-24 Mon 10:40]
+**** DONE Do presentation on the last lab meeting (9 Aug)
+CLOSED: [2017-08-14 Mon 17:11]
+- State "DONE"       from "TODO"       [2017-08-14 Mon 17:11] \\
+  Presented!
+- State "TODO"       from              [2017-07-24 Mon 10:39]
+**** DONE Send figures from data to Alireza
+CLOSED: [2017-07-24 Mon 16:31]
+- State "DONE"       from "TODO"       [2017-07-24 Mon 16:31]
+- State "TODO"       from              [2017-07-24 Mon 11:14]
+*** Mika's code
+- First to create 4D array
+- Uses pandas for rollling baseline, but everything else is done in 
+*** Misc
+- Transgenic: added gene
+- Mutant: when one or more genes have lost or altered function (includes knockouts)
+** CANCELED Ask Sarah-Ann for Dropbox business acount
+CLOSED: [2017-08-06 Sun 02:42]
+- State "CANCELED"   from "TODO"       [2017-08-06 Sun 02:42] \\
+  Not necessay anymore -- directed the query directly to support @ HHMI
+- State "TODO"       from              [2017-07-24 Mon 11:35]
+** DONE Ask Alireza how to accurately find phase relationships if the signal is not oscillating
+CLOSED: [2017-07-25 Tue 00:52]
+- State "DONE"       from "TODO"       [2017-07-25 Tue 00:52]
+- State "TODO"       from              [2017-07-24 Mon 23:17]
+** TODO Compare the phase at all time points with swim points -- if they are the same then something must be wrong (assuming you see a relationship in the raw signal)
+- State "TODO"       from              [2017-07-24 Mon 23:19]
+* 17JUL26 Tried to get started with Spark
+** Journal club
+- Clustering of correlated input but not to orientation
+- Local dendrites receive local connections, long range connections synapse onto distal dendrites
+- In mouse, the retinotopic organisation of the visual cortex is not as clear as that in the monkey
+- Long range connections tend to be of the same orientation
+- If one cell is activated, cells with the same orientations would also be activated (or more easily activated) -- causing us to see lines better
+- Very little behavioural difference between a mouse with the cortical layers all messed up -- maybe mesoscopic organisation doesn't matter as much as the actual connections \to then development has to be very precise!
+** Masashi progress report
+- Bessel-beam 2-photon Ca2+ imaging allows imaging of volume with extended depth of view
+- during swimming, people have seen depression in sensory areas 
+** [master a243fd5] added takashi's spark configuration files for reference
+ 3 files changed, 17397 insertions(+), 18806 deletions(-)
+ rewrite analysis/swim_triggered_average.ipynb (62%)
+ create mode 100644 takashi/.bashrc
+ create mode 100755 takashi/mypyspark
+* 17JUL27 Tried to set up Spark with Spyder IDE -- to no avail
+** Two errors
+*** bash error:
+#+BEGIN_SRC 
+Qt: Session management error: Could not open network socket
+#+END_SRC
+*** Python error:
+#+BEGIN_SRC 
+Python 3.5.3 |Anaconda custom (64-bit)| (default, Mar  6 2017, 11:58:13) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-1)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+17/07/27 11:28:24 ERROR DiskBlockManager: Failed to create local dir in /data1/sparklocaldir. Ignoring this directory.
+java.io.IOException: Failed to create a temp directory (under /data1/sparklocaldir) after 10 attempts!
+	at org.apache.spark.util.Utils$.createDirectory(Utils.scala:218)
+	at org.apache.spark.storage.DiskBlockManager$$anonfun$createLocalDirs$1.apply(DiskBlockManager.scala:135)
+	at org.apache.spark.storage.DiskBlockManager$$anonfun$createLocalDirs$1.apply(DiskBlockManager.scala:133)
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:251)
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:251)
+	at scala.collection.IndexedSeqOptimized$class.foreach(IndexedSeqOptimized.scala:33)
+	at scala.collection.mutable.ArrayOps$ofRef.foreach(ArrayOps.scala:108)
+	at scala.collection.TraversableLike$class.flatMap(TraversableLike.scala:251)
+	at scala.collection.mutable.ArrayOps$ofRef.flatMap(ArrayOps.scala:108)
+	at org.apache.spark.storage.DiskBlockManager.createLocalDirs(DiskBlockManager.scala:133)
+	at org.apache.spark.storage.DiskBlockManager.<init>(DiskBlockManager.scala:45)
+	at org.apache.spark.storage.BlockManager.<init>(BlockManager.scala:78)
+	at org.apache.spark.SparkEnv$.create(SparkEnv.scala:365)
+	at org.apache.spark.SparkEnv$.createDriverEnv(SparkEnv.scala:193)
+	at org.apache.spark.SparkContext.createSparkEnv(SparkContext.scala:288)
+	at org.apache.spark.SparkContext.<init>(SparkContext.scala:457)
+	at org.apache.spark.api.java.JavaSparkContext.<init>(JavaSparkContext.scala:59)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:234)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:381)
+	at py4j.Gateway.invoke(Gateway.java:214)
+	at py4j.commands.ConstructorCommand.invokeConstructor(ConstructorCommand.java:79)
+	at py4j.commands.ConstructorCommand.execute(ConstructorCommand.java:68)
+	at py4j.GatewayConnection.run(GatewayConnection.java:209)
+	at java.lang.Thread.run(Thread.java:745)
+17/07/27 11:28:24 ERROR DiskBlockManager: Failed to create local dir in /data2/sparklocaldir. Ignoring this directory.
+java.io.IOException: Failed to create a temp directory (under /data2/sparklocaldir) after 10 attempts!
+	at org.apache.spark.util.Utils$.createDirectory(Utils.scala:218)
+	at org.apache.spark.storage.DiskBlockManager$$anonfun$createLocalDirs$1.apply(DiskBlockManager.scala:135)
+	at org.apache.spark.storage.DiskBlockManager$$anonfun$createLocalDirs$1.apply(DiskBlockManager.scala:133)
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:251)
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:251)
+	at scala.collection.IndexedSeqOptimized$class.foreach(IndexedSeqOptimized.scala:33)
+	at scala.collection.mutable.ArrayOps$ofRef.foreach(ArrayOps.scala:108)
+	at scala.collection.TraversableLike$class.flatMap(TraversableLike.scala:251)
+	at scala.collection.mutable.ArrayOps$ofRef.flatMap(ArrayOps.scala:108)
+	at org.apache.spark.storage.DiskBlockManager.createLocalDirs(DiskBlockManager.scala:133)
+	at org.apache.spark.storage.DiskBlockManager.<init>(DiskBlockManager.scala:45)
+	at org.apache.spark.storage.BlockManager.<init>(BlockManager.scala:78)
+	at org.apache.spark.SparkEnv$.create(SparkEnv.scala:365)
+	at org.apache.spark.SparkEnv$.createDriverEnv(SparkEnv.scala:193)
+	at org.apache.spark.SparkContext.createSparkEnv(SparkContext.scala:288)
+	at org.apache.spark.SparkContext.<init>(SparkContext.scala:457)
+	at org.apache.spark.api.java.JavaSparkContext.<init>(JavaSparkContext.scala:59)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:234)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:381)
+	at py4j.Gateway.invoke(Gateway.java:214)
+	at py4j.commands.ConstructorCommand.invokeConstructor(ConstructorCommand.java:79)
+	at py4j.commands.ConstructorCommand.execute(ConstructorCommand.java:68)
+	at py4j.GatewayConnection.run(GatewayConnection.java:209)
+	at java.lang.Thread.run(Thread.java:745)
+17/07/27 11:28:24 ERROR DiskBlockManager: Failed to create local dir in /data3/sparklocaldir. Ignoring this directory.
+java.io.IOException: Failed to create a temp directory (under /data3/sparklocaldir) after 10 attempts!
+	at org.apache.spark.util.Utils$.createDirectory(Utils.scala:218)
+	at org.apache.spark.storage.DiskBlockManager$$anonfun$createLocalDirs$1.apply(DiskBlockManager.scala:135)
+	at org.apache.spark.storage.DiskBlockManager$$anonfun$createLocalDirs$1.apply(DiskBlockManager.scala:133)
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:251)
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:251)
+	at scala.collection.IndexedSeqOptimized$class.foreach(IndexedSeqOptimized.scala:33)
+	at scala.collection.mutable.ArrayOps$ofRef.foreach(ArrayOps.scala:108)
+	at scala.collection.TraversableLike$class.flatMap(TraversableLike.scala:251)
+	at scala.collection.mutable.ArrayOps$ofRef.flatMap(ArrayOps.scala:108)
+	at org.apache.spark.storage.DiskBlockManager.createLocalDirs(DiskBlockManager.scala:133)
+	at org.apache.spark.storage.DiskBlockManager.<init>(DiskBlockManager.scala:45)
+	at org.apache.spark.storage.BlockManager.<init>(BlockManager.scala:78)
+	at org.apache.spark.SparkEnv$.create(SparkEnv.scala:365)
+	at org.apache.spark.SparkEnv$.createDriverEnv(SparkEnv.scala:193)
+	at org.apache.spark.SparkContext.createSparkEnv(SparkContext.scala:288)
+	at org.apache.spark.SparkContext.<init>(SparkContext.scala:457)
+	at org.apache.spark.api.java.JavaSparkContext.<init>(JavaSparkContext.scala:59)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:234)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:381)
+	at py4j.Gateway.invoke(Gateway.java:214)
+	at py4j.commands.ConstructorCommand.invokeConstructor(ConstructorCommand.java:79)
+	at py4j.commands.ConstructorCommand.execute(ConstructorCommand.java:68)
+	at py4j.GatewayConnection.run(GatewayConnection.java:209)
+	at java.lang.Thread.run(Thread.java:745)
+17/07/27 11:28:24 ERROR DiskBlockManager: Failed to create any local dir.
+ERROR:py4j.java_gateway:An error occurred while trying to connect to the Java server
+Traceback (most recent call last):
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 746, in send_command
+    raise Py4JError("Answer from Java side is empty")
+py4j.protocol.Py4JError: Answer from Java side is empty
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 626, in send_command
+    response = connection.send_command(command)
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 750, in send_command
+    raise Py4JNetworkError("Error while sending or receiving", e)
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 577, in _get_connection
+    connection = self.deque.pop()
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 690, in start
+    self.socket.connect((self.address, self.port))
+ConnectionRefusedError: [Errno 111] Connection refused
+Traceback (most recent call last):
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 746, in send_command
+py4j.protocol.Py4JError: Answer from Java side is empty
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 626, in send_command
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 750, in send_command
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 577, in _get_connection
+IndexError: pop from an empty deque
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 690, in start
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/spark-current/python/pyspark/shell.py", line 43, in <module>
+    sc = SparkContext(pyFiles=add_files)
+  File "/usr/local/spark-current/python/pyspark/context.py", line 115, in __init__
+    conf, jsc, profiler_cls)
+  File "/usr/local/spark-current/python/pyspark/context.py", line 172, in _do_init
+    self._jsc = jsc or self._initialize_context(self._conf._jconf)
+  File "/usr/local/spark-current/python/pyspark/context.py", line 235, in _initialize_context
+    return self._jvm.JavaSparkContext(jconf)
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 1062, in __call__
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 631, in send_command
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 624, in send_command
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 579, in _get_connection
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 585, in _create_connection
+  File "/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py", line 697, in start
+py4j.protocol.Py4JNetworkError: An error occurred while trying to connect to the Java server
+>>> 
+#+END_SRC
+** Seems like setting ~PYSPARK_PYTHON~ to python instead of spyder solved the error
+#+BEGIN_SRC 
+export PYSPARK_PYTHON=$HOME/anaconda3/bin/python
+#+END_SRC
+* 17JUL30 Collected my first full dataset from the light sheet
+** Collected first full dataset from the light sheet
+** DONE Ask Misha to go through with me what the light sheet components are actually doing when you acquire a stack
+CLOSED: [2017-08-03 Thu 02:02]
+- State "DONE"       from "TODO"       [2017-08-03 Thu 02:02] \\
+  He went through everything with me 2 nights ago :)
+- State "TODO"       from              [2017-07-30 Sun 22:03]
+* 17JUL31 Light sheet imaging
+** Technical lab meeting
+- Tighten screws!
+- Everybody should learn how to align the lasers.
+- We should build a stage so that we don't have to manually change the position of the objective every time a different chamber is used.
+- Use fluorescin as a medium to test the laser beams -- it's good.
+- Hooking up the oscilloscope and looking the command vs the output was good to align both
+- Don't use CW mode; use analog mode.
+- The smaller the galvo, the better is it for noise because it is a servo system.
+- Got optogenetics working with two-photon stimulation and concurrent calcium imaging (ReaChR and GCaMP)
+- could be direct effect of serotonin on calcium rather than spiking levels.
+* 17AUG01 Collected my first completed light sheet + fictive behaviour dataset
+** Collected my first completed LS + fictive behaviour dataset!
+* 17AUG02 Ahbi's progress report
+** Ahbi's progress report
+- The model is that the response is directly due to sensory input and/or input by the Maunthner
+- Theme in the lab: fast vs slow neurons are due to neurodevelopmental age.
+- Escape response: fast then slower later on
+- Dark response: slow, large then slower later on
+- Early born: maunthner and homologs
+- Fast escape in a single direction, whereas dark reponse can see that it starts in one direction but quickly switches to the other
+- Mauthner causes some stereotypy in the motor response, so without it, not only do you not get the fast response, but the slower repsonse is also more variable
+- The smudging could be due to different tail configurations at the start of the slow response
+- Trigeminal stim elicits longer episodes
+- When Mauthner hyperpolarised before TG is stimulated, fast component is gone, but slow component ramins
+* 17AUG06 Preparing for my progress report I: additional analyses to be done
+** DONE Find out the average rate of oscillations for heart rate and brain rhythms
+CLOSED: [2017-08-06 Sun 22:02]
+- State "DONE"       from "TODO"       [2017-08-06 Sun 22:02]
+- State "TODO"       from              [2017-08-06 Sun 12:53]
+** DONE Find the mean the standard deviation for the swim-triggered fluorescence timeseries
+CLOSED: [2017-08-06 Sun 19:12]
+- State "DONE"       from "TODO"       [2017-08-06 Sun 19:12]
+- State "TODO"       from              [2017-08-06 Sun 13:00]
+** TODO Scramble the data somehow and show that the trend we see goes away
+- State "TODO"       from              [2017-08-06 Sun 13:00]
+** CANCELED Do K means clustering of the pixels for different calcium dynamics
+CLOSED: [2017-08-14 Mon 17:13]
+- State "CANCELED"   from "TODO"       [2017-08-14 Mon 17:13] \\
+  Working on doing regression instead :)
+- State "TODO"       from              [2017-08-06 Sun 13:02]
+** DONE Move my python data analysis pipeline all over to Jupyter
+CLOSED: [2017-08-14 Mon 17:11]
+- State "DONE"       from "TODO"       [2017-08-14 Mon 17:11] \\
+  Copied Mika's code over to a new jupyter notebook. This notebook contains both ~z__parameters.py~ and ~z__main.py~.
+- State "TODO"       from              [2017-08-06 Sun 13:30]
+** DONE Pass to datasets to Mika for processing for James Fitzgerald's Woods Hole course
+CLOSED: [2017-08-06 Sun 16:17]
+- State "DONE"       from "TODO"       [2017-08-06 Sun 16:17]
+- State "TODO"       from              [2017-08-06 Sun 16:17]
+
+- /groups/ahrens/ahrenslab/jing/SPIM/20170731/6dpf_2026x2061_fish00_osc01_20170731_232605 (everything)
+- /groups/ahrens/ahrenslab/jing/SPIM/20170801/7dpf_2026x2061_fish00_osc04_20170802_020923 (everything less a2_cluster.m)
+** [master 334c9ab] looked at swim-triggered fluorescence and found datasets for the woods hole course
+** Not sure why can't use ~swim_triggered~ to plot all delta F
+#+BEGIN_SRC 
+    # for each swim, plot average fluorescence
+    for s in range(swim_triggered.shape[0]-1):
+        print(s)
+        fluor_arnd_swim = np.mean(swim_triggered[s][:, coords[0], coords[1]], axis=1)
+#         baseline_arnd_swim = peakutils.baseline(fluor_arnd_swim, deg=5)
+#         fluor_arnd_swim_bs = fluor_arnd_swim - baseline_arnd_swim
+        stf_ax2[i, 0].plot(fluor_arnd_swim, color='steelblue', alpha=0.1)
+#+END_SRC
+** Don't plot swim stops triggered averages anymore
+#+BEGIN_SRC 
+    for s in swimstp_index:
+
+        stf_ax1[i,1].plot(np.arange(-(fluor_bs[s-30:s+30].shape[0]/2), (fluor_bs[s-30:s+30].shape[0]/2)), fluor_bs[s-30:s+30], color='steelblue', alpha=0.1)
+        stf_ax1[i,1].axvline(0, ls='dashed', color='red', lw='0.5')
+#+END_SRC
+* 17AUG07 Preparing for my progress report II: additional analyses to be done
+** DONE Plot interswim interval
+CLOSED: [2017-08-07 Mon 11:25]
+- State "DONE"       from "TODO"       [2017-08-07 Mon 11:25]
+- State "TODO"       from              [2017-08-07 Mon 11:25]
+* 17AUG08 Preparing for my prrgress report III: making the PPT
+** CANCELED Try optimizing the swim-triggered movie for ~17JUL16 fish00_osc00~
+CLOSED: [2017-08-14 Mon 17:13]
+- State "CANCELED"   from "TODO"       [2017-08-14 Mon 17:13] \\
+  Too late: already done with my progress report presentation
+- State "TODO"       from              [2017-08-08 Tue 01:18]
+** CANCELED Swim-triggered average has to be something since forebrain doesn't have it?
+CLOSED: [2017-08-08 Tue 22:38]
+- State "CANCELED"   from "TODO"       [2017-08-08 Tue 22:38] \\
+  The waist area and cerebellum is closer to the heart than the forebrain is.
+- State "TODO"       from              [2017-08-08 Tue 13:21]
+** DONE What is the speed of two photon vs light sheet imaging?
+CLOSED: [2017-08-09 Wed 01:37]
+- State "DONE"       from "TODO"       [2017-08-09 Wed 01:37] \\
+  15 frames vs 15 stacks (x 21 planes) per second
+- State "TODO"       from              [2017-08-09 Wed 00:08]
+* 17AUG14
+** [master 8fc8713] imported mika's analysis pipeline to ipynb and started to implement regression
+ 5 files changed, 24497 insertions(+), 5199 deletions(-)
+ create mode 100644 analysis/check_spark_and_thunder.ipynb
+ create mode 100644 analysis/explore_ephys.ipynb
+ rewrite analysis/hilbert_test.ipynb (81%)
+ create mode 100644 analysis/preprocess_ls.ipynb
+** TODO Write 1 page report on rotation
+- State "TODO"       from              [2017-08-14 Mon 18:00]
+- For guidelines, see: [[file:~/work/hopkins.org::*Rotations%20Guidelines][Rotations Guidelines]]
