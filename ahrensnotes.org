@@ -47,13 +47,15 @@
   - The first thing to do is to be able to work with zebrafishes and to use it to carry out motor learning tasks. It takes about a week (often more) to be comfortable with working with these fishes.
   - There's also python to learn; not so much C sharp now since the code for the VR part of this experiment has already been written.
 * 17JUN19 Day 1: tried my hand at electrode preparation, paralysis, fish embedding and fictive behaviour
-** URGENT What have I brought to my work desk?
+** DONE What have I brought to my work desk?
+CLOSED: [2017-08-16 Wed 23:54]
+- State "DONE"       from "URGENT"     [2017-08-16 Wed 23:54]
 - State "URGENT"     from              [2017-08-14 Mon 15:45]
-- [ ] 2X US adaptors
-- [ ] Surface Pro charger
-- [ ] Z3 charger
-- [ ] logitech MX Master
-- [ ] logitech K380 keyboard
+- [X] 2X US adaptors
+- [X] Surface Pro charger
+- [X] Z3 charger
+- [X] logitech MX Master
+- [X] logitech K380 keyboard
 ** DONE Tried my hand at electrode preparation, paralysis, fish embedding and fictive behaviour
 ** DONE Take note of the fictive behaviour and fish maintenance protocols
 CLOSED: [2017-06-19 Mon 22:05] SCHEDULED: <2017-06-19 Mon>
@@ -131,7 +133,10 @@ CLOSED: [2017-06-23 Fri 20:31]
 - State "TODO"       from              [2017-06-23 Fri 19:21]
 ** TODO Note down microscope basics -- two-photon, light sheet -- in [[file:~/universe/optics.org][optics wiki]]
 - State "TODO"       from              [2017-06-23 Fri 19:17]
-** TODO Note down two-photon imaging protocol
+** DONE Note down two-photon imaging protocol
+CLOSED: [2017-08-29 Tue 13:44]
+- State "DONE"       from "TODO"       [2017-08-29 Tue 13:44] \\
+  see: [[file:~/universe/academic/protocols.org::*Zebrafish:%20Two-photon%20imaging%20(Ahrens%20Lab)][Zebrafish: Two-photon imaging (Ahrens Lab)]]
 - State "TODO"       from              [2017-06-23 Fri 19:20]
 ** CANCELED Note down Misha's ideas to fix the YFP signal coming out of the zebrafish line we are using
 CLOSED: [2017-07-30 Sun 21:45]
@@ -169,7 +174,9 @@ CLOSED: [2017-07-01 Sat 23:42]
 ** Tried out the old two-photon rig because the resonant two-photon rig's software is broken
 ** TODO Note down what are the three main things to change in the code in order to add a GUI tool to change the position of the VR
 - State "TODO"       from              [2017-06-25 Sun 21:07]
-** TODO Finish up recording the protocol for two-photon calcium imaging
+** DONE Finish up recording the protocol for two-photon calcium imaging
+CLOSED: [2017-08-29 Tue 13:47]
+- State "DONE"       from "TODO"       [2017-08-29 Tue 13:47]
 - State "TODO"       from              [2017-06-25 Sun 21:09]
 Quick link: [[file:~/universe/protocols.org::*Zebrafish:%20Two-photon%20calcium%20imaging%20(Ahrens%20Lab)][Zebrafish: Two-photon calcium imaging (Ahrens Lab)]]
 ** TODO Note down my understanding of fish species and their crosses
@@ -768,7 +775,10 @@ CLOSED: [2017-08-14 Mon 17:11]
 - Yumu found that the gabaergic neurons spiked right after swim bouts
 - Negatively-correlated with inter-swim interval
 - Yumu: oscillations might create variability in the escape behaviour (e.g. snake vs fish C response)
-**** ONHOLD Check the movement of the piezo with the oscilloscope
+**** DONE Check the movement of the piezo with the oscilloscope
+CLOSED: [2017-08-16 Wed 03:19]
+- State "DONE"       from "ONHOLD"     [2017-08-16 Wed 03:19] \\
+  Misha and Davis checked and optimized the PIFOC lag 1 and 2 settings!
 - State "ONHOLD"     from "TODO"       [2017-07-25 Tue 19:05] \\
   Misha thinks I should just try and get data instead
 - State "TODO"       from              [2017-07-24 Mon 10:18]
@@ -1097,13 +1107,153 @@ CLOSED: [2017-08-09 Wed 01:37]
 - State "DONE"       from "TODO"       [2017-08-09 Wed 01:37] \\
   15 frames vs 15 stacks (x 21 planes) per second
 - State "TODO"       from              [2017-08-09 Wed 00:08]
-* 17AUG14
+* 17AUG14 Tried to implement regression on the signals I found
 ** [master 8fc8713] imported mika's analysis pipeline to ipynb and started to implement regression
  5 files changed, 24497 insertions(+), 5199 deletions(-)
  create mode 100644 analysis/check_spark_and_thunder.ipynb
  create mode 100644 analysis/explore_ephys.ipynb
  rewrite analysis/hilbert_test.ipynb (81%)
  create mode 100644 analysis/preprocess_ls.ipynb
-** TODO Write 1 page report on rotation
+** REASSIGNED Write 1 page report on rotation
+CLOSED: [2017-08-27 Sun 11:46]
+- State "REASSIGNED" from "TODO"       [2017-08-27 Sun 11:46] \\
+  Reassigned to: [[file:~/work/worknotes.org::*Write%20rotation%20report%20for%20rotation%20in%20Misha's%20lab][Write rotation report for rotation in Misha's lab]]
 - State "TODO"       from              [2017-08-14 Mon 18:00]
 - For guidelines, see: [[file:~/work/hopkins.org::*Rotations%20Guidelines][Rotations Guidelines]]
+** [master 228dec3] virginia tries to do regression with me
+** Merge made by the 'recursive' strategy.
+ ahrensexpt.org  | 501 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ahrensideas.org |  22 ++++++
+ ahrensnotes.org | 995 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------
+ ahrenswiki.org  | 116 +++++++++++++++++++++++++--
+ project.org     | 264 -------------------------------------------------------------
+ 5 files changed, 1592 insertions(+), 306 deletions(-)
+ create mode 100644 ahrensexpt.org
+ create mode 100644 ahrensideas.org
+ delete mode 100644 project.org
+* 17AUG17 Backing up all files and getting ready to depart for Hopkins
+** [master d5e1273] added muyu's and mika's files
+ 38 files changed, 11374 insertions(+)
+ create mode 100755 mika/a1_clean.m
+ create mode 100755 mika/a2_cluster.m
+ create mode 100644 mika/mask_example.m
+ create mode 100755 mika/nndsvd_econ.m
+ create mode 100755 mika/old/__init__.py
+ create mode 100644 mika/old/__init__.pyc
+ create mode 100644 mika/old/a1_clean.m
+ create mode 100644 mika/old/a2_cluster.m
+ create mode 100755 mika/old/alignment_follow_up.py
+ create mode 100755 mika/old/hdf5_compression.py
+ create mode 100755 mika/old/hdf_compression.py
+ create mode 100755 mika/old/nmfh_lite.m
+ create mode 100644 mika/old/nndsvd_econ.m
+ create mode 100755 mika/old/voxel_correlations.py
+ create mode 100755 mika/old/z0_preliminaries.py
+ create mode 100755 mika/old/z1_alignment.py
+ create mode 100755 mika/old/z2_storage.py
+ create mode 100755 mika/old/z3_cell_detect.py
+ create mode 100755 mika/old/z4_cell_collect.py
+ create mode 100644 mika/old/z__main.py
+ create mode 100644 mika/old/z__parameters.py
+ create mode 100755 mika/old/zfun.py
+ create mode 100755 mika/old/zfun_cell.py
+ create mode 100755 mika/z0_preliminaries.py
+ create mode 100755 mika/z1_alignment.py
+ create mode 100755 mika/z2_brain_mask.py
+ create mode 100755 mika/z3_cell_detect.py
+ create mode 100755 mika/z4_cell_collect.py
+ create mode 100755 mika/z__main.py
+ create mode 100755 mika/z__parameters.py
+ create mode 100755 mika/zfun.py
+ create mode 100755 mika/zfun_cell.py
+ create mode 100755 muyu/.ipynb_checkpoints/bin_to_tif-checkpoint.ipynb
+ create mode 100755 muyu/.ipynb_checkpoints/save-projections-SPIM-checkpoint.ipynb
+ create mode 100755 muyu/.ipynb_checkpoints/save-projections-new2P-checkpoint.ipynb
+ create mode 100755 muyu/bin_to_tif.ipynb
+ create mode 100755 muyu/save-projections-SPIM.ipynb
+ create mode 100755 muyu/save-projections-new2P.ipynb
+** [master d89c0c9] copied over mika's new pipeline
+ 48 files changed, 1601 insertions(+)
+ rename mika/{old => 0}/__init__.py (100%)
+ rename mika/{old => 0}/__init__.pyc (100%)
+ rename mika/{old => 0}/a1_clean.m (100%)
+ rename mika/{old => 0}/a2_cluster.m (100%)
+ rename mika/{old => 0}/alignment_follow_up.py (100%)
+ rename mika/{old => 0}/hdf5_compression.py (100%)
+ rename mika/{old => 0}/hdf_compression.py (100%)
+ rename mika/{old => 0}/nmfh_lite.m (100%)
+ rename mika/{ => 0}/nndsvd_econ.m (100%)
+ mode change 100755 => 100644
+ rename mika/{old => 0}/voxel_correlations.py (100%)
+ rename mika/{old => 0}/z0_preliminaries.py (100%)
+ rename mika/{old => 0}/z1_alignment.py (100%)
+ rename mika/{old => 0}/z2_storage.py (100%)
+ rename mika/{old => 0}/z3_cell_detect.py (100%)
+ rename mika/{old => 0}/z4_cell_collect.py (100%)
+ rename mika/{old => 0}/z__main.py (100%)
+ rename mika/{old => 0}/z__parameters.py (100%)
+ rename mika/{old => 0}/zfun.py (100%)
+ rename mika/{old => 0}/zfun_cell.py (100%)
+ rename mika/{ => 1}/a1_clean.m (100%)
+ rename mika/{ => 1}/a2_cluster.m (100%)
+ rename mika/{ => 1}/mask_example.m (100%)
+ rename mika/{old => 1}/nndsvd_econ.m (100%)
+ mode change 100644 => 100755
+ rename mika/{ => 1}/z0_preliminaries.py (100%)
+ rename mika/{ => 1}/z1_alignment.py (100%)
+ rename mika/{ => 1}/z2_brain_mask.py (100%)
+ rename mika/{ => 1}/z3_cell_detect.py (100%)
+ rename mika/{ => 1}/z4_cell_collect.py (100%)
+ rename mika/{ => 1}/z__main.py (100%)
+ rename mika/{ => 1}/z__parameters.py (100%)
+ rename mika/{ => 1}/zfun.py (100%)
+ rename mika/{ => 1}/zfun_cell.py (100%)
+ create mode 100644 mika/2/a0_clean.m
+ create mode 100644 mika/2/a1_baseline.m
+ create mode 100644 mika/2/a2_cluster.m
+ create mode 100644 mika/2/a_commit_message.txt
+ create mode 100644 mika/2/nmfh_lite.m
+ create mode 100644 mika/2/nndsvd_econ.m
+ create mode 100644 mika/2/show_vol.m
+ create mode 100644 mika/2/z0_preliminaries.py
+ create mode 100644 mika/2/z1_alignment.py
+ create mode 100644 mika/2/z2_brain_mask.py
+ create mode 100644 mika/2/z3_cell_detect.py
+ create mode 100644 mika/2/z4_cell_collect.py
+ create mode 100644 mika/2/z__main.py
+ create mode 100644 mika/2/z__parameters.py
+ create mode 100644 mika/2/zfun.py
+ create mode 100644 mika/2/zfun_cell.py
+* 17DEC13 Alireza's (last) lab meeting presentation
+- rhythmic cells found in the posterior region
+- need imaging of up to 20 Hz -- for what region? missing oscillations?
+- concern is that you cannot actually say that they are cells, although Alireza mentioned that there are cells on the same planes in the atlas
+- saw oscillations in neuropil with voltage imaging -- nobody has tried shown so interesting
+- mostly at the start of the open loop: found causality between red \to blue in the forebrain -- however the reliability of the detection is harder to say
+* 18JAN15 Brainstorming a thesis project
+** Calls for applying population recording methods in the study of temporal perception
+- "the noisy character of ramping activity implies that whatever is reading this temporal information downstream cannot be relying on single cells to quantify he passage of time or to produce accurately time movements. Therefore, a *population code* is suggested for encoding elapsed time, by which the reading network adds the magnitude of a population of individual ramps over time, resulting in a ramp population function." (Merchat et al., 2013)
+- both Buhusi et al. (2005) and Cheng et al. (2014) are calling for the use of ensemble recording techniques and whole brain calcium imaging respectively to look at timing circuits because they involve many areas of the brain (most notably the cortico-striatal circuits)
+* 18MAY29 Joined the Misha Ahrens lab!
+** Employee number: 60837
+* 18MAY30 Started on the behavioural rig
+** Tried getting back into doing experiments on the behavioural rig -- didn't manage to get swimming
+* 18MAY31 Started on the 2P resonant microscope
+** DONE Order list
+CLOSED: [2018-06-01 Fri 00:37]
+- State "DONE"       from "TODO"       [2018-06-01 Fri 00:37] \\
+  told yu mu
+- State "TODO"       from              [2018-05-31 Thu 10:02]
+- more surgical instruments, including box
+- more BTX
+- electrode box
+** DONE Make my own line: HuC-GCaMP?
+CLOSED: [2018-06-01 Fri 00:36]
+- State "DONE"       from "TODO"       [2018-06-01 Fri 00:36]
+- State "TODO"       from              [2018-05-31 Thu 10:02]
+** Tried working on the 2P resonant microscope -- got decent images but didn't manage to get swimning again
+* 18JUN03 Installed the red filter to the resonant 2P
+** Installed the red filter to the resonant 2P
+* 18JUN07
+** Visual stimulus for flashes
+- should be tens to hundreds milliseconds
