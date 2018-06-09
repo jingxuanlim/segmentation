@@ -1,0 +1,52 @@
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\bin\Debug\BehaveAndScanSPIM.exe.config
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.csproj.ResolveComReference.cache
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\bin\Debug\BehaveAndScanSPIM.exe
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\bin\Debug\BehaveAndScanSPIM.pdb
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\Window1.baml
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\Window1.g.cs
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\App.g.cs
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM_MarkupCompile.cache
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.g.resources
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.Properties.Resources.resources
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.StimCheckWindow.resources
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.StimWindow.resources
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.exe
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.pdb
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.csproj.GenerateResource.Cache
+C:\Users\AhrensLab\Documents\Visual Studio 2010\Projects\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.csprojResolveAssemblyReference.cache
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\bin\Debug\BehaveAndScanSPIM.exe.config
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.csproj.ResolveComReference.cache
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.exe
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.pdb
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.csprojResolveAssemblyReference.cache
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\Window1.baml
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\Window1.g.cs
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\App.g.cs
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM_MarkupCompile.cache
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.g.resources
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.Properties.Resources.resources
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.StimCheckWindow.resources
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.StimWindow.resources
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.csproj.GenerateResource.Cache
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\bin\Debug\BehaveAndScanSPIM.exe
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanSPIM\bin\Debug\BehaveAndScanSPIM.pdb
+Z:\Takashi\BehaveAndScanSPIM\bin\Debug\BehaveAndScanSPIM.exe.config
+Z:\Takashi\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.csproj.ResolveComReference.cache
+Z:\Takashi\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.exe
+Z:\Takashi\BehaveAndScanSPIM\obj\Debug\BehaveAndScanSPIM.pdb
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\BehaveAndScanSPIM.csproj.ResolveComReference.cache
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\BehaveAndScanSPIM.csprojResolveAssemblyReference.cache
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\Window1.baml
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\Window1.g.cs
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\App.g.cs
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\BehaveAndScanSPIM.StimCheckWindow.resources
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\BehaveAndScanSPIM.StimWindow.resources
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\BehaveAndScanSPIM.csproj.GenerateResource.Cache
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\bin\Debug\BehaveAndScanMZ.exe.config
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\bin\Debug\BehaveAndScanMZ.exe
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\bin\Debug\BehaveAndScanMZ.pdb
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\BehaveAndScanMZ_MarkupCompile.cache
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\BehaveAndScanMZ.g.resources
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\BehaveAndScanMZ.exe
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\BehaveAndScanMZ.pdb
+C:\Users\BehaviorRig2\Desktop\BehaveAndScanMZ\obj\Debug\BehaveAndScanMZ.Properties.Resources.resources
