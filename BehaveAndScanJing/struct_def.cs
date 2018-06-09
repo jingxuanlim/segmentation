@@ -47,7 +47,6 @@ namespace BehaveAndScanSPIM
         public double flash_col1;
         public double flash_col2;
 
-
     }
 
 
