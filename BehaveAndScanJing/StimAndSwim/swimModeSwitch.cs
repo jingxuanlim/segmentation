@@ -1626,13 +1626,13 @@ namespace BehaveAndScanSPIM
                         {
                             Console.WriteLine("Triggered");
 
-                            if (blevel == 255)
+                            if (blevel == senderWindow.InstStimParams.flash_col1 || blevel == 128)
                             {
-                                blevel = 128;
+                                blevel = senderWindow.InstStimParams.flash_col2;
                             }
-                            else if (blevel == 128)
+                            else if (blevel == senderWindow.InstStimParams.flash_col2 || blevel == 128)
                             {
-                                blevel = 255;
+                                blevel = senderWindow.InstStimParams.flash_col1;
                             }
 
                         }
