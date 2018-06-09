@@ -30,7 +30,7 @@ namespace BehaveAndScanSPIM
             }
             else
             {
-                tt = (int)(stopwatch.ElapsedMilliseconds / 1000.0);// (int)(RecTime);
+                tt = (int)(stopwatch.ElapsedMilliseconds / 1000.0);  // (int)(RecTime);
                 tt2 = (int)(stopwatch.ElapsedMilliseconds / 100.0);
                 DTT = (int)(stopwatch.ElapsedMilliseconds);
             
@@ -1595,6 +1595,9 @@ namespace BehaveAndScanSPIM
 
                 else
                 {
+                    double t_flash =  (stopwatch.ElapsedMilliseconds/1000.0)
+                        % senderWindow.InstStimParams.flash_dur;  // flash time
+
                     stim1DclosedLoopContrast = 0; // remove constrast to remove gratings
 
                     if (senderWindow.switchParamsAuto.stopmode == 2
@@ -1603,7 +1606,29 @@ namespace BehaveAndScanSPIM
                         stim1DclosedLoopContrast = 0;
                     }
 
-                    // blevel = 50;  // set background level
+                    // change background color at different times so it flashes
+
+                    int numFlashes = (int)senderWindow.InstStimParams.flash_freq 
+                        * (int)senderWindow.InstStimParams.flash_dur;
+
+                    int cycle = 0;
+                    blevel = 150;
+
+                    if (t_flash / (1/(2*senderWindow.InstStimParams.flash_freq)) >= cycle)
+                    {
+                        if (blevel == 50)
+                        {
+                            blevel = 150;
+                        }
+                        else if (blevel == 150)
+                        {
+                           blevel = 50;
+                        }
+
+                        cycle = cycle + 1;
+                    }
+
+
                     closedLoop1Dgain = 0;
                     velMultip = 0;
                     stimParam3 = 2;
