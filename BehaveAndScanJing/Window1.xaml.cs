@@ -1033,9 +1033,10 @@ namespace BehaveAndScanSPIM
         private void flash_Click(object sender, RoutedEventArgs e)
         {
             //if (flash.IsChecked == true)
-           InstStimParams.clmode = 1234567;
-           CommonDuration = (40 * switchParamsAuto.cycles) + 1;
-           DurationEBox.Text = CommonDuration.ToString("0");
+            InstStimParams.clmode = 1234567;
+            CommonDuration = (40 * switchParamsAuto.cycles) + 1;
+            DurationEBox.Text = CommonDuration.ToString("0");
+            // flash_time.Content = t_flash.ToSting("0");
          
         }
 

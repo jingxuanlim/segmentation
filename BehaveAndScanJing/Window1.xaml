@@ -147,6 +147,7 @@
                     <Label Content="" HorizontalAlignment="Right" IsEnabled="True" Margin="0,119,16,613" Name="GainLabel" Width="37" Grid.Column="3" />
                     <Label Content="" HorizontalAlignment="Right" IsEnabled="True" Margin="0,0,15,577" Name="TrigLabel" Width="37" Grid.Column="3" Height="30" VerticalAlignment="Bottom" />
                     <Label Content="0" Grid.Column="3" Height="28" HorizontalAlignment="Left" Margin="260,176,0,0" Name="autosumdoubleTEMP" VerticalAlignment="Top" />
+                    <Label Content="0" Height="28.886" HorizontalAlignment="Right" Margin="0,662,169,0" Name="flash_time" VerticalAlignment="Top" Width="45" Grid.Column="3" />
                 </Grid>
             </TabItem>
         </TabControl>

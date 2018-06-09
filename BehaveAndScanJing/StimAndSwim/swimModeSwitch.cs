@@ -1556,7 +1556,8 @@ namespace BehaveAndScanSPIM
 
             if (senderWindow.InstStimParams.clmode == 1234567)  // Jing's flashing trial structure
             {
-                int t = (int)tt % (int)(senderWindow.InstStimParams.flash_iti
+                double t = (stopwatch.ElapsedMilliseconds/1000.0) % 
+                    (int)(senderWindow.InstStimParams.flash_iti 
                     + senderWindow.InstStimParams.flash_dur);  // trial time
 
                 resetGratingParams();  // reset grating angle, motion and gain
@@ -1595,8 +1596,9 @@ namespace BehaveAndScanSPIM
 
                 else
                 {
-                    double t_flash =  (stopwatch.ElapsedMilliseconds/1000.0)
-                        % senderWindow.InstStimParams.flash_dur;  // flash time
+
+                    t_flash =  t - senderWindow.InstStimParams.flash_iti;  // flash time
+                    // Console.WriteLine("flash time: {0}", t_flash);
 
                     stim1DclosedLoopContrast = 0; // remove constrast to remove gratings
 
@@ -1611,27 +1613,39 @@ namespace BehaveAndScanSPIM
                     int numFlashes = (int)senderWindow.InstStimParams.flash_freq 
                         * (int)senderWindow.InstStimParams.flash_dur;
 
-                    int cycle = 0;
-                    blevel = 150;
 
-                    if (t_flash / (1/(2*senderWindow.InstStimParams.flash_freq)) >= cycle)
+                    double cycle_rem = t_flash % (1 / (2 * senderWindow.InstStimParams.flash_freq));
+
+                    cur_rem = cycle_rem;
+
+                    // Console.WriteLine("cur remainder: {0}; previous remainder: {1}", cur_rem, pre_rem);
+                    try
                     {
-                        if (blevel == 50)
-                        {
-                            blevel = 150;
-                        }
-                        else if (blevel == 150)
-                        {
-                           blevel = 50;
-                        }
 
-                        cycle = cycle + 1;
+                        if (cur_rem < pre_rem)
+                        {
+                            Console.WriteLine("Triggered");
+
+                            if (blevel == 255)
+                            {
+                                blevel = 128;
+                            }
+                            else if (blevel == 128)
+                            {
+                                blevel = 255;
+                            }
+
+                        }
                     }
+                    catch
+                    { }
 
 
                     closedLoop1Dgain = 0;
                     velMultip = 0;
                     stimParam3 = 2;
+
+                    pre_rem = cycle_rem;
 
                 }
 
