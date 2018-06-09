@@ -785,12 +785,12 @@ namespace BehaveAndScanSPIM
 
         private void flashCol1_TextChanged(object sender, TextChangedEventArgs e)
         { 
-                double.TryParse(flashCol1.Text, out InstStimParams.flash_col1);
+                int.TryParse(flashCol1.Text, out InstStimParams.flash_col1);
         }
 
         private void flashCol2_TextChanged(object sender, TextChangedEventArgs e)
         { 
-                double.TryParse(flashCol2.Text, out InstStimParams.flash_col2);
+                int.TryParse(flashCol2.Text, out InstStimParams.flash_col2);
         }
 
         private void sps_box_TextChanged(object sender, TextChangedEventArgs e)
