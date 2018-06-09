@@ -1213,7 +1213,7 @@ namespace BehaveAndScanSPIM {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/BehaveAndScanJing;component/window1.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/BehaveAndScan_jing;component/window1.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\Window1.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
