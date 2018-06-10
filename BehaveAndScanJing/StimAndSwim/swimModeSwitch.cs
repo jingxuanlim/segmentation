@@ -1562,6 +1562,10 @@ namespace BehaveAndScanSPIM
 
                 resetGratingParams();  // reset grating angle, motion and gain
 
+                /*           *\
+                  CLOSED LOOP
+                \*           */
+
                 if (t < senderWindow.InstStimParams.flash_iti)  // start with closed loop first ("ITI")
                 {
                     int t_iti = (int)tt % (int)senderWindow.InstStimParams.autoTimeSum;  // ITI time
@@ -1595,6 +1599,10 @@ namespace BehaveAndScanSPIM
                     stimParam4 = 0;  // do not record blevel in close loop
                 }
 
+                /*        *\
+                  FLASHING
+                \*        */
+
                 else
                 {
 
@@ -1613,6 +1621,9 @@ namespace BehaveAndScanSPIM
 
                     int numFlashes = (int)senderWindow.InstStimParams.flash_freq 
                         * (int)senderWindow.InstStimParams.flash_dur;
+                    Console.WriteLine("Brief? {0}", senderWindow.InstStimParams.brief);
+
+                    /* BRIEF STIMULUS */
 
                     if (senderWindow.InstStimParams.brief == true)
                     {
@@ -1621,12 +1632,23 @@ namespace BehaveAndScanSPIM
                         try
                         {
                             double isi = 1 / senderWindow.InstStimParams.flash_freq;
-                            double cycle_remain = t_flash % isi;
+
+                            if (senderWindow.InstStimParams.jitter == true)
+                            {
+                                Random rnd = new Random();
+                                jit = rnd.Next((int)-senderWindow.InstStimParams.flash_jitter * 1000, (int)senderWindow.InstStimParams.flash_jitter * 1000);
+                                jit = jit/1000.0;
+                            }
+                            else
+                            { jit = 0;}
+
+                            double cycle_remain = t_flash % (isi+jit);
                             cur_remain = cycle_remain;
                             // Console.WriteLine(cur_remain);
+
                             if (cur_remain < pre_remain)
                             {
-                                Console.WriteLine("Brief Triggered");
+                                Console.WriteLine("Brief Triggered [{0} s]", t_flash);
                                 blevel = senderWindow.InstStimParams.flash_col2;  // set col2 as stimulus
                                 stimParam4 = blevel;
                                 stim_t = cur_remain;  // save time
@@ -1635,9 +1657,9 @@ namespace BehaveAndScanSPIM
                                 // Console.WriteLine("off_t: {0}", stim_t + 0.015);
                             }
 
-                            if (cur_remain >= stim_t + 0.015 &&  off_bool)  // switch off stim after 15 ms
+                            if (cur_remain >= stim_t + (senderWindow.InstStimParams.flash_brief/1000) &&  off_bool)  // switch off stim after 15 ms
                             {
-                                Console.WriteLine("Off Triggered");
+                                Console.WriteLine("Off Triggered [{0} s]", t_flash);
                                 blevel = senderWindow.InstStimParams.flash_col1;  // set col1 as stimulus
                                 stimParam4 = blevel;
                                 off_bool = false;
@@ -1646,15 +1668,29 @@ namespace BehaveAndScanSPIM
                         }
                         catch { }
                     }
+
+                    /* ALTERNATING STIMULUS */
+
                     else{
                         try
                         {
-                            double cycle_rem = t_flash % (1 / (2 * senderWindow.InstStimParams.flash_freq));
+                            double isi = 1 / (2 * senderWindow.InstStimParams.flash_freq);
+
+                            if (senderWindow.InstStimParams.jitter == true)
+                            {
+                                Random rnd = new Random();
+                                jit = rnd.Next((int)-senderWindow.InstStimParams.flash_jitter * 1000, (int)senderWindow.InstStimParams.flash_jitter * 1000);
+                                jit = jit / 1000.0;
+                            }
+                            else
+                            { jit = 0; }
+
+                            double cycle_rem = t_flash % (isi+jit);
                             cur_rem = cycle_rem;
 
                             if (cur_rem < pre_rem)
                             {
-                                Console.WriteLine("Triggered");
+                                Console.WriteLine("Triggered [{0} s]", t_flash);
 
                                 if (blevel == senderWindow.InstStimParams.flash_col1 || blevel == 128)
                                 {

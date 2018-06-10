@@ -44,6 +44,8 @@ namespace BehaveAndScanSPIM
         public double flash_freq;
         public double flash_dur;
         public double flash_iti;
+        public double flash_jitter;
+        public double flash_brief;
         public int flash_col1;
         public int flash_col2;
         public bool brief;
