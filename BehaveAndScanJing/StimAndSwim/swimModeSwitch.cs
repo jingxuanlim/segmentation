@@ -1621,7 +1621,6 @@ namespace BehaveAndScanSPIM
 
                     int numFlashes = (int)senderWindow.InstStimParams.flash_freq 
                         * (int)senderWindow.InstStimParams.flash_dur;
-                    Console.WriteLine("Brief? {0}", senderWindow.InstStimParams.brief);
 
                     /* BRIEF STIMULUS */
 
@@ -1638,6 +1637,7 @@ namespace BehaveAndScanSPIM
                                 Random rnd = new Random();
                                 jit = rnd.Next((int)-senderWindow.InstStimParams.flash_jitter * 1000, (int)senderWindow.InstStimParams.flash_jitter * 1000);
                                 jit = jit/1000.0;
+                                Console.WriteLine("Jitter: {0}", jit);
                             }
                             else
                             { jit = 0;}
