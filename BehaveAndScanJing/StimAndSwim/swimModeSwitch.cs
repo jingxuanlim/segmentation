@@ -1562,7 +1562,7 @@ namespace BehaveAndScanSPIM
 
                 resetGratingParams();  // reset grating angle, motion and gain
 
-                if (t < senderWindow.InstStimParams.flash_iti)
+                if (t < senderWindow.InstStimParams.flash_iti)  // start with closed loop first ("ITI")
                 {
                     int t_iti = (int)tt % (int)senderWindow.InstStimParams.autoTimeSum;  // ITI time
                     stim1DclosedLoopContrast = 200;   // add contrast back
@@ -1592,6 +1592,7 @@ namespace BehaveAndScanSPIM
                         velMultip = velMultip2;
                         stimParam3 = 2;
                     }
+                    stimParam4 = 0;  // do not record blevel in close loop
                 }
 
                 else
@@ -1613,39 +1614,70 @@ namespace BehaveAndScanSPIM
                     int numFlashes = (int)senderWindow.InstStimParams.flash_freq 
                         * (int)senderWindow.InstStimParams.flash_dur;
 
-
-                    double cycle_rem = t_flash % (1 / (2 * senderWindow.InstStimParams.flash_freq));
-
-                    cur_rem = cycle_rem;
-
-                    // Console.WriteLine("cur remainder: {0}; previous remainder: {1}", cur_rem, pre_rem);
-                    try
+                    if (senderWindow.InstStimParams.brief == true)
                     {
 
-                        if (cur_rem < pre_rem)
+                        stimParam4 = blevel;
+                        try
                         {
-                            Console.WriteLine("Triggered");
-
-                            if (blevel == senderWindow.InstStimParams.flash_col1 || blevel == 128)
+                            double isi = 1 / senderWindow.InstStimParams.flash_freq;
+                            double cycle_remain = t_flash % isi;
+                            cur_remain = cycle_remain;
+                            // Console.WriteLine(cur_remain);
+                            if (cur_remain < pre_remain)
                             {
-                                blevel = senderWindow.InstStimParams.flash_col2;
-                            }
-                            else if (blevel == senderWindow.InstStimParams.flash_col2 || blevel == 128)
-                            {
-                                blevel = senderWindow.InstStimParams.flash_col1;
+                                Console.WriteLine("Brief Triggered");
+                                blevel = senderWindow.InstStimParams.flash_col2;  // set col2 as stimulus
+                                stimParam4 = blevel;
+                                stim_t = cur_remain;  // save time
+                                off_bool = true;
+                                // Console.WriteLine("stim_t: {0}", stim_t);
+                                // Console.WriteLine("off_t: {0}", stim_t + 0.015);
                             }
 
+                            if (cur_remain >= stim_t + 0.015 &&  off_bool)  // switch off stim after 15 ms
+                            {
+                                Console.WriteLine("Off Triggered");
+                                blevel = senderWindow.InstStimParams.flash_col1;  // set col1 as stimulus
+                                stimParam4 = blevel;
+                                off_bool = false;
+                            }
+                            pre_remain = cycle_remain;
                         }
+                        catch { }
                     }
-                    catch
-                    { }
+                    else{
+                        try
+                        {
+                            double cycle_rem = t_flash % (1 / (2 * senderWindow.InstStimParams.flash_freq));
+                            cur_rem = cycle_rem;
+
+                            if (cur_rem < pre_rem)
+                            {
+                                Console.WriteLine("Triggered");
+
+                                if (blevel == senderWindow.InstStimParams.flash_col1 || blevel == 128)
+                                {
+                                    blevel = senderWindow.InstStimParams.flash_col2;
+                                    stimParam4 = blevel;
+                                }
+                                else if (blevel == senderWindow.InstStimParams.flash_col2 || blevel == 128)
+                                {
+                                    blevel = senderWindow.InstStimParams.flash_col1;
+                                    stimParam4 = blevel;
+                                }
+
+                            }
+                            pre_rem = cycle_rem;
+                        }
+                        catch
+                        { }
+                    }
 
 
                     closedLoop1Dgain = 0;
                     velMultip = 0;
-                    stimParam3 = 2;
-
-                    pre_rem = cycle_rem;
+                    stimParam3 = 3;             // set 3
 
                 }
 
