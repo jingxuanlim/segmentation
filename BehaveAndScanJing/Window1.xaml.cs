@@ -1050,9 +1050,29 @@ namespace BehaveAndScanSPIM
             InstStimParams.brief = (briefBox.IsChecked == true);
         }
 
+        private void briefBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            InstStimParams.brief = (briefBox.IsChecked == true);
+        }
+
         private void jitterBox_Checked(object sender, RoutedEventArgs e)
         {
             InstStimParams.jitter = (jitterBox.IsChecked == true);
+        }
+
+        private void jitterBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            InstStimParams.jitter = (jitterBox.IsChecked == true);
+        }
+
+        private void flashJitter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double.TryParse(flashJitter.Text, out InstStimParams.flash_jitter);
+        }
+
+        private void flashBrief_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double.TryParse(flashBrief.Text, out InstStimParams.flash_brief);
         }
         
 

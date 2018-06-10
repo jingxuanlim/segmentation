@@ -95,6 +95,7 @@ namespace BehaveAndScanSPIM
         public bool off_bool = false;
         public bool brief = false;
         public bool jitter = false;
+        public double jit = 0;
                
         public int[] shufflelist1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         public int[] shufflelist2 = { 1, 2, 3, 4, 5, 6, 7, 8 };
