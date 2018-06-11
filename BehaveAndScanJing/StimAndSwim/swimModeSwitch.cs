@@ -1626,45 +1626,45 @@ namespace BehaveAndScanSPIM
 
                     if (senderWindow.InstStimParams.brief == true)
                     {
+                            brief_s = senderWindow.InstStimParams.flash_brief/1000.0;
 
-                        stimParam4 = blevel;
                         try
                         {
                             double isi = 1 / senderWindow.InstStimParams.flash_freq;
+                            double t_trial = t_flash % isi;
 
                             if (senderWindow.InstStimParams.jitter == true)
                             {
-                                Random rnd = new Random();
-                                jit = rnd.Next((int)-senderWindow.InstStimParams.flash_jitter * 1000, (int)senderWindow.InstStimParams.flash_jitter * 1000);
-                                jit = jit/1000.0;
-                                Console.WriteLine("Jitter: {0}", jit);
+                                cur_remain = t_trial;
+                                if (cur_remain < pre_remain) // run random number generate only at trial start
+                                {
+                                    Random rnd = new Random();
+                                    jit = rnd.Next(0, (int)senderWindow.InstStimParams.flash_jitter * 1000);
+                                    jit_s = jit / 1000.0;
+                                    Console.WriteLine("Jitter: {0}", jit_s);
+                                }
                             }
                             else
-                            { jit = 0;}
+                            { jit_s = 0;}
 
-                            double cycle_remain = t_flash % (isi+jit);
-                            cur_remain = cycle_remain;
-                            // Console.WriteLine(cur_remain);
+                            
+                            
+                            // Console.WriteLine(t_trial);
 
-                            if (cur_remain < pre_remain)
+                            if (t_trial >= 0 + jit_s && t_trial <= brief_s + jit_s)
                             {
-                                Console.WriteLine("Brief Triggered [{0} s]", t_flash);
+                                Console.WriteLine("Flash [{0} s]", t_flash);
                                 blevel = senderWindow.InstStimParams.flash_col2;  // set col2 as stimulus
                                 stimParam4 = blevel;
-                                stim_t = cur_remain;  // save time
-                                off_bool = true;
-                                // Console.WriteLine("stim_t: {0}", stim_t);
-                                // Console.WriteLine("off_t: {0}", stim_t + 0.015);
                             }
 
-                            if (cur_remain >= stim_t + (senderWindow.InstStimParams.flash_brief/1000) &&  off_bool)  // switch off stim after 15 ms
+                            else
                             {
-                                Console.WriteLine("Off Triggered [{0} s]", t_flash);
+                                // Console.WriteLine("Background [{0} s]", t_flash);
                                 blevel = senderWindow.InstStimParams.flash_col1;  // set col1 as stimulus
                                 stimParam4 = blevel;
-                                off_bool = false;
                             }
-                            pre_remain = cycle_remain;
+                            pre_remain = t_trial;
                         }
                         catch { }
                     }
