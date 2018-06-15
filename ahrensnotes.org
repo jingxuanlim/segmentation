@@ -1257,3 +1257,29 @@ CLOSED: [2018-06-01 Fri 00:36]
 * 18JUN07
 ** Visual stimulus for flashes
 - should be tens to hundreds milliseconds
+* 18JUN12
+** Distance travelled
+_Adult (4-6 month old)_
+1073 cm^2 \to 10 m / 30 mins \to 0.0093e-3 m / cm^2
+1833cm^2 \to 20 m / 30 mins \to 0.01 m / cm^2
+
+_Larval (6 dpf)_
+66.4 cm^2 \to 1 m / 5 mins \to 6 m / 30 mins  \to 0.09 m / cm^2
+* 18JUN13
+** Avinash progress report: ablating the young neurons changes swim kinematics
+- ablating neurons early so that it is cleaner -- newer neurons are not accidentally ablated
+- the worry is that ablating them too early allows compensatory mechanisms to kick in
+** Alex progress report
+- Use diffuser and put water in between petri dish and platform to prevent refraction
+** Misha Ahrens talk rehearsal
+*** Talk notes
+- Objective: trying to get the type of narrative right
+- motor intent \to close to desired outcome
+- astroglial integrate and drive motor activity
+*** Comments
+- Cartoon about motor learning and fighting extraneous because already covered motor learning in description of OMR; or find more relevant examples of motor learning more connected to giving up
+- Introduce glia and function of calcium signals before showing glial imaging
+- Anatomy slide: didn't describe green cartoon cell in the hindbrain
+- Jumping back a slide to refer to a figure there when talking about astroglial activity and behaviour
+- Summary slide of perturbations slightly busy; used different colored boxes to demarcate activation vs ablation but might also be useful to use UP arrow for activation, DOWN arrow for inhibition and CROSSES for ablation
+
