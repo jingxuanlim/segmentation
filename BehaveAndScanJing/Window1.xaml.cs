@@ -56,7 +56,7 @@ namespace BehaveAndScanSPIM
 
         public string fishName;
         public string directory;
-        public string fileNameEP;       
+        public string fileNameEP; 
 
         public StimEphysOscilloscopeControl stimSession;
         
@@ -1032,25 +1032,48 @@ namespace BehaveAndScanSPIM
 
         private void flash_Click(object sender, RoutedEventArgs e)
         {
-            //if (flash.IsChecked == true)
-            InstStimParams.clmode = 1234567;
-            CommonDuration = (40 * switchParamsAuto.cycles) + 1;
-            DurationEBox.Text = CommonDuration.ToString("0");
-            // flash_time.Content = t_flash.ToSting("0");
+            if (flash.IsChecked == true)
+            {
+                briefBox.IsEnabled = true;
+                jitterBox.IsEnabled = true;
+
+                InstStimParams.clmode = 1234567;
+                CommonDuration = (40 * switchParamsAuto.cycles) + 1;
+                DurationEBox.Text = CommonDuration.ToString("0");
+                // flash_time.Content = t_flash.ToSting("0");
+            }
          
         }
 
+        private void briefBox_Checked(object sender, RoutedEventArgs e)
+        {
+            InstStimParams.brief = (briefBox.IsChecked == true);
+        }
 
+        private void briefBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            InstStimParams.brief = (briefBox.IsChecked == true);
+        }
 
+        private void jitterBox_Checked(object sender, RoutedEventArgs e)
+        {
+            InstStimParams.jitter = (jitterBox.IsChecked == true);
+        }
 
+        private void jitterBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            InstStimParams.jitter = (jitterBox.IsChecked == true);
+        }
 
+        private void flashJitter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double.TryParse(flashJitter.Text, out InstStimParams.flash_jitter);
+        }
 
-
-
-        
-
-
-
+        private void flashBrief_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double.TryParse(flashBrief.Text, out InstStimParams.flash_brief);
+        }
         
 
 

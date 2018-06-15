@@ -85,9 +85,20 @@ namespace BehaveAndScanSPIM
         public int blevel = 128;
         public int boxpos = 1;
 
+        // Flashing
         public double t_flash;
+        public double t_trial;
         public double pre_rem = default(double);
         public double cur_rem = default(double);
+        public double pre_remain = default(double);
+        public double cur_remain = default(double);
+        public double stim_t = default(double);
+        public bool off_bool = false;
+        public bool brief = false;
+        public bool jitter = false;
+        public double jit = 0;
+        public double brief_s;
+        public double jit_s;
                
         public int[] shufflelist1 = { 1, 2, 3, 4, 5, 6, 7, 8 };
         public int[] shufflelist2 = { 1, 2, 3, 4, 5, 6, 7, 8 };
