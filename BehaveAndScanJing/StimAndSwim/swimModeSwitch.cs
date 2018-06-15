@@ -1562,7 +1562,11 @@ namespace BehaveAndScanSPIM
 
                 resetGratingParams();  // reset grating angle, motion and gain
 
-                if (t < senderWindow.InstStimParams.flash_iti)
+                /*           *\
+                  CLOSED LOOP
+                \*           */
+
+                if (t < senderWindow.InstStimParams.flash_iti)  // start with closed loop first ("ITI")
                 {
                     int t_iti = (int)tt % (int)senderWindow.InstStimParams.autoTimeSum;  // ITI time
                     stim1DclosedLoopContrast = 200;   // add contrast back
@@ -1592,7 +1596,12 @@ namespace BehaveAndScanSPIM
                         velMultip = velMultip2;
                         stimParam3 = 2;
                     }
+                    stimParam4 = 0;  // do not record blevel in close loop
                 }
+
+                /*        *\
+                  FLASHING
+                \*        */
 
                 else
                 {
@@ -1613,39 +1622,98 @@ namespace BehaveAndScanSPIM
                     int numFlashes = (int)senderWindow.InstStimParams.flash_freq 
                         * (int)senderWindow.InstStimParams.flash_dur;
 
+                    /* BRIEF STIMULUS */
 
-                    double cycle_rem = t_flash % (1 / (2 * senderWindow.InstStimParams.flash_freq));
-
-                    cur_rem = cycle_rem;
-
-                    // Console.WriteLine("cur remainder: {0}; previous remainder: {1}", cur_rem, pre_rem);
-                    try
+                    if (senderWindow.InstStimParams.brief == true)
                     {
+                            brief_s = senderWindow.InstStimParams.flash_brief/1000.0;
 
-                        if (cur_rem < pre_rem)
+                        try
                         {
-                            Console.WriteLine("Triggered");
+                            double isi = 1 / senderWindow.InstStimParams.flash_freq;
+                            double t_trial = t_flash % isi;
 
-                            if (blevel == senderWindow.InstStimParams.flash_col1 || blevel == 128)
+                            if (senderWindow.InstStimParams.jitter == true)
                             {
-                                blevel = senderWindow.InstStimParams.flash_col2;
+                                cur_remain = t_trial;
+                                if (cur_remain < pre_remain) // run random number generate only at trial start
+                                {
+                                    Random rnd = new Random();
+                                    jit = rnd.Next(0, (int)senderWindow.InstStimParams.flash_jitter * 1000);
+                                    jit_s = jit / 1000.0;
+                                    Console.WriteLine("Jitter: {0}", jit_s);
+                                }
                             }
-                            else if (blevel == senderWindow.InstStimParams.flash_col2 || blevel == 128)
+                            else
+                            { jit_s = 0;}
+
+                            
+                            
+                            // Console.WriteLine(t_trial);
+
+                            if (t_trial >= 0 + jit_s && t_trial <= brief_s + jit_s)
                             {
-                                blevel = senderWindow.InstStimParams.flash_col1;
+                                Console.WriteLine("Flash [{0} s]", t_flash);
+                                blevel = senderWindow.InstStimParams.flash_col2;  // set col2 as stimulus
+                                stimParam4 = blevel;
                             }
 
+                            else
+                            {
+                                // Console.WriteLine("Background [{0} s]", t_flash);
+                                blevel = senderWindow.InstStimParams.flash_col1;  // set col1 as stimulus
+                                stimParam4 = blevel;
+                            }
+                            pre_remain = t_trial;
                         }
+                        catch { }
                     }
-                    catch
-                    { }
+
+                    /* ALTERNATING STIMULUS */
+
+                    else{
+                        try
+                        {
+                            double isi = 1 / (2 * senderWindow.InstStimParams.flash_freq);
+
+                            if (senderWindow.InstStimParams.jitter == true)
+                            {
+                                Random rnd = new Random();
+                                jit = rnd.Next((int)-senderWindow.InstStimParams.flash_jitter * 1000, (int)senderWindow.InstStimParams.flash_jitter * 1000);
+                                jit = jit / 1000.0;
+                            }
+                            else
+                            { jit = 0; }
+
+                            double cycle_rem = t_flash % (isi+jit);
+                            cur_rem = cycle_rem;
+
+                            if (cur_rem < pre_rem)
+                            {
+                                Console.WriteLine("Triggered [{0} s]", t_flash);
+
+                                if (blevel == senderWindow.InstStimParams.flash_col1 || blevel == 128)
+                                {
+                                    blevel = senderWindow.InstStimParams.flash_col2;
+                                    stimParam4 = blevel;
+                                }
+                                else if (blevel == senderWindow.InstStimParams.flash_col2 || blevel == 128)
+                                {
+                                    blevel = senderWindow.InstStimParams.flash_col1;
+                                    stimParam4 = blevel;
+                                }
+
+                            }
+                            pre_rem = cycle_rem;
+                        }
+                        catch
+                        { }
+                    }
 
 
                     closedLoop1Dgain = 0;
                     velMultip = 0;
-                    stimParam3 = 2;
-
-                    pre_rem = cycle_rem;
+                    stimParam3 = 3;             // set 3
 
                 }
 
