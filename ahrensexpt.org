@@ -1,3 +1,5 @@
+#+STARTUP: entitiespretty
+
 * old 2-photon procedure
 1. Start ephys recording
 2. Start writing
@@ -499,3 +501,12 @@ Mode: Gratings
 * 17AUG11 6dfp_fish01_osc03_20170811_204107                       :justwaist:
 * 17AUG11 6dfp_fish02_osc00_20170811_221042                       :justwaist:
 * 17AUG11 6dfp_fish02_osc01_20170811_232051                       :justwaist:
+* 17AUG15 4dpf_fish00_osc00                                      :wholebrain:
+Sampling rate: 4 stacks / s
+- Behaviour is definitely there, but weak -- not obvious
+* 17AUG 4dpf_fish00_osc01                                   :waist:hindbrain:
+Sampling rate: I thought it was 9 stacks / s, but could be 7 stacks / s
+- Behaviour is definitely there, but weak -- not obvious
+* 17AUG 4dpf_fish01_osc01                                   :waist:hindbrain:
+Sampling rate: 7 stacks / s
+- Behaviour in channel 2 is apparent
