@@ -510,7 +510,10 @@ Sampling rate: I thought it was 9 stacks / s, but could be 7 stacks / s
 * 17AUG 4dpf_fish01_osc01                                   :waist:hindbrain:
 Sampling rate: 7 stacks / s
 - Behaviour in channel 2 is apparent
+<<<<<<< HEAD
 * 17AUG17 HuC-GCaMP_7dpf_fish01_00008
 - want to find visual responses to the flashes
 - didn't find response to flash in the hindbrain (including the waist)
 - recorded the visual areas, focusing on the tectum
+=======
+>>>>>>> 56c5c73dfa70eec6a538b7eec7ee4c72859a06c8
