@@ -1,0 +1,6 @@
+*.png
+*.tif
+*.log
+core.*
+.ipynb_checkpoints
+Thumbs.db
