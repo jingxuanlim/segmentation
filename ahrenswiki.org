@@ -48,6 +48,10 @@ If want to just start spark intereactively:
 #+BEGIN_SRC 
 spark-janelia-lsf start
 #+END_SRC
+** OR, to perform  steps (1) and (2) in a single step
+#+BEGIN_SRC 
+spark-janelia-lsf launch-notebook -n2
+#+END_SRC
 * Mika's cell segmentation code on the Janelia cluster
 ** 1. Start an interactive job
 #+BEGIN_SRC 
