@@ -1254,10 +1254,10 @@ CLOSED: [2018-06-01 Fri 00:36]
 ** Tried working on the 2P resonant microscope -- got decent images but didn't manage to get swimning again
 * 18JUN03 Installed the red filter to the resonant 2P
 ** Installed the red filter to the resonant 2P
-* 18JUN07
+* 18JUN07 Requirements for visual flashes
 ** Visual stimulus for flashes
 - should be tens to hundreds milliseconds
-* 18JUN12
+* 18JUN12 What are the speeds of adult vs larval zebrafishes?
 ** Distance travelled
 _Adult (4-6 month old)_
 1073 cm^2 \to 10 m / 30 mins \to 0.0093e-3 m / cm^2
@@ -1265,7 +1265,7 @@ _Adult (4-6 month old)_
 
 _Larval (6 dpf)_
 66.4 cm^2 \to 1 m / 5 mins \to 6 m / 30 mins  \to 0.09 m / cm^2
-* 18JUN13
+* 18JUN13 Lab meeting notes
 ** Avinash progress report: ablating the young neurons changes swim kinematics
 - ablating neurons early so that it is cleaner -- newer neurons are not accidentally ablated
 - the worry is that ablating them too early allows compensatory mechanisms to kick in
@@ -1283,3 +1283,199 @@ _Larval (6 dpf)_
 - Jumping back a slide to refer to a figure there when talking about astroglial activity and behaviour
 - Summary slide of perturbations slightly busy; used different colored boxes to demarcate activation vs ablation but might also be useful to use UP arrow for activation, DOWN arrow for inhibition and CROSSES for ablation
 
+* 18JUL05 Figuring out how to port my old analysis code to the resonant 2P
+** Differences between 2P and resonant 2P
+- ~min(im)~ can be negative in 2P resonant
+** Other questions
+- how to speed up jupyter notebook?
+** Printer IP
+10.123.15.2
+* 18JUL07 Problems opening files with ~thunder~
+** What ~thunder~ complains about when opening big tif files
+#+BEGIN_SRC 
+---------------------------------------------------------------------------
+Py4JJavaError                             Traceback (most recent call last)
+<ipython-input-41-4a55a5b397e1> in <module>()
+----> 1 dat = td.images.fromtif(base_dir+'HuC-GCaMP_fish01_rec05/',engine=sc)
+
+~/anaconda3/lib/python3.5/site-packages/thunder/images/readers.py in fromtif(path, ext, start, stop, recursive, nplanes, npartitions, labels, engine, credentials, discard_extra)
+    392     return frompath(path, accessor=getarray, ext=ext, start=start, stop=stop,
+    393                     recursive=recursive, npartitions=npartitions, recount=recount,
+--> 394                     labels=labels, engine=engine, credentials=credentials)
+    395 
+    396 def frompng(path, ext='png', start=None, stop=None, recursive=False, npartitions=None, labels=None, engine=None, credentials=None):
+
+~/anaconda3/lib/python3.5/site-packages/thunder/images/readers.py in frompath(path, accessor, ext, start, stop, recursive, npartitions, dims, dtype, labels, recount, engine, credentials)
+    212         else:
+    213             nrecords = reader.nfiles
+--> 214         return fromrdd(data, nrecords=nrecords, dims=dims, dtype=dtype, labels=labels, ordered=True)
+    215 
+    216     else:
+
+~/anaconda3/lib/python3.5/site-packages/thunder/images/readers.py in fromrdd(rdd, dims, nrecords, dtype, labels, ordered)
+     40 
+     41     if dims is None or dtype is None:
+---> 42         item = rdd.values().first()
+     43         dtype = item.dtype
+     44         dims = item.shape
+
+/usr/local/spark-current/python/pyspark/rdd.py in first(self)
+   1313         ValueError: RDD is empty
+   1314         """
+-> 1315         rs = self.take(1)
+   1316         if rs:
+   1317             return rs[0]
+
+/usr/local/spark-current/python/pyspark/rdd.py in take(self, num)
+   1295 
+   1296             p = range(partsScanned, min(partsScanned + numPartsToTry, totalParts))
+-> 1297             res = self.context.runJob(self, takeUpToNumLeft, p)
+   1298 
+   1299             items += res
+
+/usr/local/spark-current/python/pyspark/context.py in runJob(self, rdd, partitionFunc, partitions, allowLocal)
+    937         # SparkContext#runJob.
+    938         mappedRDD = rdd.mapPartitions(partitionFunc)
+--> 939         port = self._jvm.PythonRDD.runJob(self._jsc.sc(), mappedRDD._jrdd, partitions)
+    940         return list(_load_from_socket(port, mappedRDD._jrdd_deserializer))
+    941 
+
+/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/java_gateway.py in __call__(self, *args)
+    811         answer = self.gateway_client.send_command(command)
+    812         return_value = get_return_value(
+--> 813             answer, self.gateway_client, self.target_id, self.name)
+    814 
+    815         for temp_arg in temp_args:
+
+/usr/local/spark-current/python/pyspark/sql/utils.py in deco(*a, **kw)
+     43     def deco(*a, **kw):
+     44         try:
+---> 45             return f(*a, **kw)
+     46         except py4j.protocol.Py4JJavaError as e:
+     47             s = e.java_exception.toString()
+
+/usr/local/spark-current/python/lib/py4j-0.9-src.zip/py4j/protocol.py in get_return_value(answer, gateway_client, target_id, name)
+    306                 raise Py4JJavaError(
+    307                     "An error occurred while calling {0}{1}{2}.\n".
+--> 308                     format(target_id, ".", name), value)
+    309             else:
+    310                 raise Py4JError(
+
+Py4JJavaError: An error occurred while calling z:org.apache.spark.api.python.PythonRDD.runJob.
+: org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 1.0 failed 4 times, most recent failure: Lost task 0.3 in stage 1.0 (TID 4, h02u03.int.janelia.org): org.apache.spark.api.python.PythonException: Traceback (most recent call last):
+  File "/usr/local/spark-current/python/lib/pyspark.zip/pyspark/worker.py", line 111, in main
+    process()
+  File "/usr/local/spark-current/python/lib/pyspark.zip/pyspark/worker.py", line 106, in process
+    serializer.dump_stream(func(split_index, iterator), outfile)
+  File "/usr/local/spark-current/python/lib/pyspark.zip/pyspark/serializers.py", line 267, in dump_stream
+    bytes = self.serializer.dumps(vs)
+  File "/usr/local/spark-current/python/lib/pyspark.zip/pyspark/serializers.py", line 415, in dumps
+    return pickle.dumps(obj, protocol)
+MemoryError
+
+	at org.apache.spark.api.python.PythonRunner$$anon$1.read(PythonRDD.scala:166)
+	at org.apache.spark.api.python.PythonRunner$$anon$1.<init>(PythonRDD.scala:207)
+	at org.apache.spark.api.python.PythonRunner.compute(PythonRDD.scala:125)
+	at org.apache.spark.api.python.PythonRDD.compute(PythonRDD.scala:70)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:306)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:270)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:66)
+	at org.apache.spark.scheduler.Task.run(Task.scala:89)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:227)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+
+Driver stacktrace:
+	at org.apache.spark.scheduler.DAGScheduler.org$apache$spark$scheduler$DAGScheduler$$failJobAndIndependentStages(DAGScheduler.scala:1431)
+	at org.apache.spark.scheduler.DAGScheduler$$anonfun$abortStage$1.apply(DAGScheduler.scala:1419)
+	at org.apache.spark.scheduler.DAGScheduler$$anonfun$abortStage$1.apply(DAGScheduler.scala:1418)
+	at scala.collection.mutable.ResizableArray$class.foreach(ResizableArray.scala:59)
+	at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:47)
+	at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:1418)
+	at org.apache.spark.scheduler.DAGScheduler$$anonfun$handleTaskSetFailed$1.apply(DAGScheduler.scala:799)
+	at org.apache.spark.scheduler.DAGScheduler$$anonfun$handleTaskSetFailed$1.apply(DAGScheduler.scala:799)
+	at scala.Option.foreach(Option.scala:236)
+	at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:799)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:1640)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:1599)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:1588)
+	at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:48)
+	at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:620)
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:1832)
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:1845)
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:1858)
+	at org.apache.spark.api.python.PythonRDD$.runJob(PythonRDD.scala:393)
+	at org.apache.spark.api.python.PythonRDD.runJob(PythonRDD.scala)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:231)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:381)
+	at py4j.Gateway.invoke(Gateway.java:259)
+	at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:133)
+	at py4j.commands.CallCommand.execute(CallCommand.java:79)
+	at py4j.GatewayConnection.run(GatewayConnection.java:209)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.spark.api.python.PythonException: Traceback (most recent call last):
+  File "/usr/local/spark-current/python/lib/pyspark.zip/pyspark/worker.py", line 111, in main
+    process()
+  File "/usr/local/spark-current/python/lib/pyspark.zip/pyspark/worker.py", line 106, in process
+    serializer.dump_stream(func(split_index, iterator), outfile)
+  File "/usr/local/spark-current/python/lib/pyspark.zip/pyspark/serializers.py", line 267, in dump_stream
+    bytes = self.serializer.dumps(vs)
+  File "/usr/local/spark-current/python/lib/pyspark.zip/pyspark/serializers.py", line 415, in dumps
+    return pickle.dumps(obj, protocol)
+MemoryError
+
+	at org.apache.spark.api.python.PythonRunner$$anon$1.read(PythonRDD.scala:166)
+	at org.apache.spark.api.python.PythonRunner$$anon$1.<init>(PythonRDD.scala:207)
+	at org.apache.spark.api.python.PythonRunner.compute(PythonRDD.scala:125)
+	at org.apache.spark.api.python.PythonRDD.compute(PythonRDD.scala:70)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:306)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:270)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:66)
+	at org.apache.spark.scheduler.Task.run(Task.scala:89)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:227)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	... 1 more
+
+#+END_SRC
+* 18JUL11 Lab meeting
+** Lab meeting
+- Digital LZBAs
+  - Z-Brain
+  - Zebrafish Brain Browser: collection of transgenic lines
+  - Y (something)
+  - Single cell atlas
+- Hard copy LZBA
+  - atlas of early zebrafish brain development (2005, 2014)
+- read Gregory Marquart et al. (2017) for very detailed instructions of how to use ANTs to do registration
+- atlas to use anatomical data as baseilne, and have the functional data ride on top of it
+- there's talk about creating a probability map -- across development and across individual variability across fishes
+- looking at light sheet microscopic images might be more informative than looking at fluorescent images because a lot of subtle things are missing
+- if you spend the time, you can register anything; you can do a lot of preprocessing to control for the defect (e.g. electrode tract)
+* 18JUL12 Dask workers dying on me
+** Davis fixed dask workers getting killed while computing the mean for the swim-triggered average: lessons
+Culprit: ~aroundswims = arnd_swims.mean(axis=0).compute()~
+- normal indexing (i.e. ~im[swims_arr.ravel()]~) causes more imread calls
+- ~.vindex()~ takes a while to create the index
+- every time a worker switches to a new task, you pay a price
+- ~sum()~ and ~mean()~ should behave the same way
+- it might be more expensive memory-wise to do a ~mean()~ across a big array than to do a for loop, each with the addition of a segment of the big array because the memory you need for this operation would just be 2x that segment in size
+- the execution graph itself (how the scheduler decides who does what) requires computation and can also take up memory -- there's a tradeoff between parallel computing and planning the parallel computation
+- rechunking can be an expensive operation. if possible, use the chunking that already exist on disk. in my case, that would be each image is a chunk
+* 18JUL13
+** Problems with dask workers getting killed: what we tried
+- ~im[swims_arr.ravel()].reshape(*swims_arr.shape,*im.shape[1:]).rechunk(chunks=(30,1,512,512))~
+- ~im.vindex[swims_arr[:300]].compute()~
+** Keeping track of workers
+- 160 workers: 18 min 41s
+- 240 workers: 16 min 27s
+** Reconnect to server
+http://h08u29.int.janelia.org:9999/?token=3cb3b980334c11bd6b5d1c25a60c4b95d929cdc9cb678941
+* 18JUL14
+** Keeping track of time
+- downsample 1000x: 53 mins
