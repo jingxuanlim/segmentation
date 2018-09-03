@@ -26,10 +26,10 @@
 #     typical value is 1.
 #     value is 2 if two-color image
 
-code_dir        = '/groups/ahrens/home/rubinovm/mycode/zfish_prepro/code/'
-func_dir        = '/ablation_ALMA/2015-07-23fish2_6dpf/dOMR0_20150723_150907/'
-input_dir       = '/groups/ahrens/ahrenslab/FROM_TIER2/Nikita/' + func_dir
-output_dir      = '/groups/ahrens/ahrenslab/mika/nikita/' + func_dir + '/ana/'
+code_dir        = ''
+func_dir        = ''
+input_dir       = '' + func_dir
+output_dir      = '' + func_dir + '/ana/'
 xml_filename    = input_dir + '/ch0.xml'
 stack_filename  = input_dir + '/Stack_frequency.txt'
 dt_range        = []
