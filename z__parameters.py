@@ -6,10 +6,14 @@
 # - output_dir: output directory
 # - xml_filename: full path to xml filename that has recording metadata
 # - stack_filename: full path to stack filename that has recording metadata
+# - alignment_type: type of motion correction.
+#     possible values:
+#       translation: (translation only)
+#       rigid: (translation and rotation)
 # - dt: the range of timepoints to use for cell detection
 #     can be a vector which specifies the precise point sequence
 #     can be a scalar which specifies the downsampling factor
-#     e.g. 
+#     e.g.
 #       dt = list(range(2000))      # first 2000 timepoints of recording
 #       dt = 10;                    # every 10th point of recording
 #       dt = 1, dt = 0, dt = []     # every point of recording
@@ -33,6 +37,7 @@ input_dir       = '' + func_dir
 output_dir      = '' + func_dir + '/ana/'
 xml_filename    = input_dir + '/ch0.xml'
 stack_filename  = input_dir + '/Stack_frequency.txt'
+alignment_type  = 'rigid'
 dt              = 1
 thr_mask        = 0
 ds              = 2

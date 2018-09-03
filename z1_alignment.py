@@ -9,7 +9,7 @@ for frame_i in range(imageframe_nmbr):
             ref_nii = image_dir(image_names[lt//2 - 1], frame_i) + 'image_original' + nii_ext,
             out_nii = image_dir(image_name, frame_i) + 'image_aligned' + nii_ext,
             out_tform = image_dir(image_name, frame_i) + 'alignment_tform_',
-            tip = 'r',
+            tip = reg_tip,
             exe = False
         )
         flag = os.system(cmd)

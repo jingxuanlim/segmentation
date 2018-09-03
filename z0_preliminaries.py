@@ -2,6 +2,11 @@
 if os.path.isfile(output_dir + 'prepro_parameters.hdf5'):
     sys.exit('Imported modules and exiting')
     
+# pad directories
+code_dir = '/'.join(code_dir.split('/'))
+input_dir = '/'.join(input_dir.split('/'))
+output_dir = '/'.join(output_dir.split('/'))
+    
 # output file formats
 data_type = 'float32'
 nii_ext   = '.nii.gz'
@@ -55,9 +60,16 @@ if packed_planes:
     freq_stack *= lz
     t_stack /= lz
     lz = 1;
+    
+if alignment_type.lower() == 'rigid':
+    reg_tip = 'r'
+elif alignment_type.lower() == 'translation':
+    reg_tip = 't'
+else:
+    raise Exception('alignment_type must be either \'rigid\' or \'translation\'.') 
 
 # if single plane, adjust resolution and padding
-if lz==1:
+if (lz==1) or (reg_tip=='t'):
     lpad = 0
     resn_z = 1.0
 else:
@@ -104,6 +116,7 @@ try:
         file_handle['nii_ext']                 = nii_ext
         file_handle['niiaffmat']               = niiaffmat
         file_handle['output_dir']              = output_dir
+        file_handle['reg_tip']                 = reg_tip
         file_handle['resn_x']                  = resn_x
         file_handle['resn_y']                  = resn_y
         file_handle['resn_z']                  = resn_z
