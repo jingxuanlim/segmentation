@@ -1,8 +1,6 @@
 image_nameRDD = sc.parallelize(image_names)
 for frame_i in range(imageframe_nmbr):
-    if os.path.isfile(output_dir + 'image_reference_aligned' + str(frame_i) + nii_ext):
-        continue
-            
+                
     image_nameRDD.foreach(init_image_process)
     
     def ants_reg(image_name):

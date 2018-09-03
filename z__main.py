@@ -4,15 +4,16 @@ try:
     with h5py.File('prepro_parameters.hdf5', 'r') as file_handle:
         for key in file_handle:
             var = file_handle[key][()]
-            if isinstance(var, str):
-                try: var = var.decode()
-                except AttributeError: pass
-            elif var.size > 1:
-                try: var = [i.decode() for i in var]
-                except AttributeError: pass                
+            try:         var = var.decode()
+            except:
+                try:     var = [i.decode() for i in var]
+                except:
+                    pass
+                    
             exec(key + '=var')
     print('Successfully imported from prepro_parameters.hdf5')
 except:
+    print('Warning: Did not import from prepro_parameters.hdf5')
     pass
 
 ##

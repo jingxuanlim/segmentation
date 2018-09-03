@@ -7,7 +7,8 @@ file_names = [i.split('.', 1) for i in os.listdir(input_dir)]
 file_names = list(itertools.zip_longest(*file_names, fillvalue=''))
 file_exts, counts = np.unique(file_names[1], return_counts=True)
 image_ext = file_exts[np.argmax(counts)]
-image_names = [i for i, j in zip(*file_names) if j==image_ext]
+image_names = [i.encode('utf8') for i, j in zip(*file_names) if j==image_ext]
+image_ext = ('.' + image_ext).encode('utf8')
 image_names.sort()
 
 # unpack single planes
@@ -61,34 +62,42 @@ else:
 
 # make directories and save  parameters
 os.system('mkdir -p ' + output_dir + '{brain_images,cell_series}')
-with h5py.File(output_dir + 'prepro_parameters.hdf5', 'w') as file_handle:
-    file_handle['cell_ball']               = cell_ball
-    file_handle['cell_ball_fine']          = cell_ball_fine
-    file_handle['cell_ball_midpoint']      = cell_ball_midpoint
-    file_handle['cell_ball_midpoint_fine'] = cell_ball_midpoint_fine
-    file_handle['cell_diam']               = cell_diam
-    file_handle['cell_voxl_nmbr']          = cell_voxl_nmbr
-    file_handle['code_dir']                = code_dir
-    file_handle['blok_cell_nmbr']          = blok_cell_nmbr
-    file_handle['data_type']               = data_type
-    file_handle['ds']                      = ds
-    file_handle['dt_range']                = dt_range
-    file_handle['freq_stack']              = freq_stack
-    file_handle['image_ext']               = image_ext
-    file_handle['image_names']             = image_names
-    file_handle['imageframe_nmbr']         = imageframe_nmbr
-    file_handle['input_dir']               = input_dir
-    file_handle['lpad']                    = lpad
-    file_handle['lt']                      = lt
-    file_handle['lx']                      = lx
-    file_handle['ly']                      = ly
-    file_handle['lz']                      = lz
-    file_handle['nii_ext']                 = nii_ext
-    file_handle['niiaffmat']               = niiaffmat
-    file_handle['output_dir']              = output_dir
-    file_handle['resn_x']                  = resn_x
-    file_handle['resn_y']                  = resn_y
-    file_handle['resn_z']                  = resn_z
-    file_handle['t_stack']                 = t_stack
-    file_handle['t_exposure']              = t_exposure
-    file_handle['thr_mask']                = thr_mask
+
+try:
+    with h5py.File(output_dir + 'prepro_parameters.hdf5', 'w') as file_handle:
+        file_handle['cell_ball']               = cell_ball
+        file_handle['cell_ball_fine']          = cell_ball_fine
+        file_handle['cell_ball_midpoint']      = cell_ball_midpoint
+        file_handle['cell_ball_midpoint_fine'] = cell_ball_midpoint_fine
+        file_handle['cell_diam']               = cell_diam
+        file_handle['cell_voxl_nmbr']          = cell_voxl_nmbr
+        file_handle['code_dir']                = code_dir
+        file_handle['blok_cell_nmbr']          = blok_cell_nmbr
+        file_handle['data_type']               = data_type
+        file_handle['ds']                      = ds
+        file_handle['dt_range']                = dt_range
+        file_handle['freq_stack']              = freq_stack
+        file_handle['image_ext']               = image_ext
+        file_handle['image_names']             = image_names
+        file_handle['imageframe_nmbr']         = imageframe_nmbr
+        file_handle['input_dir']               = input_dir
+        file_handle['lpad']                    = lpad
+        file_handle['lt']                      = lt
+        file_handle['lx']                      = lx
+        file_handle['ly']                      = ly
+        file_handle['lz']                      = lz
+        file_handle['nii_ext']                 = nii_ext
+        file_handle['niiaffmat']               = niiaffmat
+        file_handle['output_dir']              = output_dir
+        file_handle['resn_x']                  = resn_x
+        file_handle['resn_y']                  = resn_y
+        file_handle['resn_z']                  = resn_z
+        file_handle['t_stack']                 = t_stack
+        file_handle['t_exposure']              = t_exposure
+        file_handle['thr_mask']                = thr_mask
+    
+    print('Parameter file successfully saved.')
+except:
+    print('Error: Parameter file not saved.')
+    
+    os.remove(output_dir + 'prepro_parameters.hdf5')
