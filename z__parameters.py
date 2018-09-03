@@ -33,16 +33,12 @@ input_dir       = '' + func_dir
 output_dir      = '' + func_dir + '/ana/'
 xml_filename    = input_dir + '/ch0.xml'
 stack_filename  = input_dir + '/Stack_frequency.txt'
-dt        = []
+dt              = 1
 thr_mask        = 0
 ds              = 2
 blok_cell_nmbr  = 100
 cell_diam       = 6.0
 imageframe_nmbr = 1
-
-# output file formats (typically no need to change)
-data_type = 'float32'
-nii_ext   = '.nii.gz'
 
 # packed planes: set to 1 when single plane stacks are packed into a 3d-volume
 packed_planes = 0

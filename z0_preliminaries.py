@@ -2,6 +2,10 @@
 if os.path.isfile(output_dir + 'prepro_parameters.hdf5'):
     sys.exit('Imported modules and exiting')
     
+# output file formats
+data_type = 'float32'
+nii_ext   = '.nii.gz'
+    
 # get image extension and image names
 file_names = [i.split('.', 1) for i in os.listdir(input_dir)]
 file_names = list(itertools.zip_longest(*file_names, fillvalue=''))
