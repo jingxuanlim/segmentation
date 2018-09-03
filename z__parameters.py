@@ -6,12 +6,13 @@
 # - output_dir: output directory
 # - xml_filename: full path to xml filename that has recording metadata
 # - stack_filename: full path to stack filename that has recording metadata
-# - dt_range: the range of timepoints to use for cell detection
+# - dt: the range of timepoints to use for cell detection
 #     can be a vector which specifies the precise point sequence
 #     can be a scalar which specifies the downsampling factor
 #     e.g. 
-#       dt_range = np.r_[0:2000]  # first 2000 timepoints of recording
-#       dt_range = 10;            # every 10th point of recording
+#       dt = list(range(2000))      # first 2000 timepoints of recording
+#       dt = 10;                    # every 10th point of recording
+#       dt = 1, dt = 0, dt = []     # every point of recording
 # - thr_mask: fluorescence threshold for brain masking the brain
 #     typical values lie in the range of 100 to 110
 #     if in doubt, set thr_mask=0 (this allows to choose it interactively later)
@@ -32,7 +33,7 @@ input_dir       = '' + func_dir
 output_dir      = '' + func_dir + '/ana/'
 xml_filename    = input_dir + '/ch0.xml'
 stack_filename  = input_dir + '/Stack_frequency.txt'
-dt_range        = []
+dt        = []
 thr_mask        = 0
 ds              = 2
 blok_cell_nmbr  = 100

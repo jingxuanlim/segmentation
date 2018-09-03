@@ -31,17 +31,16 @@ if packed_planes:
 # get number of timepoints
 lt = len(image_names)
 
-# get final dt_range
+# get dt_range
 try:
-    if len(dt_range) == 0:
-        dt_range = 1
+    if len(dt) == 0: dt_range = 1
 except:
-    pass
+    if dt == 0:      dt_range = 1
         
 try:
-    dt_range = np.r_[:lt:dt_range]
+    dt_range = np.r_[:lt:dt]
 except:
-    dt_range = np.r_[dt_range]
+    dt_range = np.r_[dt]
 
 # get spatial and temporal parameters
 resn_x, resn_y, resn_z, lx, ly, lz, t_exposure, t_stack, freq_stack \
