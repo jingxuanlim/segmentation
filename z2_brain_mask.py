@@ -17,9 +17,19 @@ if mask_reset:
         
         image_dims = get_img_hdf(image_names[0]).shape
         assert(np.allclose(image_dims, (lx//ds, ly//ds, lz)))
-        image_accumulator = \
-            sc.accumulator(np.zeros(image_dims, dtype='float32'), accum_param())
         try:
+            class accum_param(pyspark.accumulators.AccumulatorParam):
+                '''define accumulator class'''
+        
+                def zero(self, val0):
+                    return np.zeros(val0.shape, dtype='float32')
+        
+                def addInPlace(self, val1, val2):
+                    return val1 + val2
+                                
+            image_accumulator = \
+                sc.accumulator(np.zeros(image_dims, dtype='float32'), accum_param())
+                                
             sc.parallelize(image_names).foreach(
                 lambda name_i: image_accumulator.add(get_img_hdf(name_i)))
         except:
