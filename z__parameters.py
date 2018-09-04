@@ -1,7 +1,6 @@
 
 # INPUT VARIABLES:
 # - code_dir: directory in which the code resides
-# - func_dir: an optional variable which defines input and output directories
 # - input_dir: input directory
 # - output_dir: output directory
 # - xml_filename: full path to xml filename that has recording metadata
@@ -32,9 +31,8 @@
 #     value is 2 if two-color image
 
 code_dir        = ''
-func_dir        = ''
-input_dir       = '' + func_dir
-output_dir      = '' + func_dir + '/ana/'
+input_dir       = ''
+output_dir      = ''
 xml_filename    = input_dir + '/ch0.xml'
 stack_filename  = input_dir + '/Stack_frequency.txt'
 alignment_type  = 'rigid'
