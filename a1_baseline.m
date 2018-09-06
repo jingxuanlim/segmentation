@@ -75,7 +75,7 @@ for frame_i = 0:imageframe_nmbr-1
         
         if numel(dt_range) < t
             base0 = ordfilt2(time1(dt_range), rho_p, ones(1, len_p), 'symmetric');
-            base0 = interp1(time1(dt_range) + 1e-6*rand(1, numel(dt_range)), base0, time1);
+            base0 = interp1(time1(dt_range) + randn(size(time1(dt_range)))*1e-3, base0 + randn(size(base0))*1e-3, time1);
             base0 = smooth(base0, smt_f, 'loess').';
         else
             base0 = ordfilt2(time1, rho_p, ones(1, len_p), 'symmetric');
@@ -92,7 +92,7 @@ for frame_i = 0:imageframe_nmbr-1
     end
     clear Cell_timesers freq
     
-    save(['Cells' num2str(frame_i) '_baseline.mat'], '-v7.3');
+    save(['Cells' fi '_baseline.mat'], '-v7.3');
 end
 
 delete(gcp('nocreate'))
