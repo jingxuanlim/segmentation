@@ -65,7 +65,6 @@ if mask_reset:
                 except SyntaxError:
                     thr_mask = 105
 
-
             # remove all disconnected components less than 5000 cubic microliters in size
             small_obj = int(np.round(5000 * (resn_x * ds * resn_y * ds * resn_z)))
             brain_mask = (image_mean > thr_mask)
@@ -78,8 +77,7 @@ if mask_reset:
 
             if not mask_flag:
                 try:
-                    mask_flag = eval(input( 'Is thr_mask = ' + str(thr_mask) + \
-                                        ' accurate? [1, yes]; 0, no. '))
+                    mask_flag = eval(input('Is thr_mask = ' + str(thr_mask) + ' accurate? [1, yes]; 0, no. '))
                 except SyntaxError:
                     mask_flag = 1
                     
