@@ -5,9 +5,8 @@ cd(output_dir)
 %%
 
 poly_ordr = 2;          % 1;            % 2;
-band_filt = 1;          % 0;            % 1;
+band_filt = 0;          % 0;            % 1;
 offs_secn = [60 0];     % [60 0];       % [60 60];
-offs_base = 80;
 
 f_lo = 0.001;
 tau_p = 60e3;           % 600e3;        % 300e3;
@@ -19,17 +18,18 @@ dt_range = 1 + double(h5read([output_dir 'prepro_parameters.hdf5'], '/dt_range')
 %%
 
 for frame_i = 0:imageframe_nmbr-1
+    fi = num2str(frame_i);
     %%
     
-    if exist([output_dir 'brain_mask.hdf5'], 'file')
-        image_mean = h5read([output_dir 'brain_mask.hdf5'], '/image_mean');
-    elseif exist([output_dir 'image_reference_aligned.nii.gz'], 'file')
-        nii = nii_load([output_dir 'image_reference_aligned.nii.gz']);
+    if exist([output_dir 'brain_mask' fi '.hdf5'], 'file')
+        image_mean = h5read([output_dir 'brain_mask' fi '.hdf5'], '/image_mean');
+    elseif exist([output_dir 'image_reference_aligned' fi '.nii.gz'], 'file')
+        nii = nii_load([output_dir 'image_reference_aligned' fi '.nii.gz']);
         lpad = h5read([output_dir 'prepro_parameters.hdf5']);
         image_mean = image_mean(:, :, lpad+1:end-lpad);
     end
     
-    load(['Cells' num2str(frame_i) '_clean.mat'], ...
+    load(['Cells' fi '_clean.mat'], ...
         'Cell_spcesers', 'Cell_timesers', 'freq', ...
         'Cell_X', 'Cell_Y', 'Cell_Z');
     [n, t] = size(Cell_timesers);
@@ -56,11 +56,11 @@ for frame_i = 0:imageframe_nmbr-1
         disp(i)
         
         mean0 = 0;
-        for j = 1:isfinite(Cell_spcesers)
+        for j = 1:nnz(isfinite(Cell_spcesers(i, :)))
             mean0 = mean0 + ...
                 Cell_spcesers(i, j) * image_mean(Cell_X(i, j), Cell_Y(i, j), Cell_Z(i, j));
         end
-        mean0 = mean0 / nansum(Cell_spcsers(i, :));
+        mean0 = mean0 / nansum(Cell_spcesers(i, :));
         
         time0 = mean0 * Cell_timesers(i, :) / mean(Cell_timesers(i, :));
         p0 = polyfit(find(t_idx), time0(t_idx), poly_ordr);
@@ -75,7 +75,7 @@ for frame_i = 0:imageframe_nmbr-1
         
         if numel(dt_range) < t
             base0 = ordfilt2(time1(dt_range), rho_p, ones(1, len_p), 'symmetric');
-            base0 = interp1(time1(dt_range), base0, time1);
+            base0 = interp1(time1(dt_range) + 1e-6*rand(1, numel(dt_range)), base0, time1);
             base0 = smooth(base0, smt_f, 'loess').';
         else
             base0 = ordfilt2(time1, rho_p, ones(1, len_p), 'symmetric');
