@@ -21,8 +21,8 @@ dt_range = 1 + double(h5read([output_dir 'prepro_parameters.hdf5'], '/dt_range')
 for frame_i = 0:imageframe_nmbr-1
     %%
     
-    if exist([output_dir 'brain_mask.hdf5'], 'file')
-        image_mean = h5read([output_dir 'brain_mask.hdf5'], '/image_mean');
+    if exist([output_dir 'brain_mask0.hdf5'], 'file')
+        image_mean = h5read([output_dir 'brain_mask0.hdf5'], '/image_mean');
     elseif exist([output_dir 'image_reference_aligned.nii.gz'], 'file')
         nii = nii_load([output_dir 'image_reference_aligned.nii.gz']);
         lpad = h5read([output_dir 'prepro_parameters.hdf5']);
@@ -60,7 +60,7 @@ for frame_i = 0:imageframe_nmbr-1
             mean0 = mean0 + ...
                 Cell_spcesers(i, j) * image_mean(Cell_X(i, j), Cell_Y(i, j), Cell_Z(i, j));
         end
-        mean0 = mean0 / nansum(Cell_spcsers(i, :));
+        mean0 = mean0 / nansum(Cell_spcesers(i, :));
         
         time0 = mean0 * Cell_timesers(i, :) / mean(Cell_timesers(i, :));
         p0 = polyfit(find(t_idx), time0(t_idx), poly_ordr);
