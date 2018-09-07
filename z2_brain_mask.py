@@ -48,29 +48,22 @@ if mask_reset:
 
         # get and save brain mask
         mask_flag = 0
-        while mask_flag == 0:
-
-            def knee_plot(image_array, xlabel, ylabel, default_val):
-                plt.figure(1, (81, 4))
-                thr_range = np.linspace(image_array.min(), image_array.max(), 1000)
-                n_suprathr_voxs = np.array([np.mean(image_array > thr) for thr in thr_range])
-                plt.plot(thr_range, n_suprathr_voxs)
-                plt.xlabel(xlabel); plt.xlim(np.percentile(thr_range, (40, 60))), plt.xticks(thr_range[::100]);
-                plt.ylabel(ylabel); plt.ylim([0, 1])
-                plt.show()
-                try:
-                    return eval(input('Enter threshold for: ' + xlabel + ' [default ' + str(default_val) + ']: '))
-                except SyntaxError:
-                    return default_val
-
+        while 1:
             if thr_mask:
                 mask_flag = 1
             else:
-                thr_mask = knee_plot(
-                    image_array=image_mean,
-                    xlabel='Individual pixels -- mean signal over time points',
-                    ylabel='Fraction of pixels',
-                    default_val=105)
+                plt.figure(1, (81, 4))
+                thr_range = np.linspace(image_mean.min(), image_mean.max(), 1000)
+                n_suprathr_voxs = np.array([np.mean(image_mean > thr) for thr in thr_range])
+                plt.plot(thr_range, n_suprathr_voxs)
+                plt.xlabel('Mean signal of pixel'); plt.xlim(np.percentile(thr_range, (40, 60))), plt.xticks(thr_range[::100]);
+                plt.ylabel('Fraction of pixels'); plt.ylim([0, 1])
+                plt.xticks(np.linspace(image_mean.min(), image_mean.max(), 200))
+                plt.show()
+                try:
+                    thr_mask = eval(input('Enter threshold for mean signal of pixel: [default 105]: '))
+                except SyntaxError:
+                    thr_mask = 105
 
             # remove all disconnected components less than 5000 cubic microliters in size
             small_obj = int(np.round(5000 * (resn_x * ds * resn_y * ds * resn_z)))
@@ -84,10 +77,14 @@ if mask_reset:
 
             if not mask_flag:
                 try:
-                    mask_flag = eval(input( 'Is thr_mask = ' + str(thr_mask) + \
-                                        ' accurate? [1, yes]; 0, no. '))
+                    mask_flag = eval(input('Is thr_mask = ' + str(thr_mask) + ' accurate? [1, yes]; 0, no. '))
                 except SyntaxError:
                     mask_flag = 1
+                    
+            if mask_flag == 0:
+                thr_mask = 0
+            else:
+                break
         
         plt.close('all')
         
