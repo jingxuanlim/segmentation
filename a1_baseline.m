@@ -4,9 +4,9 @@ cd(output_dir)
 
 %%
 
-poly_ordr = 2;          % 1;            % 2;
+poly_ordr = 1;          % 1;            % 2;
 band_filt = 0;          % 0;            % 1;
-offs_secn = [60 0];     % [60 0];       % [60 60];
+offs_secn = [0 0];      % [60 0];       % [60 60];
 
 f_lo = 0.001;
 tau_p = 60e3;           % 600e3;        % 300e3;
@@ -75,7 +75,7 @@ for frame_i = 0:imageframe_nmbr-1
         
         if numel(dt_range) < t
             base0 = ordfilt2(time1(dt_range), rho_p, ones(1, len_p), 'symmetric');
-            base0 = interp1(time1(dt_range) + randn(size(time1(dt_range)))*1e-3, base0 + randn(size(base0))*1e-3, time1);
+            base0 = interp1(time1(dt_range) + randn(size(time1(dt_range)))*1e-1, base0 + randn(size(base0))*1e-1, time1);
             base0 = smooth(base0, smt_f, 'loess').';
         else
             base0 = ordfilt2(time1, rho_p, ones(1, len_p), 'symmetric');

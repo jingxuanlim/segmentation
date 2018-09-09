@@ -1,10 +1,9 @@
 
 # INPUT VARIABLES:
+# - ants_dir: path to ANTS directory
 # - code_dir: directory in which the code resides
 # - input_dir: input directory
 # - output_dir: output directory
-# - xml_filename: full path to xml filename that has recording metadata
-# - stack_filename: full path to stack filename that has recording metadata
 # - alignment_type: type of motion correction.
 #     possible values:
 #       translation: (translation only)
@@ -30,11 +29,10 @@
 #     typical value is 1.
 #     value is 2 if two-color image
 
+ants_dir        = ''
 code_dir        = ''
 input_dir       = ''
 output_dir      = ''
-xml_filename    = input_dir + '/ch0.xml'
-stack_filename  = input_dir + '/Stack_frequency.txt'
 alignment_type  = 'rigid'
 dt              = 1
 thr_mask        = 0
@@ -42,6 +40,33 @@ ds              = 2
 blok_cell_nmbr  = 100
 cell_diam       = 6.0
 imageframe_nmbr = 1
+
+
+# imaging parameters
+
+# automatically parse imaging parameters
+try:
+    # - xml_filename: full path to xml filename which has recording metadata
+    # - stack_filename: full path to stack filename which has recording metadata
+    from past.builtins import execfile
+    execfile(code_dir + 'zfun.py')
+    xml_filename    = input_dir + '/ch0.xml'
+    stack_filename  = input_dir + '/Stack_frequency.txt'
+    resn_x, resn_y, resn_z, lx, ly, lz, t_exposure, t_stack, freq_stack \
+        = parse_info(xml_filename, stack_filename, imageframe_nmbr)
+        
+# manually specify imaging parameters
+except:
+    resn_x = ''
+    resn_y = ''
+    resn_z = ''
+    lx = ''
+    ly = ''
+    lz = ''
+    t_exposure = ''
+    freq_stack = ''
+    t_stack = 1000.0 / freq_stack
+
 
 # packed planes: set to 1 when single plane stacks are packed into a 3d-volume
 packed_planes = 0

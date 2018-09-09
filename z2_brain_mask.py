@@ -58,7 +58,7 @@ if mask_reset:
                 plt.plot(thr_range, n_suprathr_voxs)
                 plt.xlabel('Mean signal of pixel'); plt.xlim(np.percentile(thr_range, (40, 60))), plt.xticks(thr_range[::100]);
                 plt.ylabel('Fraction of pixels'); plt.ylim([0, 1])
-                plt.xticks(np.linspace(image_mean.min(), image_mean.max(), 200))
+                plt.xticks(np.around(np.linspace(image_mean.min(), image_mean.max(), 200)))
                 plt.show()
                 try:
                     thr_mask = eval(input('Enter threshold for mean signal of pixel: [default 105]: '))
