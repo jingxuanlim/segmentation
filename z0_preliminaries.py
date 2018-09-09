@@ -57,11 +57,6 @@ try:
 except:
     dt_range = np.r_[dt]
 
-# get spatial and temporal parameters
-if parse_flag:
-    resn_x, resn_y, resn_z, lx, ly, lz, t_exposure, t_stack, freq_stack =\
-    parse_info(xml_filename, stack_filename, imageframe_nmbr)
-
 # in case of packed planes, modify lz and freq_stack/t_stack
 if packed_planes:
     freq_stack *= lz
