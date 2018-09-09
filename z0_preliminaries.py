@@ -10,38 +10,42 @@ output_dir = '/'.join(output_dir.split('/'))
 # output file formats
 data_type = 'float32'
 nii_ext   = '.nii.gz'
-    
-# get image extension and image names
-file_names = [i.split('.', 1) for i in os.listdir(input_dir)]
-file_names = list(itertools.zip_longest(*file_names, fillvalue=''))
-file_exts, counts = np.unique(file_names[1], return_counts=True)
-image_ext = file_exts[np.argmax(counts)]
-image_names = [i.encode('utf8') for i, j in zip(*file_names) if j==image_ext]
-image_ext = ('.' + image_ext).encode('utf8')
-image_names.sort()
 
-# unpack single planes
-if packed_planes:
-    input_dir0 = input_dir
-    input_dir1 = input_dir + 'pln/'
-    os.system('mkdir ' + input_dir1)
-    def volume_to_singleplane(image_name):
-        try:
-            image_name = image_name.decode()
-        except:
-            pass
-        
-        with h5py.File(input_dir0 + image_name + '.h5', 'r') as f:
-            vol = f['default'][()]
-            
-        for i, vol_i in enumerate(vol):
-            with h5py.File(input_dir1 + image_name + '_PLN' + str(i).zfill(2) + '.h5', 'w') as g:
-                g['default'] = vol_i
-    
-    sc.parallelize(image_names).foreach(volume_to_singleplane)
-    image_names = get_image_names(os.listdir(input_dir1))
+while 1:
+    # get image extension and image names
+    file_names = [i.split('.', 1) for i in os.listdir(input_dir)]
+    file_names = list(itertools.zip_longest(*file_names, fillvalue=''))
+    file_exts, counts = np.unique(file_names[1], return_counts=True)
+    image_ext = file_exts[np.argmax(counts)]
+    image_names = [i.encode('utf8') for i, j in zip(*file_names) if j==image_ext]
+    image_ext = ('.' + image_ext).encode('utf8')
     image_names.sort()
-    input_dir = input_dir1
+    
+    # unpack single planes
+    if packed_planes:
+        input_dir0 = input_dir
+        input_dir1 = input_dir + 'pln/'
+        os.system('mkdir ' + input_dir1)
+        def volume_to_singleplane(image_name):
+            try:
+                image_name = image_name.decode()
+            except:
+                pass
+            
+            with h5py.File(input_dir0 + image_name + '.h5', 'r') as f:
+                vol = f['default'][()]
+                
+            for i, vol_i in enumerate(vol):
+                with h5py.File(input_dir1 + image_name + '_PLN' + str(i).zfill(2) + '.h5', 'w') as g:
+                    g['default'] = vol_i
+        
+        sc.parallelize(image_names).foreach(volume_to_singleplane)
+        
+        # change input directory and get new image names
+        input_dir = input_dir1        
+        packed_planes = 0
+    else:
+        break
 
 # get number of timepoints
 lt = len(image_names)
