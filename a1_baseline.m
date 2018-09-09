@@ -4,9 +4,9 @@ cd(output_dir)
 
 %%
 
-poly_ordr = 2;          % 1;            % 2;
+poly_ordr = 1;          % 1;            % 2;
 band_filt = 0;          % 0;            % 1;
-offs_secn = [60 0];     % [60 0];       % [60 60];
+offs_secn = [0 0];      % [60 0];       % [60 60];
 
 f_lo = 0.001;
 tau_p = 60e3;           % 600e3;        % 300e3;
