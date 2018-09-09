@@ -23,19 +23,25 @@ image_names.sort()
 # unpack single planes
 if packed_planes:
     input_dir0 = input_dir
-    input_dir += 'pln/'
-    os.system('mkdir ' + input_dir)
+    input_dir1 = input_dir + 'pln/'
+    os.system('mkdir ' + input_dir1)
     def volume_to_singleplane(image_name):
+        try:
+            image_name = image_name.decode()
+        except:
+            pass
+        
         with h5py.File(input_dir0 + image_name + '.h5', 'r') as f:
             vol = f['default'][()]
             
         for i, vol_i in enumerate(vol):
-            with h5py.File(input_dir + image_name + '_PLN' + str(i).zfill(2) + '.h5', 'w') as g:
+            with h5py.File(input_dir1 + image_name + '_PLN' + str(i).zfill(2) + '.h5', 'w') as g:
                 g['default'] = vol_i
     
     sc.parallelize(image_names).foreach(volume_to_singleplane)
-    image_names = get_image_names(os.listdir(input_dir))
+    image_names = get_image_names(os.listdir(input_dir1))
     image_names.sort()
+    input_dir = input_dir1
 
 # get number of timepoints
 lt = len(image_names)
