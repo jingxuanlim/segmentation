@@ -12,7 +12,7 @@
 
   	`ants_dir = path_to_ants_directory`
 
-# Demo
+# Instructions and Demo
 - Download an example dataset folder: 
 
 	https://www.dropbox.com/sh/psrj9lusohj7epu/AAAbj8Jbb3o__pyKTTDxPvIKa?dl=0
