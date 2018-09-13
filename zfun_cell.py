@@ -181,7 +181,10 @@ def blok_cell_detection(blok_i_blok_xyz_01):
                     cmpn_lidx_i = np.nonzero(cmpn_spcesers_vald[:, cmpn_i])[0]
                     cmpn_position_i = voxl_position_vald[cmpn_lidx_i]
                     cmpn_spcesers_i = cmpn_spcesers_vald[cmpn_lidx_i, cmpn_i]
+                    mean_spcevoxl_i = bimage_mean.value[list(zip(*cmpn_position_i))]
+                    mean_i = np.sum(mean_spcevoxl_i * cmpn_spcesers_i) / np.sum(cmpn_spcesers_i)
                     cmpn_timesers_i = cmpn_timesers_vald[cmpn_i]
+                    cmpn_timesers_i = cmpn_timesers_i * mean_i / np.mean(cmpn_timesers_i)
                     # cmpn_polytrnd_i = nonlinear_trend(cmpn_timesers_i, poly_ordr=2)[0]
                     # cmpn_basedetr_i = dynamic_baseline(cmpn_timesers_i - cmpn_polytrnd_i)
     

@@ -98,6 +98,7 @@ os.system('mkdir -p ' + output_dir + '{brain_images,cell_series}')
 
 try:
     with h5py.File(output_dir + 'prepro_parameters.hdf5', 'w') as file_handle:
+        file_handle['ants_dir']                = ants_dir
         file_handle['cell_ball']               = cell_ball
         file_handle['cell_ball_fine']          = cell_ball_fine
         file_handle['cell_ball_midpoint']      = cell_ball_midpoint

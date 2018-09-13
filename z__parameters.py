@@ -1,4 +1,3 @@
-
 # INPUT VARIABLES:
 # - ants_dir: path to ANTS directory
 # - code_dir: directory in which the code resides
@@ -29,14 +28,14 @@
 #     typical value is 1.
 #     value is 2 if two-color image
 
-ants_dir        = ''
-code_dir        = ''
-input_dir       = ''
-output_dir      = ''
+ants_dir        = '/groups/ahrens/home/rubinovm/ants-2.1.0-redhat/'
+code_dir        = '/groups/ahrens/home/rubinovm/mycode/zfish_prepro/code/'
+input_dir       = '/groups/ahrens/home/rubinovm/mycode/zfish_prepro/input/'
+output_dir      = '/groups/ahrens/home/rubinovm/mycode/zfish_prepro/output/'
 alignment_type  = 'rigid'
 dt              = 1
-thr_mask        = 0
-ds              = 2
+thr_mask        = 105
+ds              = 1
 blok_cell_nmbr  = 100
 cell_diam       = 6.0
 imageframe_nmbr = 1
@@ -57,14 +56,14 @@ try:
         
 # manually specify imaging parameters
 except:
-    resn_x = ''
-    resn_y = ''
-    resn_z = ''
-    lx = ''
-    ly = ''
-    lz = ''
-    t_exposure = ''
-    freq_stack = ''
+    resn_x = 0.812
+    resn_y = 0.812
+    resn_z = 1.0
+    lx = 512
+    ly = 444
+    lz = 1
+    t_exposure = 9.7
+    freq_stack = 2.66
     t_stack = 1000.0 / freq_stack
 
 

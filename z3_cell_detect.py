@@ -3,11 +3,13 @@ if 'nthread' not in globals(): nthread = 1
 # load plane filename
 for frame_i in range(imageframe_nmbr):
     with h5py.File(output_dir + 'brain_mask' + str(frame_i) + '.hdf5', 'r') as file_handle:
+        image_mean = file_handle['image_mean'][()].T
         brain_mask = file_handle['brain_mask'][()].T
         image_peak_fine = file_handle['image_peak_fine'][()].T
     
-    # broadcast image peaks for initialization
+    # broadcast image peaks (for initialization) and image_mean (for renormalization)
     bimage_peak_fine = sc.broadcast(image_peak_fine)
+    bimage_mean      = sc.broadcast(image_mean)
 
     # get initial estimate for the number of blocks
     blok_nmbr0 = int(np.ceil(brain_mask.size / (blok_cell_nmbr * cell_voxl_nmbr)))
