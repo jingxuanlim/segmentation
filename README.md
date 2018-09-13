@@ -148,3 +148,4 @@ for h in range(W1.shape[1]):
     plt.show()
 ```
 
+>>>>>>> 188dfe11ca6e1034686919ab53100f8050f02720
