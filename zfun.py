@@ -65,6 +65,7 @@ def detrend_dynamic_baseline(timesers, poly_ordr=2, tau_p=600e3, tau_s=60e3):
     assert(np.allclose(np.percentile(timesers - baseline, 1), 0))
 
     return(timesers, baseline)
+<<<<<<< HEAD
 
 
 def nonlinear_trend(timesers, poly_ordr):
@@ -73,6 +74,9 @@ def nonlinear_trend(timesers, poly_ordr):
 
     return timepoly, coefpoly
 
+=======
+    
+>>>>>>> 879ea3f81bd418d5a22b253fdc2becf2e337c3c2
 
 def sparseness(W, dim=0):
     '''vector sparseness along specified dimension'''
@@ -191,7 +195,11 @@ def ants_registration(in_nii, ref_nii, out_nii, out_tform, tip, restrict=None, e
         '--smoothing-sigmas 5x3x2x1x0vox',
     ])
     antsRegistration_call = ' '.join([
+<<<<<<< HEAD
         '/groups/ahrens/home/rubinovm/ants-2.1.0-redhat/antsRegistration',
+=======
+        ants_dir + '/antsRegistration',
+>>>>>>> 879ea3f81bd418d5a22b253fdc2becf2e337c3c2
         '--initial-moving-transform [' + ref_nii + ',' + in_nii + ',1]',
         '--output [' + out_tform + ',' + out_nii + ']',
         '--dimensionality 3',
@@ -217,7 +225,11 @@ def ants_transformation(in_nii, ref_nii, out_nii, in_tform, interpolation='Linea
     '''application of ants transform'''
 
     antsTransformation_call = ' '.join([
+<<<<<<< HEAD
         '/groups/ahrens/home/rubinovm/ants-2.1.0-redhat/antsApplyTransforms',
+=======
+        ants_dir + '/antsApplyTransforms',
+>>>>>>> 879ea3f81bd418d5a22b253fdc2becf2e337c3c2
         '--dimensionality 3',
         '--input', in_nii,
         '--reference-image', ref_nii,
@@ -354,8 +366,14 @@ def init_image_process(image_name, image_proc=1):
             image_data = image_data[:, ly:, :]
         
     # ensure original dimensions are even
+<<<<<<< HEAD
     if lx % 2: image_data = image_data[:-1, :, :]
     if ly % 2: image_data = image_data[:, :-1, :]
+=======
+    if ds > 1:
+        if lx % 2: image_data = image_data[:-1, :, :]
+        if ly % 2: image_data = image_data[:, :-1, :]
+>>>>>>> 879ea3f81bd418d5a22b253fdc2becf2e337c3c2
 
     # downsample in the x-y dimension and pad in the z dimension
     if ds > 1:

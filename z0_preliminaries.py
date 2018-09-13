@@ -98,6 +98,10 @@ os.system('mkdir -p ' + output_dir + '{brain_images,cell_series}')
 
 try:
     with h5py.File(output_dir + 'prepro_parameters.hdf5', 'w') as file_handle:
+<<<<<<< HEAD
+=======
+        file_handle['ants_dir']                = ants_dir
+>>>>>>> 879ea3f81bd418d5a22b253fdc2becf2e337c3c2
         file_handle['cell_ball']               = cell_ball
         file_handle['cell_ball_fine']          = cell_ball_fine
         file_handle['cell_ball_midpoint']      = cell_ball_midpoint
@@ -134,4 +138,8 @@ try:
 except:
     print('Error: Parameter file not saved.')
     
+<<<<<<< HEAD
     os.remove(output_dir + 'prepro_parameters.hdf5')
+=======
+    os.remove(output_dir + 'prepro_parameters.hdf5')
+>>>>>>> 879ea3f81bd418d5a22b253fdc2becf2e337c3c2
