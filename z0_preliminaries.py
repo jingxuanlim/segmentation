@@ -135,5 +135,4 @@ try:
 except:
     print('Error: Parameter file not saved.')
     
-
     os.remove(output_dir + 'prepro_parameters.hdf5')
