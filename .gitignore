@@ -4,3 +4,7 @@
 core.*
 .ipynb_checkpoints
 Thumbs.db
+**/dask-worker-script*
+**/__pycache__
+*.hdf5
+*.mat
