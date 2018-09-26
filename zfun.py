@@ -32,39 +32,38 @@ import xml
 
 from builtins import range, zip
 
-def smooth(timesers, tau_s=12e3, tip='median'):
 
-    ltau_s = int(np.ceil(tau_s / t_stack) // 2 * 2 + 1)
-    if tip=='mean':
-        return pd.rolling_mean(timesers, ltau_s, min_periods=1, center=True)
-    elif tip=='median':
-        return pd.rolling_median(timesers, ltau_s, min_periods=1, center=True)
-
-
-def detrend_dynamic_baseline(timesers, poly_ordr=2, tau_p=600e3, tau_s=60e3):
+def detrend_dynamic_baseline(timesers, poly_ordr=2, tau=600e3, f_lo=0.001):
     '''estimation of dynamic baseline for input timeseries'''
 
     # poly_ordr  polynomial order for detrending
-    # tau_p:     timescale constant for percentile baseline estimation (default 5 minutes)
-    # tau_s:     timescale constant for subsequent baseline smooth (default 30 seconds)
-    # t_stack:   time for imaging a single stack (equivalent to TR)
+    # tau:           timescale constant for baseline estimation (default 10 minutes)
+    # f_lo:          highpass cutoff frequency
+    # t_stack:       time for imaging a single stack (in ms)
+    # freq_stack:    frequency of imaging a single stack (in Hz) 
 
     # length of interval of dynamic baseline time-scales
-    ltau_p = int(np.ceil(tau_p / t_stack) // 2 * 2 + 1)
-    ltau_s = int(np.ceil(tau_s / t_stack) // 2 * 2 + 1)
+    ltau = int(np.ceil(tau / t_stack) // 2 * 2 + 1)
 
     # detrend with a low-order polynomial
     xtime = np.arange(timesers.shape[0])
     coefpoly = np.polyfit(xtime, timesers, poly_ordr)
     timesers -= np.polyval(coefpoly, xtime)
     
+    #highpass filter
+    nyquist = freq_stack / 2
+    f_rng = np.r_[np.maximum(f_lo, 1e-10), nyquist - 1e-10]
+    krnl = signal.firwin(lt, f_rng / nyquist, pass_zero=False)
+    timesers_pad = np.concatenate((timesers[::-1], timesers, timesers[::-1]))
+    timesers = signal.filtfilt(krnl, 1, timesers_pad, padtype=None)
+    
     # compute dynamic baseline
-    baseline = pd.rolling_quantile(timesers, ltau_p, quantile=0.1, min_periods=1, center=True)
-    baseline = pd.rolling_mean(    baseline, ltau_s,               min_periods=1, center=True)
+    baseline = pd.rolling_quantile(timesers, ltau, quantile=0.1, min_periods=1, center=True)
+    baseline = pd.rolling_mean(    baseline, ltau,               min_periods=1, center=True)
     baseline += np.percentile(timesers - baseline, 1)
     assert(np.allclose(np.percentile(timesers - baseline, 1), 0))
 
-    return(timesers, baseline)
+    return(timesers[lt:2*lt], baseline[lt:2*lt])
     
 
 def sparseness(W, dim=0):
