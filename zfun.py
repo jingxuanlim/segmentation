@@ -7,6 +7,7 @@
 import os
 import sys
 import shutil
+import difflib
 import itertools
 import numpy as np
 import pandas as pd
@@ -21,39 +22,48 @@ try:
 except:
     pass
 import time
-import PIL.Image
 import tempfile
+import multiprocessing
 
 from scipy import io, interpolate, linalg, stats, ndimage, signal, optimize, sparse
 from sklearn import cluster, mixture, decomposition, externals
 from skimage import morphology, measure, filters
 from skimage.external import tifffile
+from PIL import Image
 import xml
 
 from builtins import range, zip
 
 
-def detrend_dynamic_baseline(timesers, poly_ordr=2, tau=600e3, f_lo=0.001):
+def detrend_dynamic_baseline(timesers, poly_ordr=2, tau=600):
     '''estimation of dynamic baseline for input timeseries'''
     
     # poly_ordr  polynomial order for detrending
-    # tau:           timescale constant for baseline estimation (default 10 minutes)
-    # f_lo:          highpass cutoff frequency
-    # t_stack:       time for imaging a single stack (in ms)
+    # tau:           timescale constant for baseline estimation (in seconds)
+    # freq_cutoff:   highpass cutoff frequency
+    # freq_stack:    frequency of imaging a single stack (in Hz)
+    
+    # timeseries mean
+    timesers_mean = timesers.mean()
+    
     # length of interval of dynamic baseline time-scales
-    ltau = int(np.ceil(tau / t_stack) // 2 * 2 + 1)
+    ltau = (np.round(tau * freq_stack / 2) * 2 + 1).astype(int)
     
     # detrend with a low-order polynomial
     xtime = np.arange(timesers.shape[0])
     coefpoly = np.polyfit(xtime, timesers, poly_ordr)
     timesers -= np.polyval(coefpoly, xtime)
+    timesers = np.concatenate((timesers[::-1], timesers, timesers[::-1]))
     
-    #highpass filter
+    # highpass filter
     nyquist = freq_stack / 2
-    f_rng = np.r_[np.maximum(f_lo, 1e-10), nyquist - 1e-10]
-    krnl = signal.firwin(lt, f_rng / nyquist, pass_zero=False)
-    timesers_pad = np.concatenate((timesers[::-1], timesers, timesers[::-1]))
-    timesers = signal.filtfilt(krnl, 1, timesers_pad, padtype=None)
+    if (freq_cutoff > 1e-10) and (freq_cutoff < nyquist - 1e-10):
+        f_rng = np.array([freq_cutoff, nyquist - 1e-10])
+        krnl = signal.firwin(lt, f_rng / nyquist, pass_zero=False)
+        timesers = signal.filtfilt(krnl, 1, timesers, padtype=None)
+        
+    # restore mean
+    timesers = timesers - timesers.mean() + timesers_mean
     
     # compute dynamic baseline
     timesers_df = pd.DataFrame(timesers)
@@ -260,23 +270,21 @@ def parse_info(xml_filename, stack_filename, imageframe_nmbr):
             freq_stack = np.fromfile(stack_filename, sep='\n')[0] # Hz
         else:
             with open(stack_filename, 'r') as file_handle:
-                times_stack = np.r_[file_handle.read().split('\t')][1:-1]
-                freq_stack = 1.0 / np.mean(np.diff(times_stack.astype('double')))
+                times_stack = np.array(file_handle.read().split('\t'))[1:-1]
+                freq_stack = 1.0 / np.mean(np.diff(times_stack.astype(float)))
     except:
         print(('Warning: cannot read from ' + stack_filename + '.'))
         freq_stack = np.nan
-    t_stack = 1000.0 / freq_stack               # t_stack and t_exposure are in ms
 
-    return resn_x, resn_y, resn_z, lx, ly, lz, t_exposure, t_stack, freq_stack
+    return resn_x, resn_y, resn_z, lx, ly, lz, t_exposure, freq_stack
 
 
 def get_ball(radi):
     ''' morphological cell balls and midpoints '''
     ball = np.ones((
-        int(np.maximum(1, np.round(radi / (resn_x * ds)) * 2 + 1)),
-        int(np.maximum(1, np.round(radi / (resn_y * ds)) * 2 + 1)),
-        int(np.maximum(1, np.round(radi /  resn_z      ) * 2 + 1))
-    ), 'uint8')
+            np.maximum(1, np.round(radi / (resn_x * ds)).astype(int) * 2 + 1),
+            np.maximum(1, np.round(radi / (resn_y * ds)).astype(int) * 2 + 1),
+            np.maximum(1, np.round(radi /  resn_z      ).astype(int) * 2 + 1)), dtype=int)
 
     ball_xyzm = (np.array(ball.shape) - 1) / 2
     for xi in range(ball.shape[0]):
@@ -299,7 +307,7 @@ def init_image_process(image_name, image_proc=1):
         try:
             image_data = tifffile.imread(input_dir + image_name + image_ext)
         except:
-            img = PIL.Image.open(input_dir + image_name + image_ext)
+            img = Image.open(input_dir + image_name + image_ext)
             image_data = []
             for i in range(img.n_frames):
                 img.seek(i)
