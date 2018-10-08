@@ -4,7 +4,7 @@ cd(output_dir)
 
 %%
 
-K = [20 60];
+K = [200];
 
 imageframe_nmbr = h5read([output_dir 'prepro_parameters.hdf5'], '/imageframe_nmbr');
 
