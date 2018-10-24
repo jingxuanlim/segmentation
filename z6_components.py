@@ -83,6 +83,7 @@ def z6():
                 
             T = (Cell_timesers1 - Cell_baseline1) / (Cell_baseline1 - background * 0.8)
             T = np.maximum(T, 0)
+            T = np.divide(T,(np.mean(T, 1))[:,np.newaxis])
                         
             if nmf_algorithm==1:
                 W0, H0 = nndsvd_econ(T)
