@@ -75,15 +75,29 @@ def z6():
     
     if nmf_algorithm:
         for frame_i in range(imageframe_nmbr):
+            if os.path.isfile(output_dir + 'Cells' + str(frame_i) + '_clust.hdf5'):
+                try:
+                    cell_reset = eval(input('Reset cluster cells? [0, no]; 1, yes. '))
+                except SyntaxError:
+                    cell_reset = 0
+                
+                if not cell_reset:
+                    continue
             
             with h5py.File(output_dir + 'Cells' + str(frame_i) + '_clean.hdf5', 'r') as file_handle:
                 Cell_timesers1 = file_handle['Cell_timesers1'][()].astype(float)
                 Cell_baseline1 = file_handle['Cell_baseline1'][()].astype(float)
                 background = file_handle['background'][()]
                 
-            T = (Cell_timesers1 - Cell_baseline1) / (Cell_baseline1 - background * 0.8)
-            T = np.maximum(T, 0)
-            T = np.minimum(T, np.max(T[np.isfinite(T)]))
+            ltau = (np.round(baseline_tau * freq_stack / 2) * 2 + 1).astype(int)
+            T  = np.maximum(Cell_timesers1 - Cell_baseline1, 0)
+            assert(np.all(np.isfinite(T)))
+            T /= np.maximum(Cell_baseline1 - background * 0.8, 0)
+            T[np.isnan(T)] = 0
+            assert(np.min(T)==0)
+            T[np.isinf(T)] = np.max(T[np.isfinite(T)])
+            T[:, ltau:] /= T[:, ltau:].mean(1)[:, None]
+            T[:, :ltau]  = T[:, ltau:].mean()
             assert(np.all(np.isfinite(T)))
                         
             if nmf_algorithm==1:
@@ -91,6 +105,7 @@ def z6():
                 
             h5py.File(output_dir + 'Cells' + str(frame_i) + '_clust.hdf5', 'w')
             for i, k in enumerate(n_components):
+                print('Running NMF: %d components' %k)
                 if nmf_algorithm==1:
                     W, H = nmfh_lite(T, H0[:k], 100, 100, 1e-4)
                 elif nmf_algorithm==2:
