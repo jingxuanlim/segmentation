@@ -96,8 +96,9 @@ def z6():
             T[np.isnan(T)] = 0
             assert(np.min(T)==0)
             T[np.isinf(T)] = np.max(T[np.isfinite(T)])
-            T[:, ltau:] /= T[:, ltau:].mean(1)[:, None]
-            T[:, :ltau]  = T[:, ltau:].mean()
+            T[:, ltau:-ltau] /= T[:, ltau:ltau].mean(1)[:, None]
+            T[:, :ltau]  = T[:, ltau:ltau].mean()
+            T[:, -ltau:]  = T[:, ltau:ltau].mean()
             assert(np.all(np.isfinite(T)))
                         
             if nmf_algorithm==1:
