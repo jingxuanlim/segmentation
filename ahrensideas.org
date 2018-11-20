@@ -1,0 +1,30 @@
+#+STARTUP: entitiespretty
+
+* Oscillations in the waist area
+- Misha thinks that the oscillations (the upstates) are actually inhibiting the generation of swim bouts.
+- I should look at the stop times in addition to the start times, because the oscillations might not be just inhibiting the start of swims but activating the stop of swims. Because the drive to swim is constant, the swim will just swim at the next available window, which is after the inhibition on swim is lifted.
+* 17AUG09 Progress report
+** Introduction
+- Oscillations in the brain
+- Have people found oscillations in the zebrafish?
+** Alireza found oscillations (YuMu's LS data)
+- Method development: multitaper PSD, clustering etc
+- Alireza found oscillations in the zebrafish brain, mostly notably the waist area (and anitiphase cells around the waist area) and the forebrain
+** Jing tried to relate oscillations to heart beat and behaviour (Jing's 2P data)
+*** Waist area
+- Are oscillations in the waist area related to heart beat?
+  - Quantify heart rate vs rate of oscillations (number of peaks): heart rate 3x of oscillations
+  - heartbeat-triggered average fluorescence: 
+- Are oscillations related to swim bouts?
+  - raw data: swim bouts seem to happen during at some oscillatory peaks
+  - swim-triggered average fluorescence: amplitude seems to rise before swim and std tapers after swims -- seems to have a feedback loop
+  - measure the phase at which swim bouts happen: hilbert transform
+*** Cerebellum
+- neuropil area above cerebellum response to swim bouts
+*** Forebrain area
+* 18JAN01 Thesis project ideas
+- what kind of statistics would a "master" neuron have? can we use statistics to find out which neurons are these?
+- PCA is a way to dimensionality reduce. when applied to populations of neurons, it's a way to understand the trajectory population activity in state space. people have also applied this to complex behaviour to break it down.
+- In Wang et al. (2017), temporal properties are preserved when pass on from the MFC to caudate, but their firing profiles are different. Generally, when information is pass on from one node to another, how does it maintain some properties but change others?
+- this is probably important regardless: higher order cortex computes something and must be passed on to output centers.
+- where does the temporal scaling first arise? is it necessarily the MFC?
