@@ -1,0 +1,519 @@
+#+STARTUP: entitiespretty
+
+* old 2-photon procedure
+1. Start ephys recording
+2. Start writing
+3. Start imaging
+4. Stop imaging
+5. Stop ephys recording
+** Notes
+- If you stop ephys recoding before stopping writing, your ephys file won't be saved (?!, see below)
+- If you stop writing before stopping ephys recording, your ephys file won't be saved (?!, see above)
+* data analysis procedure
+1. Good to restart the kernel before rerunning analyses
+2. Update date_dir and fnames
+3. Set ~cthresh~ and ~cmax~ to remove noise and to visualize better respectively
+4. Remove blank frames at the front and at the back of the stack
+* 17JUN29: noradrenergic_04
+file: E:\Jing\20170729\noradrenergic_04
+task: auto-switch
+set 1: gain 1, vel 1, time 20, contrast 120
+set 2: gain 3, ve1 1, time 20, contrast 120
+
+- for all previous tasks, gains in set 1 and 2 are set to 0
+- remind misha to make stimulus box unresizeable
+- it is nice to see a response to the swim bouts but i'm surprised the cells are not really active during the intervals. do zebrafishes only think about swimming?
+* 17JUN29: noradrenergic_05
+file: E:\Jing\20170729\noradrenergic_05
+task: auto-switch
+set 1: gain 1, vel 1, time 20, contrast 120
+set 2: gain 3, ve1 1, time 20, contrast 120
+* 17JUN29: noradrenergic_06
+file: E:\Jing\20170729\noradrenergic_06
+task: auto-switch
+set 1: gain 1, vel 1, time 20, contrast 120
+set 2: gain 1, ve1 5, time 20, contrast 120
+- truncated: suspected that stimulus isn't presented properly
+* 17JUN29: noradrenergic_07
+file: E:\Jing\20170729\noradrenergic_07
+task: auto-switch
+set 1: gain 1, vel 1, time 20, contrast 120
+set 2: gain 1, ve1 1, time 20, contrast 20
+- truncated: suspected that stimulus isn't presented properly
+* 17JUN29: noradrenergic_08
+file: E:\Jing\20170729\noradrenergic_08
+task: auto-switch
+set 1: gain 0.1, vel 1, time 20, contrast 120
+set 2: gain 0.1, ve1 5, time 20, contrast 120
+
+- there might indeed be a problem with the stimulus
+* DONE 17JUL03: fish2-heart_06                    :interesting:useable:waist:
+- mode: gratings
+
+_0 - 415 s_
+- set 1: gain 0.005 vel 0.5 time 10
+- set 2: gain 0.005 vel 0.5 time 10
+
+_415 - s_
+- set 1: gain 0 vel 0 time 10
+- set 2: gain 0.005 vel 0.5 time 10
+
+- behaveandscan crashed at around 600s
+** Analysis notes
+- The waist area is oscillates 46 times in 66.7 seconds == 0.7 Hz
+- Start of swim bouts seem to happen at a particular time during an oscillatory wave
+- Seems like there could be some phase precession?
+- The ends of the waist (what's their name?) also seem to be oscillating at similar frequencies, and swim bouts are time locked to the oscillations at those frequencies. However, they also appear to be oscillating at a slower frequency of maybe 0.04 Hz, which might have nested some of the smaller but faster oscillations, which might have made some of the time-locking events harder to spot.
+* DONE 17JUL03: fish2-heart_08                    :interesting:useable:waist:
+- mode: gratings
+- set 1: gain 0 vel 0 time 20
+- set 2: gain 0 vel 0.5 time 20
+- see 1 Hz oscilations in the axon bundles of the waist area
+- heart rate is slightly higher than 1 Hz (~1.5 Hz)
+** Analysis notes
+- Again, swim bouts seem to be time-locked to the oscillations.
+- The top most part of the waist seems to have the largest oscillations.
+- The regions beneath the waist regions are not oscillating.
+* 17JUL03: fish2-heart_10
+- mode: texture
+- set 1: gain 0.005 vel 0 time 10
+- set 2: gain 0.005 vel 0.5 time 10
+- big group of cells in the top right of the waist area
+- oscillations not obvious (due to differnet stimulus?)
+** Analysis notes
+- Oscillations are not as obvious even in the waist region. 
+- The swim bouts are also not as strong and so it's hard to say when the fish is swimming too.
+* 17JUL03: fish2-heart_11
+- mode: gratings
+- set 1: gain 0.005 vel 0 time 10
+- set 2: gain 0.005 vel 0.5 time 10
+- oscillations not immediately obvious now
+- heartbeat is also weakened
+** Analysis notes
+- Possibly slower oscillations in the waist area. 
+- The swims are very weak and few so it's difficult to determine where they are and if they are actually time-locked.
+* 17JUL03: fish2-heart_12
+- mode: gratings
+- set 1: gain 0 vel 0 time 10
+- set 2: gain 0 vel 0.5 time 10
+- right after adding 0.8 ml of hot water
+- at around 30s, improved recording quality by adding negative pressure
+- heartbeat seemed to increased slightly to about 2Hz
+
+* 17JUL03: fish2-heart_13
+- mode: graings
+- set 1: gain 0 vel 0 time 10
+- set 2: gain 0 vel 0.5 time 10
+- the heartrate is faster than before, but oscillations cannot be found
+
+* 17JUL03: fish2-heart_14
+- mode: texture
+- set 1: gain 0 vel 0 time 10
+- set 2: gain 0 vel 0.5 time 10
+* 17JUL08: no recordings
+_circle position_
+1: 1.49
+2: -11.38
+* 17JUL09: fish-1_osc-03
+- Alignment was done during the recording so will have to cut it out.
+
+_circle position_
+1: 1.13
+2: -10.91
+
+_Set 1_
+Gain: 0.0016
+Vel: 0.75
+Time: 30
+
+_Set 2_
+Gain: 0
+Vel: 0
+Time: 30
+* 17JUL09: fish-1_osc-04
+- The fish stopped swimming in the late parts of the recordings; the heart rate slowed down by half too.
+- Perhaps can use heartbeat to guage the healthiness of the fish.
+
+_circle position_
+1: 1.13
+2: -10.91
+
+_Set 1_
+Gain: 0.0016
+Vel: 0.5
+Time: 30
+
+_Set 2_
+Gain: 0
+Vel: 0
+Time: 30
+* DONE 17JUL09: fish-2_osc-06                            :useable:cerebellum:
+- imaged in the top part of the left cerebellum
+- crashed at ~ 600 sec
+_Set 1_
+Gain: 0.0016
+Vel: 0.75
+Time: 30
+
+_Set 2_
+Gain: 0
+Vel: 0
+Time: 30
+** Analysis notes
+- The cerebellum doesn't really seem to oscillate that much. Surely it has to be active -- I guess the cells are not active in unison.
+* 17JUL09: fish-2_osc-07
+- imaged in the mid part of the left cerebellum
+- crashed at ~ 600 sec
+
+_Set 1_
+Gain: 0.0016
+Vel: 0.75
+Time: 30
+
+_Set 2_
+Gain: 0
+Vel: 0
+Time: 30
+** Analysis notes
+- Swim bouts are not consistent across trials, so maybe behaviour is bad...
+- As before, the cerebellum doesn't seem to be oscillating.
+- When swim does happen, cerebellum doesn't seem to be doing all the much either.
+* 17JUL09: fish-2_osc-09
+- imaged in the mid part of the right cerebellum
+- shifted here from the left cerebellum because can see more cells and activity clearly
+- looks like the electrophys file isn't saved if you stop writing before you stop the recording
+- Mode: texture
+
+_Set 1_
+Gain: 0.0016
+Vel: 0.75
+Time: 30
+
+_Set 2_
+Gain: 0
+Vel: 0
+Time: 30
+* DONE 17JUL09: fish-2_osc-10                :interesting:useable:cerebellum:
+- imaged in the mid part of the right cerebellum; repeated because the ephys file wasn't saved in the previous recording.
+- Mode: texture
+
+_Set 1_
+Gain: 0.0016
+Vel: 0.75
+Time: 30
+
+_Set 2_
+Gain: 0
+Vel: 0
+Time: 30
+** Analysis notes
+- The cerebellum is not silent at all! Might be the bad alignment causing very little fluorophores to be activated in the previous data so the dynamics wasn't clear.
+- The cerebellum doesn't really oscillate. It is also not anti-correlated with the swim bouts. Their activity just seems to be early-shifted with respect to the swim bouts. It seems like it's active before swims.
+- During long swim bouts, cerebellar activity overlaps with swim starts, suggesting that cerebellar activity doesn't inhibit swims.
+* 17JUL09: fish-2_osc-11
+- imaged in the mid part of the right cerebellum.
+- swims alot less when in the grating mode than during the texture mode -- stronger perception of gestalt (maybe not the correct word because the organized parts are not interspersed with chaotic parts).
+
+- Mode: gratings
+
+_Set 1_
+Gain: 0.0016
+Vel: 0.75
+Time: 30
+
+_Set 2_
+Gain: 0
+Vel: 0
+Time: 30
+** Analysis notes
+- It's a lot quieter deeper into the cerebellum, but some ROIs still suggests that it's relevant to the swim signal, in the senes that its activity increases before swim bouts -- just like what is seen [[*17JUL09: fish-2_osc-10][17JUL09: fish-2_osc-10]]
+* 17JUL09: fish-2_osc-12
+- imaged in the top part of the right cerebellum.
+- Mode: grating
+
+_Set 1_
+Gain: 0.0016
+Vel: 0.75
+Time: 30
+
+_Set 2_
+Gain: 0
+Vel: 0
+Time: 30
+* TODO 17JUL09: fish-2_osc-13
+- imaged the locus coerulus
+- Mode: texture
+
+_Set 1_
+Gain: 0.0016
+Vel: 0.75
+Time: 30
+
+_Set 2_
+Gain: 0
+Vel: 0
+Time: 30
+* 17JUL15 fish01_osc00
+** Fish
+7 Jul: 8 day old
+** Microscope position and plane
+x: -0.42
+y: -10.8
+z: 16.6
+** Params
+_Set 1_
+- Gain: 0.0015
+- Vel: 1
+- Time: 30
+
+_Set 2_
+- Gain: 0
+- Vel: 0
+- Time: 30
+
+Mode: Gratings
+** Observations
+* 17JUL15 fish02_osc00
+** Fish
+7 Jul: 8 day old
+** Microscope position and plane
+x: -0.19
+y: -10.2
+z: 16.4
+** Params
+_Set 1_
+- Gain: 0.0015
+- Vel: 1
+- Time: 30
+
+_Set 2_
+- Gain: 0
+- Vel: 0
+- Time: 30
+
+Mode: Gratings
+** Observations
+* DONE 17JUL16 fish00_osc00                             :goodbehaviour:waist:
+** Fish
+x
+10 Jul: 6 day old
+** Microscope position and plane: waist area
+x: -0.34
+y: -10.0
+z: 17.2
+** Params
+_Set 1_
+- Gain: 0.015
+- Vel: 1
+- Time: 30
+
+_Set 2_
+- Gain: 0.015
+- Vel: 0
+- Time: 30
+
+Mode: Gratings
+** Experimental observations and notes
+- big bouts of swimming not necessarily when vel = 1.0, but also during vel = 0
+- Stopped writing before turning off the imaging... the last imaging frame might be no more...
+** Analysis notes
+- Oscillations are not as obvious than in previous recordings. Might be difficult to tell because I recorded both sides of the brain at the same resolution 100 x 1500 so I might be losing a lot of information.
+- Time-locking of swim bouts to calcium signal might still be evident in the middle traces...
+* DONE 17JUL16 fish00_osc01                                    :goodbehaviour:waist:
+** Fish
+x
+10 Jul: 6 day old
+** Microscope position and plane: waist area
+x: -0.34
+y: -10.0
+z: 17.2 (slightly deeper than osc00)
+** Params
+_Set 1_
+- Gain: 0.015
+- Vel: 1
+- Time: 30
+
+_Set 2_
+- Gain: 0.015
+- Vel: 0
+- Time: 30
+
+Mode: Gratings
+** Observations and notes
+- Behave&Scan crashed before the end of recordings
+** Analysis notes
+- Kind of hard to see the oscillations but can see that some swim bouts happen at the upswing of the oscillations.
+* 17JUL16 fish00_osc02
+** Fish
+x
+10 Jul: 6 day old
+** Microscope position and plane: waist area
+x: -0.34
+y: -10.0
+z: 17.2 (slightly deeper than osc00
+** Params
+_Set 1_
+- Gain: 0.015
+- Vel: 1
+- Time: 30
+
+_Set 2_
+- Gain: 0.015
+- Vel: 0
+- Time: 30
+
+Mode: Texture
+** Observations and notes
+- Off writing \to Off Ephys leads to no ephys file being produced...
+* 17JUL16 fish01_osc00                                          :baddatafile:
+** Fish
+x
+10 Jul: 6 day old
+** Microscope position and plane: waist area
+x: -1.17
+y: -9.64
+z: 16.30
+** Params
+_Set 1_
+- Gain: 0.015
+- Vel: 1
+- Time: 30
+
+_Set 2_
+- Gain: 0.015
+- Vel: 0
+- Time: 30
+
+Mode: Gratings
+** Observations and notes
+- FIsh with very gpod behaviour
+- Swam twice as much when vel=1 (23 vs 11 swim bouts)
+- Looks like the data file is crap
+* DONE 17JUL16 fish01_osc01                             :goodbehaviour:waist:
+** Fish
+x
+10 Jul: 6 day old
+** Microscope position and plane: waist area
+x: -1.19
+y: -10.50
+z: 16.40
+** Params
+_Set 1_
+- Gain: 0.015
+- Vel: 1
+- Time: 30
+
+_Set 2_
+- Gain: 0.015
+- Vel: 0
+- Time: 30
+
+Mode: Gratings
+** Observations and notes
+- swam less than before (i.e. lower frequency of swim bouts), but swim bouts were longer (2x)
+- started swimming alot more at 260 sec!
+** Analysis notes
+- Oscillations strong in the second to last trace; can also see that the swim bouts are time locked.
+* 17JUL16 fish01_osc02                                          :baddatafile:
+- Missing dataset -- what is this?!
+* DONE 17JUL16 fish01_osc03                               :useable:forebrain:
+** Fish
+x
+10 Jul: 6 day old
+** Microscope position and plane: forebrain
+x: -1.19
+y: -10.50
+z: 16.40
+** Params: giving up
+_Set 1_
+- Gain: 0.015
+- Vel: 1
+- Time: 240
+
+_Set 2_
+- Gain: 0
+- Vel: 1
+- Time: 240
+
+Mode: Gratings
+** Observations and notes
+- Fish try a lot harder -- swim bouts from frequent and longer -- at 330 s and 360 s; feels like there is a lot more swimming when gain=0
+- Fish still tries at the end of the 240s when gain=0
+** Analysis notes
+- Don't see any correlation between the swims and calcium signal...
+* 17JUL16 fish01_osc04
+** Fish
+x
+10 Jul: 6 day old
+** Microscope position and plane: forebrain
+x: -1.19
+y: -10.50
+z: 16.37
+** Params: giving up
+_Set 1_
+- Gain: 0.015
+- Vel: 1
+- Time: 240
+
+_Set 2_
+- Gain: 0
+- Vel: 1
+- Time: 240
+
+Mode: Gratings
+** Observations and notes
+- Swim bouts are a lot longer than in previous trials
+- At one point, the forebrain went crazy and all the cells showed a calcium reponse! Is this due to giving up?! Heart rate at this ponts is slower at ~2 Hz.
+* 17JUL30 fish00_osc00
+** Fish
+24 Jul: 6 day old
+** Params
+- Gain 0.015
+- Vel: 0.5
+** Observations and notes
+- fish not swimming
+* 17JUL30 fish01_osc00
+- Looks good at first but not sure if the fish stopped swimming due to the laser
+- Also now thinking that if the task is always closed loop with forward gratings that the fish might tire out
+* 17JUL30 fish01_osc01-03
+- tried to reduce the width of the front laser so don't get into eyes, but seems like the fish stops swimming as long as there is a laser
+* 17JUL30 fish01_osc04
+- should be another reasonable dataset
+* 17JUL30 fish01_osc05
+- reduced the velocity to 0.5 -- don't want to tire the fish out
+* 17JUL30 fish01_osc06-11
+- tried to reduce the width of the two lasers as much as posible, but seems like the fish still stops swimming
+* 17JUL30 fish01_osc12
+- should be another good dataset if not for the lack of swimming
+- also seems like the signal is a lot noiser when the laser is on
+- also think that the gain is not sufficient -- should try 0.05 the next time
+* 17JUL31 6dpf_2026x2061_fish00_osc01_20170731_232605    :useable:fitzgerald:
+** Observations and notes
+- Parameterized by Misha
+** Analysis notes
+- Channel 2 looks unuseable.
+- Channel 1 looks ok (swim power is alright) but it is difficult to find clear swim bouts.
+* 17AUG01 7dpf_2026x2061_fish00_osc04_20170802_020923            :fitzgerald:
+* 17AUG03 6dpf_fish00_osc00_20170804_015530
+* 17AUG03 6dpf_fish00_osc01_20170804_023317
+* 17AUG11 6dfp_fish01_osc01_20170811_190447                       :justwaist:
+* 17AUG11 6dfp_fish01_osc02_20170811_195525                       :justwaist:
+* 17AUG11 6dfp_fish01_osc03_20170811_204107                       :justwaist:
+* 17AUG11 6dfp_fish02_osc00_20170811_221042                       :justwaist:
+* 17AUG11 6dfp_fish02_osc01_20170811_232051                       :justwaist:
+* 17AUG15 4dpf_fish00_osc00                                      :wholebrain:
+Sampling rate: 4 stacks / s
+- Behaviour is definitely there, but weak -- not obvious
+* 17AUG 4dpf_fish00_osc01                                   :waist:hindbrain:
+Sampling rate: I thought it was 9 stacks / s, but could be 7 stacks / s
+- Behaviour is definitely there, but weak -- not obvious
+* 17AUG 4dpf_fish01_osc01                                   :waist:hindbrain:
+Sampling rate: 7 stacks / s
+- Behaviour in channel 2 is apparent
+<<<<<<< HEAD
+* 17AUG17 HuC-GCaMP_7dpf_fish01_00008
+- want to find visual responses to the flashes
+- didn't find response to flash in the hindbrain (including the waist)
+- recorded the visual areas, focusing on the tectum
+=======
+>>>>>>> 56c5c73dfa70eec6a538b7eec7ee4c72859a06c8
