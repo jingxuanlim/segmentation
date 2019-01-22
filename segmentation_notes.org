@@ -1,0 +1,84 @@
+
+* Instructions
+#+BEGIN_SRC 
+The basic idea is to first set parameters in the z__parameters.py, and subsequently call python scripts sequentially from z__main.py
+The matlab scripts are run after segmentation to clean the data further and compute DF/F.
+#+END_SRC
+* (1) Mika's cell segmentation code on the Janelia cluster
+** 1. Start an interactive job
+#+BEGIN_SRC 
+bsub -Is -n1 /bin/bash
+#+END_SRC
+** 2. Start and login to spark jobs
+You can:
+#+BEGIN_SRC 
+spark-janelia-lsf launch -n20
+spark-janelia-lsf login
+#+END_SRC
+
+or do it in a single step:
+#+BEGIN_SRC 
+spark-janelia-lsf launch-in -n20
+#+END_SRC
+
+** 3. Check that MASTER is correct
+#+BEGIN_SRC 
+echo $MASTER
+#+END_SRC
+** 4. Run mypyspark script
+#+BEGIN_SRC 
+./mypyspark
+#+END_SRC
+
+To check that Spark is indeed running:
+#+BEGIN_SRC 
+sc.parallelize([1,2,3,4]).collect()
+#+END_SRC
+
+** 5. Configure and run ~z__parameters.py~
+** 6. Navigate to output directory
+Easily done in the Canopy interactive Python interpreter
+#+BEGIN_SRC 
+cd OUTPUT_DIR
+#+END_SRC
+** 7. Configure and run ~z__main.py~ step by step
+1. Load params
+2. Preparation and alignment (motion correction)
+---------- Parallel processing no longer needed; Spark jobs can be closed ----------
+3. Series conversion
+4. Delete nii images but keep transform
+5. Cell detection
+6. Cell collection into a single file
+** 8. Stop spark jobs
+#+BEGIN_SRC 
+spark-janelia-lsf stopcluster
+#+END_SRC
+* (2) Mika's clean and cluster code on the Janelia cluster
+** 1. Start interactive matlab on the compute cluster
+#+BEGIN_SRC 
+bsub -XF -n32 -R"rusage[matlab=1]" /usr/local/matlab-2017a/bin/matlab -desktop
+#+END_SRC
+** 2. Discard cells with low timeseries power
+Run ~a1_clean.m~
+
+It will ask you to determine the probability of signal vs noise (based on the power histogram):
+- probability of 0 means that all signal is preserved
+- probability of 1 means all signal is thrown out
+
+You can try 0.5, or 0.25 if you want to be more conservative.
+
+** 3. Activate MATLAB parallel computing toolbox
+#+BEGIN_SRC 
+parpool(16) OR parpool(32)
+#+END_SRC
+** 4. Estimates the delta f/f
+Run ~a2_cluster.m~
+* Cleaning up
+
+After you have completed the first steps of the pipeline (such that you have files Cells0.hdf5 and Cells0_clean.hdf5), you can free space by deleting all the registered brain images and cell blocks, as follows:
+
+Navigate to the output directory and enter these commands (in terminal):
+#+BEGIN_SRC 
+find . -name "image_aligned*" -delete
+find . -name "Block*hdf5" -delete
+#+END_SRC

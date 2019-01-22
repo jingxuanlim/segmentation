@@ -13,16 +13,19 @@ import matplotlib.pyplot as plt
 
 class segmented(object):
 
-    def __init__(self, im_dir, cell_file, cleaned_file, component_file, \
-                        parameters_file, mask_file, ephys_file=None):
+    def __init__(self, im_dir, cell_file, cleaned_file, component_file,
+                 parameters_file, mask_file, ephys_file=None,
+                 debug=False):
 
         from datetime import datetime
         import h5py
 
         self.path = im_dir
+        self.savepath = '/'.join(self.path.split('/')[:-2]) + '/analysis/'
         self.ephys_file = ephys_file
         self.expt_date = datetime.strptime(im_dir.split('/')[6], '%Y%m%d')
         self.expt_name = '_'.join(im_dir.split('/')[7].split('_')[:-2])
+        self.debug = debug
 
         try:
         
@@ -59,9 +62,9 @@ class segmented(object):
         try: 
             f = h5py.File(im_dir+cleaned_file,'r')
 
-            self.Cell_X = f['Cell_X'][()] - 1
-            self.Cell_Y = f['Cell_Y'][()] - 1
-            self.Cell_Z = f['Cell_Z'][()] - 1
+            self.Cell_X = f['Cell_X'][()]
+            self.Cell_Y = f['Cell_Y'][()]
+            self.Cell_Z = f['Cell_Z'][()]
             self.Cell_baseline1 = f['Cell_baseline1'][()]
             self.Cell_spcesers = f['Cell_spcesers'][()]
             self.Cell_timesers0 = f['Cell_timesers0'][()]
@@ -105,23 +108,25 @@ class segmented(object):
         self.image_starttimes = None
         self.nstacks = None
 
+        self.ephys_rate = None
+        self.duration = None
+        self.im_rate = None
+
         if ephys_file:
 
             from ephys_helper import ephys
 
             self.ep = ephys(ephys_file)
 
-            self.compute_imagingtimes()
+            self.compute_imagingtimes(debug=self.debug)
 
             self.check_align()
 
+            print("Computed imaging rate: %f" % self.im_rate)
+
             print("Electrophysiological data loaded!")
 
-        self.cleanup_artefacts()
-
-        self.ephys_rate = self.ep.rate
-        self.duration = self.ep.t / self.ephys_rate
-        self.im_rate = self.nstacks / self.duration
+        self.cleanup_artefacts(debug=self.debug)
 
         ## the following variables are set interactively
 
@@ -153,7 +158,7 @@ class segmented(object):
         # self.flash_index = None
         
 
-    def compute_imagingtimes(self):
+    def compute_imagingtimes(self, debug=False):
 
         self.nstacks = self.Cell_timesers1.shape[1]
         
@@ -164,19 +169,41 @@ class segmented(object):
             print("Detected multi-plane data")
             self.image_starts = self.ep.stack_starts
 
-        self.image_starttimes = np.where(self.image_starts)[0]            
+        self.image_starttimes = np.where(self.image_starts)[0]
+        self.im_intervals = np.diff(self.image_starttimes)
+
+        if debug:
+            from utils import unique
+            print(unique(self.im_intervals))
 
     def check_align(self):
-        
+
         import warnings
         
         if self.image_starts.sum() != self.Cell_timesers1.shape[1]:
-            warnings.warn("Number of images recorded after \
-            alignment (%i) and number of images actually taken (%i) \
-            don't match. Please verify!" % \
+            warnings.warn("Number of images recorded after "
+                          "alignment (%i) and number of images actually taken (%i) "
+                          "don't match. Please verify!" % \
                           (self.image_starts.sum(),self.Cell_timesers1.shape[1]))
+
+            return False
+                   
         else:
-            print('Datasets are aligned!')
+            print('Datasets are aligned! Number of images record after alignment = '
+                  'Number of images actually taken = %i' % self.image_starts.sum())
+
+            ## if ephys and imaging are aligned, compute rates    
+            self.compute_rates()
+
+            return True
+
+
+
+    def compute_rates(self):
+        
+        self.ephys_rate = self.ep.rate
+        self.duration = self.ep.t / self.ephys_rate
+        self.im_rate = self.nstacks / self.duration
             
 
     @classmethod
@@ -188,33 +215,99 @@ class segmented(object):
         print(list(h5py_file.keys()))
         h5py_file.close()
 
+    def overlay_im_ephys(self):
 
-    def cleanup_artefacts(self):
+        overlay_fig, overlay_ax = plt.subplots(figsize=(9,3))
+        overlay_ax.plot(np.linspace(0, self.H0[0].shape[0]/self.im_rate, num=self.H0[0].shape[0]),
+                        self.H0[0])
+        overlay_ax.plot(np.linspace(0, self.H0[0].shape[0]/self.im_rate, num=self.H0[0].shape[0]),
+                        self.H0[0],'.')
+        overlay_ax.plot(np.linspace(0, self.image_starts.shape[0]/self.ephys_rate, num=self.image_starts.shape[0]),
+                        self.image_starts)
+
+        return overlay_fig, overlay_ax
+
+
+    def cleanup_artefacts(self, debug=False):
         
         # find where the signal stops to be different
         artificialstop_imidx = np.where(np.around(self.H0[0,:],decimals=3) \
-                                        != np.round(self.H0[0,0],decimals=3))[0][0]
+                                        != np.around(self.H0[0,0],decimals=3))[0][0]
         if artificialstop_imidx != 1:
 
-            print("Artificial initial constant value detected. \
-            Truncating first %i data points" % artificialstop_imidx)
+            print("Artificial initial constant value detected. "
+                  "Truncating first %i data points" % artificialstop_imidx)
+
+        else: artificialstop_imidx = 0
+
+        if debug:
+
+            self.ep.plot_stackstarts(xlim_pos='end')
+
+            overlay_fig, overlay_ax = self.overlay_im_ephys()
+            
+            ## zoom into end of artefact
+            overlay_ax.axvline(x=artificialstop_imidx/self.im_rate,color='k',ls='--')
+            overlay_ax.set_xlim([artificialstop_imidx/self.im_rate-5,artificialstop_imidx/self.im_rate+5])
+
+            overlay_ax.set_xlabel('Time [s]')        
+            
 
         # truncate imaging data
-        self.H0 = self.H0[:,artificialstop_imidx:-artificialstop_imidx]
-        try: self.H1 = self.H1[:,artificialstop_imidx:-artificialstop_imidx]
+        self.H0 = self.H0[:,artificialstop_imidx:]
+        try: self.H1 = self.H1[:,artificialstop_imidx:]
         except: pass
 
-        self.Cell_timesers0 = self.Cell_timesers0[:,artificialstop_imidx:-artificialstop_imidx]
-        self.Cell_baseline1 = self.Cell_baseline1[:,artificialstop_imidx:-artificialstop_imidx]
-        self.Cell_timesers1 = self.Cell_timesers1[:,artificialstop_imidx:-artificialstop_imidx]
+        self.Cell_timesers0 = self.Cell_timesers0[:,artificialstop_imidx:]
+        self.Cell_baseline1 = self.Cell_baseline1[:,artificialstop_imidx:]
+        self.Cell_timesers1 = self.Cell_timesers1[:,artificialstop_imidx:]
 
         if self.ephys_file:
             # truncate ephys data
             artificialstop_ephysidx = self.image_starttimes[artificialstop_imidx]
-            self.ep.replace_ephys(self.ep.ep[:,artificialstop_ephysidx:-artificialstop_ephysidx])
-            self.compute_imagingtimes()
+            self.ep.replace_ephys(self.ep.ep[:,artificialstop_ephysidx:])
+            self.compute_imagingtimes(debug=self.debug)
 
-        self.check_align()
+            aligned = self.check_align()
+
+            if np.logical_not(aligned):
+
+                n_imdiff = self.image_starts.sum() - self.Cell_timesers1.shape[1]
+
+                if n_imdiff > 0:  ## there are more images in ephys -> truncate ephys
+
+                    diff_idx  = self.image_starttimes[-n_imdiff]
+                    self.ep.replace_ephys(self.ep.ep[:,:diff_idx])
+                    self.compute_imagingtimes(debug=self.debug)
+                    
+
+                elif n_imdiff < 0:  ## there are more images in imaging -> truncate imaging
+
+                    self.H0 = self.H0[:,:-n_imdiff]
+                    try: self.H1 = self.H1[:,:-n_imdiff]
+                    except: pass
+
+                    self.Cell_timesers0 = self.Cell_timesers0[:,:-n_imdiff]
+                    self.Cell_baseline1 = self.Cell_baseline1[:,:-n_imdiff]
+                    self.Cell_timesers1 = self.Cell_timesers1[:,:-n_imdiff]
+
+            else:  ## even if aligned, remove last frame from both
+                
+                self.H0 = self.H0[:,:-1]
+                try: self.H1 = self.H1[:,:-1]
+                except: pass
+
+                self.Cell_timesers0 = self.Cell_timesers0[:,:-1]
+                self.Cell_baseline1 = self.Cell_baseline1[:,:-1]
+                self.Cell_timesers1 = self.Cell_timesers1[:,:-1]
+
+                diff_idx  = self.image_starttimes[-1]
+                self.ep.replace_ephys(self.ep.ep[:,:diff_idx])
+                self.compute_imagingtimes(debug=self.debug)
+
+            aligned = self.check_align()
+            
+        
 
     def set_swims(self, channel):
 
@@ -228,8 +321,7 @@ class segmented(object):
         
     def compute_max_imintvl(self, show_stats=False):
 
-        im_intervals = np.diff(self.image_starttimes)
-        max_interval = np.max(im_intervals)
+        max_interval = np.max(self.im_intervals)
 
         self.downsample_factor = max_interval
 
@@ -237,18 +329,18 @@ class segmented(object):
 
             from utils import unique
 
-            print("Imaging intervals: %s" % str(unique(im_intervals)))
-            print("Bins of Imaging intervals: %s" % np.histogram(im_intervals)[0])
-            print("Imaging histo counts: %s" % np.histogram(im_intervals)[1])
+            print("Imaging intervals: %s" % str(unique(self.im_intervals)))
+            print("Bins of Imaging intervals: %s" % np.histogram(self.im_intervals)[0])
+            print("Imaging histo counts: %s" % np.histogram(self.im_intervals)[1])
             print('Largest interval: %i' % max_interval)
 
             imtint_fig, imtint_ax= plt.subplots(2, 1, figsize=(9,6), facecolor='w',gridspec_kw={'height_ratios':[1,3]})
-            imtint_ax[0].plot(self.image_starttimes[0:-1]/self.ephys_rate, im_intervals)
+            imtint_ax[0].plot(self.image_starttimes[0:-1]/self.ephys_rate, self.im_intervals)
             imtint_ax[0].set_ylabel('Intervals')
             imtint_ax[0].set_xlabel('Time (s)')
             imtint_ax[0].set_xlim([0,10])
 
-            imtint_ax[1].hist(im_intervals,align='left')
+            imtint_ax[1].hist(self.im_intervals,align='left')
             imtint_ax[1].set_yscale('log', nonposy='clip')
             imtint_ax[1].set_ylabel('log(count)')
             imtint_ax[1].set_xlabel('Intervals')
@@ -301,7 +393,7 @@ class segmented(object):
 
     def check_mismatched_timings(cls, swimstart_index, swimstop_index):
         
-        import warnings        
+        import warnings
         
         if (swimstop_index > swimstart_index).sum() > 0:
             warnings.warn("Some swim stops happen before their \
@@ -352,7 +444,7 @@ class segmented(object):
         for i, row in enumerate(chopped):
             n = int(row.sum())
     
-            for swims_idx in range(n):
+            for event in range(n):
                 chopped_index.append(i)
 
         assert np.sum(chopped) == len(chopped_index)
@@ -519,6 +611,8 @@ class segmented(object):
     def mika_visualize_components(self,comp_spcesers, comp_timesers, \
                                   save_name=None):
 
+        import datetime
+
         # loop over components
         for h in range(comp_spcesers.shape[0]):
 
@@ -602,7 +696,348 @@ class segmented(object):
 
         return clust_fig, clust_ax
 
-    
+    def visualize_multiple_components(self, component_list, comp_spcesers, comp_timesers,
+                                      save_name=False, close_fig=False):
+
+        for i in component_list:
+
+            self.visualize_component(i, comp_timesers, comp_spcesers, 
+                                     save_name=save_name, close_fig=close_fig)
+
+            
+    def visualize_components(self, component_list, comp_spcesers, comp_timesers,
+                             save_name='visualize_cluster', close_fig=False, parallelize=False):
+
+        if parallelize:
+
+            import multiprocessing as mp
+
+            num_processes = min(mp.cpu_count(),len(component_list))
+            
+            # divide clusters into all processes
+            components_list = np.array_split(component_list,num_processes)
+
+            processes = [mp.Process(target=self.visualize_multiple_components,
+                                    args=(components_list[proc],comp_spcesers, comp_timesers),
+                                    kwargs={"save_name": self.savepath+'visualize_cluster-'+str(components_list[proc])+'.png',
+                                            "close_fig": True}) \
+                         for proc in range(num_processes)]
+
+            print("Starting %i processes..." % num_processes)
+            for p in processes: p.start()
+            for p in processes: p.join()
+            print("Done!")
+
+        else:
+
+            self.visualize_multiple_components(component_list, comp_spcesers, comp_timesers,
+                                               save_name=save_name, close_fig=close_fig)
+
+    def compute_triggers(self, triggers, time_window, trigger_savename=False):
+
+        # how many stacks before and after the trigger are you interested to see?
+        window = np.arange(round(-time_window*self.im_rate),round(time_window*self.im_rate))
+
+        triggers_arr = triggers.reshape(-1,1) + window
+
+        triggers_around = triggers_arr[(triggers_arr < self.nstacks).all(axis=1),:]
+
+        if trigger_savename:
+            np.save(self.savepath + trigger_savename + '.npy', triggers_around)
+
+        return window, triggers_around
+
+
+    def compute_triggered(self, triggers_around, comp_timesers, statistic='mean'):
+
+        triggered = comp_timesers[:,triggers_around]
+
+        if statistic == 'mean':
+            triggered_center = triggered.mean(axis=1)
+
+        elif statistic == 'median':
+            triggered_center = np.median(triggered, axis=1)
+
+        elif statistic == 'both':
+            triggered_center = (triggered.mean(axis=1), np.median(triggered, axis=1))
+
+        return triggered, triggered_center
+
+    def visualize_triggered(self, comp_num, window, triggered, triggered_mean, triggered_median,
+                            comp_spcesers, comp_timesers, plot_trials=False):
+
+        from scipy.stats import sem
+        from math_helper import compute_fft
+
+        roi_fig, roi_ax = plt.subplots(1, 6, figsize=(16, 3))
+
+        clust_volume = self.find_component(comp_spcesers, comp_num)
+
+        vmax = np.max(np.array([np.max(clust_volume.max(0)),np.max(clust_volume.max(1))]))
+        vmin = np.min(np.array([np.min(clust_volume.max(0)),np.min(clust_volume.max(1))]))
+        
+        # Plot brain and ROI (xy projection)
+        roi_ax[0].imshow(self.image_mean.max(0).T,cmap='gray')
+        roi_ax[0].imshow(clust_volume.max(0).T,alpha=0.5,vmin=vmin,vmax=vmax)
+        roi_ax[0].axis('off')
+
+        # Plot brain and ROI (yz projection)
+        roi_ax[1].imshow(self.image_mean.max(1).T,cmap='gray',aspect='auto')
+        clust_imshow = roi_ax[1].imshow(clust_volume.max(1).T,alpha=0.5,aspect='auto',vmin=vmin,vmax=vmax)
+        roi_ax[1].axis('off')
+
+        roi_fig.colorbar(clust_imshow, ax=roi_ax[1])
+
+        if plot_trials:
+            ntriggers = triggered[comp_num].shape[0]
+            t_axis = np.tile(window/self.im_rate,(ntriggers,1)).transpose()
+            roi_ax[2].plot(t_axis,triggered[comp_num].transpose(), color='#1f77b4', alpha=0.05)
+            roi_ax[3].plot(t_axis,triggered[comp_num].transpose(), color='#1f77b4', alpha=0.05)
+
+        roi_ax[2].plot(window/self.im_rate, triggered_mean[comp_num], color='#d62728', zorder=1e6)
+        roi_ax[3].plot(window/self.im_rate, triggered_mean[comp_num], color='#d62728', zorder=1e6)
+
+        roi_ax[2].plot(window/self.im_rate, triggered_median[comp_num], color='#E377C2', zorder=1e6)
+        roi_ax[3].plot(window/self.im_rate, triggered_median[comp_num], color='#E377C2', zorder=1e6)    
+
+
+        # Plot error bars
+        if plot_trials:
+            error = sem(triggered[comp_num].transpose(),axis=1)
+            roi_ax[2].fill_between(window/self.im_rate, triggered_mean[comp_num]+error, triggered_mean[comp_num]-error,
+                                              color='#d62728',alpha=0.5,zorder=1e6-1)
+            roi_ax[3].fill_between(window/self.im_rate, triggered_mean[comp_num]+error, triggered_mean[comp_num]-error,
+                                              color='#d62728',alpha=0.5,zorder=1e6-1)
+
+        roi_ax[2].axvline(x=0,color='k',ls='--')
+        roi_ax[2].set_ylabel(r'$\Delta F/ F$')
+        roi_ax[2].set_xlabel('Time (s)')
+        roi_ax[2].set_xlim([window.min()/self.im_rate,window.max()/self.im_rate])
+
+        roi_ax[3].axvline(x=0,color='k',ls='--')
+        roi_ax[3].set_ylabel(r'$\Delta F/ F$')
+        roi_ax[3].set_xlabel('Time (s)')
+        roi_ax[3].set_xlim([window.min()/self.im_rate,window.max()/self.im_rate])
+
+        if plot_trials:
+            roi_ax[3].set_ylim([np.min(np.array([(triggered_mean[comp_num]-error).min(),triggered_median[comp_num].min()])),
+                                np.max(np.array([(triggered_mean[comp_num]+error).max(),triggered_median[comp_num].max()]))])
+
+        # Plot raw calcium trace
+        roi_ax[4].plot(np.linspace(0,self.nstacks/self.im_rate,self.nstacks), comp_timesers[comp_num])
+        roi_ax[4].set_ylabel(r'$\Delta F/ F$')
+        roi_ax[4].set_xlabel('Time (s)')
+
+        slice_win = 10  # in seconds
+        rand_slice = np.random.randint(self.nstacks/self.im_rate - 10)
+        roi_ax[4].set_xlim([rand_slice, rand_slice+10])
+        # roi_ax[3].set_ylim([np.percentile(timeseries[clust],0.1), np.percentile(timeseries[clust],99.8)])
+
+
+        # Overlay swim power
+        roi_ax2 = roi_ax[4].twinx()
+        roi_ax2.plot(np.linspace(0,self.swim_power.shape[0]/self.ephys_rate,num=self.swim_power.shape[0]),
+                     self.swim_power,color='#ff7f0e')
+        # roi_ax2.set_xlim([swim_power[0]*rand_slice/ephys_rate, swim_power[0]*rand_slice/ephys_rate])
+        roi_ax2.axis('off')
+
+        # Overlay flashes
+        roi_ax3 = roi_ax[4].twinx()
+        roi_ax3.plot(np.linspace(0, self.ep.channel4.shape[0]/self.ephys_rate,num= self.ep.channel4.shape[0]),
+                     self.ep.channel4,color='#17becf')
+        roi_ax3.axis('off')
+
+        Y, angle, frq = compute_fft(comp_timesers[comp_num], self.im_rate)
+
+        roi_ax[5].plot(frq[1:],abs(Y)[1:])
+        roi_ax[5].set_xlabel('Freq (Hz)')
+        roi_ax[5].set_ylabel(r'|$\gamma$(freq)|')
+        # roi_ax[5].set_xlim([-0.001,0.5])
+
+        roi_fig.suptitle(str(self.expt_date.date())+'_'+self.expt_name)    
+        roi_fig.tight_layout()
+        roi_fig.subplots_adjust(top = 0.8)
+
+        return roi_fig
+
+
+    def visualize_multiple_triggered(self, component_list, window, triggered, triggered_mean, triggered_median,
+                                     comp_spcesers, comp_timesers,
+                                     plot_trials=False, save_name=False, close_fig=True, output=None):
+
+        import datetime
+
+        num_comp = len(component_list)
+
+        delta = []
+
+        for comp_num in component_list:
+
+            print('Plotting ROI %i of %i ...' % (comp_num,num_comp))
+
+            roi_fig = self.visualize_triggered(comp_num, window, triggered, triggered_mean, triggered_median,
+                                               comp_spcesers, comp_timesers, plot_trials=plot_trials)
+
+
+            from scipy.stats import wilcoxon
+            t_stat,t_prob = wilcoxon(triggered[comp_num][:,np.logical_and(window/self.im_rate <= 0,
+                                                                          window/self.im_rate >= -1.)].mean(1),
+                                     triggered[comp_num][:,np.logical_and(window/self.im_rate > 0,
+                                                                          window/self.im_rate <= 1.)].mean(1))
+            print(t_stat,t_prob)
+
+            # save components with large change
+            if t_prob < 1e-10:
+                mark = 'o'
+                delta.append(comp_num)
+            else:
+                mark = 'x'
+
+            if save_name:
+                roi_fig.savefig(self.savepath+save_name+'-'+str(plot_trials)+'-'+str(comp_num)+
+                                '-'+datetime.datetime.now().strftime("%Y-%m-%d_%H-%M")+'-'+mark+'.png')
+
+            if close_fig:
+                plt.close(roi_fig)
+
+        if output: output.put(delta)
+        else: return delta
+
+
+    def visualize_triggereds(self, component_list, window, triggered, triggered_mean, triggered_median,
+                             comp_spcesers, comp_timesers,
+                             plot_trials=False, save_name='visualize_triggered_comp', close_fig=True,
+                             parallelize=False):
+
+        
+        if parallelize:
+
+            import multiprocessing as mp
+
+            num_processes = min(mp.cpu_count(),len(component_list))
+            
+            # divide clusters into all processes
+            components_list = np.array_split(component_list,num_processes)
+
+            output=mp.Queue()
+
+            processes = [mp.Process(target=self.visualize_multiple_triggered,
+                                    args=(components_list[proc], window, triggered, triggered_mean, triggered_median,
+                                          comp_spcesers, comp_timesers),
+                                    kwargs={"plot_trials": plot_trials,
+                                            "save_name": save_name,
+                                            "close_fig": True, "output": output}) \
+                         for proc in range(num_processes)]
+
+            
+
+            print("Starting %i processes..." % num_processes)
+            for p in processes: p.start()
+            for p in processes: p.join()
+            result = [output.get() for p in processes]
+            
+            print("Done!")
+
+            return result
+
+        else:
+
+            result = self.visualize_multiple_triggered(component_list, window, triggered, triggered_mean, triggered_median,
+                                                       comp_spcesers, comp_timesers, plot_trials=plot_trials,
+                                                       save_name=save_name, close_fig=close_fig, output=None)
+            return result
+
+
+
+
+    def check_NMF(self, comp_spcsers, comp_timesers, weight_percentile=99.5, save_name='component_ts'):
+
+        from colors import tableau20
+        import datetime
+        import random
+
+        dff = (self.Cell_timesers1 - self.Cell_baseline1) / (self.Cell_baseline1 - self.background * 0.8)
+
+        nclust = comp_spcsers.shape[0]
+
+        from utils import get_transparent_cm
+        trans_inferno = get_transparent_cm('hot',tvmax=1,gradient=False)
+
+        clust_fig, clust_ax = plt.subplots(nclust, 6, figsize=(20,nclust*2),
+                                           gridspec_kw = {'width_ratios':[1,1,3,3,3,3]})
+
+        for clust in range(nclust):
+
+            clust_volume = self.find_component(comp_spcsers, clust)
+            vmax = np.max(np.array([np.max(clust_volume.max(0)),np.max(clust_volume.max(1))]))
+            vmin = np.min(np.array([np.min(clust_volume.max(0)),np.min(clust_volume.max(1))]))
+
+            # Plot brain and ROI (xy projection)
+            clust_ax[clust,0].imshow(self.image_mean.max(0).T,cmap='gray')
+            clust_ax[clust,0].imshow(clust_volume.max(0).T,cmap=trans_inferno,vmin=vmin,vmax=vmax)
+            clust_ax[clust,0].axis('off')
+
+            # Plot brain and ROI (zy projection)
+            clust_ax[clust,1].imshow(self.image_mean.max(1).T,cmap='gray',aspect='auto')
+            clust_imshow = clust_ax[clust,1].imshow(clust_volume.max(1).T,cmap=trans_inferno,vmin=vmin,vmax=vmax,aspect='auto')
+            clust_ax[clust,1].axis('off')
+
+            clust_fig.colorbar(clust_imshow, ax=clust_ax[clust,1])
+
+            # plot all weights    
+            clust_ax[clust,2].plot(comp_spcsers[clust])
+
+            perc = weight_percentile
+            perct = np.percentile(comp_spcsers[clust],perc)
+            clust_ax[clust,2].axhline(y=perct, color='r', label=str(perct))
+            clust_ax[clust,2].text(25000,perct+0.1,"%.1f percentile: %.1f" % (perc, perct))
+            clust_ax[clust,2].set_ylabel('Weight')
+            clust_ax[clust,2].set_xlabel('Cell # (unsorted)')
+
+
+            # plot distribution of weights
+            clust_ax[clust,3].hist(np.ravel(comp_spcsers[clust]),bins=200)
+            clust_ax[clust,3].axvline(x=perct, color='r', label=str(perct))
+            clust_ax[clust,3].text(perct-0.6,10**3, "%.1f percentile: %.1f" % (perc, perct))
+            clust_ax[clust,3].set_yscale('log')
+            clust_ax[clust,3].set_xlabel('Weight')
+            clust_ax[clust,3].set_ylabel(r'$\log(Counts)$')
+
+            # plot comparison of time series
+            clust_ax[clust,4].plot(np.linspace(0,len(comp_timesers[clust])/self.im_rate,num=len(comp_timesers[clust])),
+                                   comp_timesers[clust])
+
+            # find highly weighted cells
+            clust_cells = np.where(comp_spcsers[clust] > perct)[0]
+            for cell in clust_cells:
+                clust_ax[clust,4].plot(np.linspace(0,len(dff[cell])/self.im_rate,num=len(dff[cell])),
+                                       dff[cell], alpha=0.4)
+
+            win_size = 10  # in seconds
+            randslice = random.randint(0, int(len(comp_timesers[clust])/self.im_rate - win_size))
+            clust_ax[clust,4].set_xlim([randslice, randslice+win_size])
+
+            clust_ax[clust,4].set_ylim([np.min([-0.1,np.percentile(comp_timesers[clust],0.1)]),np.percentile(comp_timesers[clust],99.5)])
+            clust_ax[clust,4].set_ylabel('$\Delta F / F$')
+            clust_ax[clust,4].set_xlabel('Time [s]')
+
+            # find the standard deviation
+            dff_std = np.std(dff[clust_cells],0)
+
+            clust_ax[clust,5].plot(np.linspace(0,len(comp_timesers[clust])/self.im_rate,num=len(comp_timesers[clust])),
+                                   comp_timesers[clust],color=tableau20[0])
+            clust_ax[clust,5].fill_between(np.linspace(0,len(comp_timesers[clust])/self.im_rate,num=len(comp_timesers[clust])),
+                                          comp_timesers[clust]-dff_std, comp_timesers[clust]+dff_std, alpha=0.8, color=tableau20[1])
+            clust_ax[clust,5].set_xlim([randslice, randslice+win_size])
+            clust_ax[clust,5].set_ylim([np.min([-0.1,np.percentile(comp_timesers[clust],0.1)]),np.percentile(comp_timesers[clust],99.5)])
+            clust_ax[clust,5].set_ylabel('$\Delta F / F$')
+            clust_ax[clust,5].set_xlabel('Time [s]')
+
+        clust_fig.tight_layout()
+        clust_fig.savefig(self.savepath+save_name+'-'+datetime.datetime.now().strftime("%Y-%m-%d_%H-%M")+'.png')
+
+                            
+                          
 
 ######################################################################
 ### mika_helper.py ends here
