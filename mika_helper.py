@@ -10,26 +10,106 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import h5py
 
-class segmented(object):
+from analysis_toolbox.spim_helper import spim
 
-    def __init__(self, im_dir, cell_file, cleaned_file, component_file,
-                 parameters_file, mask_file, ephys_file=None,
-                 debug=False):
+def load_segmented_data(
+                        # spim attributes
+                        im_dir, impro_dir=[], ephys_file='',
+                        channel_labels=[], debug=False,
 
-        from datetime import datetime
-        import h5py
+                        # segmented attributes
+                        cell_file='', cleaned_file='', component_file='',
+                        parameters_file='', mask_file=''):
+ 
+    """
+    Keyword Arguments:
+    im_dir         -- 
+    impro_dir      -- (default [])
+    ephys_file     -- (default None)
+    channel_labels -- (default [])
+    debug          --         
+    """
+    
+    spim_dset = segmented(
+                          # spim attributes
+                          im_dir, impro_dir=impro_dir, ephys_file=ephys_file,
+                          channel_labels=channel_labels, debug=debug,
 
+                          # segmented attributes
+                          cell_file=cell_file,
+                          cleaned_file=cleaned_file,
+                          component_file=component_file,
+                          parameters_file=parameters_file,
+                          mask_file=mask_file):
+
+    spim_dset.open_raw_images()
+    spim_dset.load_segmented_files()
+
+    if len(impro_dir) != 0: spim_dset.open_processed_images()
+
+    if spim_dset.check_congruence():  ## if it is true
+         if len(ephys_file) != 0:
+             spim_dset.load_and_match_ephys_data()
+
+    return spim_dset
+
+class segmented(spim):
+
+    def __init__(self,
+                 
+                 # spim attributes
+                 im_dir, impro_dir=[], ephys_file='',
+                 channel_labels=[], debug=False,
+
+                 # segmented attributes
+                 cell_file='', cleaned_file='', component_file='',
+                 parameters_file='', mask_file=''):
+
+        ######################
+        # imaging attributes #
+        ######################
+        super().__init__(self) ## set path, ephys_file and debug
+
+        ## Initialize imaging class
         self.path = im_dir
-        self.savepath = '/'.join(self.path.split('/')[:-2]) + '/analysis/'
         self.ephys_file = ephys_file
-        self.expt_date = datetime.strptime(im_dir.split('/')[6], '%Y%m%d')
-        self.expt_name = '_'.join(im_dir.split('/')[7].split('_')[:-2])
         self.debug = debug
+
+        self.setup()  ## set savepath, expt_id, expt_date, expt_name
+
+        ###################
+        # spim attributes #
+        ###################
+        self.ppaths = impro_dir
+        self.channel_labels = channel_labels
+
+        ########################
+        # segmented attributes #
+        ########################
+        self.cell_file = cell_file
+        self.cleaned_file = cleaned_file
+        self.component_file = component_file
+        self.parameters_file = parameters_file
+        self.mask_file = mask_file
+
+
+    def load_segmented_files(self, debug=False):
+
+        self.load_mask_file()
+        self.load_cell_file()
+        self.load_cleaned_file()
+        self.load_component_file()
+
+        print('Segmented imaging data loaded!')
+
+
+    def load_mask_file(self, debug=False):
 
         try:
         
-            f = h5py.File(im_dir+mask_file,'r')
+            f = h5py.File(self.path+self.mask_file,'r')
 
             self.background = f['background'][()]
             self.blok_lidx = f['blok_lidx'][()]
@@ -43,10 +123,13 @@ class segmented(object):
 
             f.close()
             
-        except: print("Problems loading %s" % mask_file)
+        except: print("Problems loading %s" % self.mask_file)
+
+
+    def load_cell_file(self, debug=False):
 
         try: 
-            f = h5py.File(im_dir+cell_file,'r')
+            f = h5py.File(self.path+self.cell_file,'r')
 
             self.Cmpn_position = f['Cmpn_position'][()]
             self.Cmpn_spcesers = f['Cmpn_spcesers'][()]
@@ -57,10 +140,13 @@ class segmented(object):
 
             f.close()
 
-        except: print("Problems loading %s" % cell_file)
+        except: print("Problems loading %s" % self.cell_file)
+
+
+    def load_cleaned_file(self, debug=False):
 
         try: 
-            f = h5py.File(im_dir+cleaned_file,'r')
+            f = h5py.File(self.path+self.cleaned_file,'r')
 
             self.Cell_X = f['Cell_X'][()]
             self.Cell_Y = f['Cell_Y'][()]
@@ -80,10 +166,13 @@ class segmented(object):
 
             f.close()
             
-        except: print("Problems loading %s" % cleaned_file)
+        except: print("Problems loading %s" % self.cleaned_file)
+
+
+    def load_component_file(self, debug=False):
 
         try: 
-            f = h5py.File(im_dir+component_file,'r')
+            f = h5py.File(self.path+self.component_file,'r')
             
             self.H0 = f['H0'][()]
             self.W0 = f['W0'][()].transpose()
@@ -96,114 +185,73 @@ class segmented(object):
 
             f.close()
 
-        except: print("Problems loading %s" % component_file)
+        except: print("Problems loading %s" % self.component_file)
 
+    def check_congruence(self, debug=False):
+        """
+        Determine if the segmented data is accurately derived from the
+        raw data. Since we commonly downsample in x and y, check for
+        coherence in the number of planes (i.e. z) and the number of 
+        stacks (i.e. t).
+
+        If segmented data is congruent, rely on that data to make
+        calculations for imaging times and for aligning images to ephys
+        data, applying the same treatment to the raw images.
         
-        try: del f
-        except: pass
+        """
 
-        print('Segmented imaging data loaded!')
+        nstacks = self.Cell_timesers1.shape[1] == self.im.shape[0]
+        z = self.z == self.im.shape[1]
 
-        self.image_starts = None
-        self.image_starttimes = None
-        self.nstacks = None
+        if np.logical_and(nstacks,z): return True
+        else: return False
 
-        self.ephys_rate = None
-        self.duration = None
-        self.im_rate = None
 
-        if ephys_file:
-
-            from ephys_helper import ephys
-
-            self.ep = ephys(ephys_file)
-
-            self.compute_imagingtimes(debug=self.debug)
-
-            self.check_align()
-
-            print("Computed imaging rate: %f" % self.im_rate)
-
-            print("Electrophysiological data loaded!")
-
-        self.cleanup_artefacts(debug=self.debug)
-
-        ## the following variables are set interactively
-
-        # derived ephys
-        self.swim = None
-        self.swim_power = None
-        self.swim_starts = None
-        self.swim_stops = None
-
-        self.downsample_factor = None
+    def match_ephys_im_data(self, debug=False):
         
-        # chopped ephys
-        self.chopped_swim = None
-        self.chopped_swim_power = None
-        self.chopped_swim_starts = None
-        self.chopped_swim_stops = None
-        self.chopped_set = None
+        """
+        _WARNING_
+        Redefined method. Many parts copied from segmented.match_ephys_im_data().
+        Remember to update that method whenever you update this one.
+        (Not the best way; think of a better way eventually.)
+        """        
 
-        # downsampled ephys
-        self.ds_swim = None
-        self.ds_swimpower = None
-        self.ds_swimstarts = None
-        self.ds_swimstops = None
-        self.ds_set = None  # not set yet
+        self.compute_imagingtimes_segments(debug=self.debug)
 
-        # indexed in the downsampled domain
-        self.swimstart_index = None
-        self.swimstop_index = None
-        # self.flash_index = None
+        if len(self.cell_file) != 0: self.remove_clipped_values
+
+        self.aligned = self.check_align_segments()
+
+        while np.logical_not(self.aligned):
+            self.cleanup_artefacts_segments(debug=self.debug)
+
+        if self.aligned: self.remove_lastframe(debug=self.debug)
+
+        ## print out final shapes for sainty check
+        print('Main image: %s' % (self.im.shape,))
+        print('Raw image: %s' % (self.im_raw.shape,))
+
+        if len(self.im_pro) != 0:
+            for i,im_pro in enumerate(self.im_pro):
+                print('Processed image %i: %s' % (i,im_pro.shape,))
+
+
+        print("Computed imaging rate: %f" % self.im_rate)
         
 
-    def compute_imagingtimes(self, debug=False):
+    def compute_imagingtimes_segments(self, debug=False):
 
-        self.nstacks = self.Cell_timesers1.shape[1]
-        
-        if self.z == 1:
-            print("Detected high speed single plane data")
-            self.image_starts = self.ep.im_starts
-        else:
-            print("Detected multi-plane data")
-            self.image_starts = self.ep.stack_starts
+        t = self.Cell_timesers1.shape[1]
+        z = self.z
 
-        self.image_starttimes = np.where(self.image_starts)[0]
-        self.im_intervals = np.diff(self.image_starttimes)
-
-        if debug:
-            from utils import unique
-            print(unique(self.im_intervals))
-
-    def check_align(self):
-
-        import warnings
-        
-        if self.image_starts.sum() != self.Cell_timesers1.shape[1]:
-            warnings.warn("Number of images recorded after "
-                          "alignment (%i) and number of images actually taken (%i) "
-                          "don't match. Please verify!" % \
-                          (self.image_starts.sum(),self.Cell_timesers1.shape[1]))
-
-            return False
-                   
-        else:
-            print('Datasets are aligned! Number of images record after alignment = '
-                  'Number of images actually taken = %i' % self.image_starts.sum())
-
-            ## if ephys and imaging are aligned, compute rates    
-            self.compute_rates()
-
-            return True
+        self.compute_imagingtimes(t,z,debug=debug)
 
 
+    def check_align_segments(self, debug=False):
 
-    def compute_rates(self):
-        
-        self.ephys_rate = self.ep.rate
-        self.duration = self.ep.t / self.ephys_rate
-        self.im_rate = self.nstacks / self.duration
+        t = self.Cell_timesers1.shape[1]
+
+        return self.check_align(t)
             
 
     @classmethod
@@ -228,8 +276,15 @@ class segmented(object):
         return overlay_fig, overlay_ax
 
 
-    def cleanup_artefacts(self, debug=False):
-        
+    def remove_clipped_values(self, debug=False):
+        """
+        Mika: Many recordings have big events at the beginning. These 
+        events are hard to correct and can also cause problems with
+        downstream component detection. To overcome this problem, I
+        have now set the signal at the onset of each recording (equal 
+        in length to baseline_tau) to a constant value.
+        """
+
         # find where the signal stops to be different
         artificialstop_imidx = np.where(np.around(self.H0[0,:],decimals=3) \
                                         != np.around(self.H0[0,0],decimals=3))[0][0]
@@ -254,202 +309,125 @@ class segmented(object):
             
 
         # truncate imaging data
-        self.H0 = self.H0[:,artificialstop_imidx:]
+        self.im = self.im[:artificialstop_imidx,:,:,:]
+        self.im_raw = self.im_raw[:artificialstop_imidx,:,:,:]
+        if self.im_eq:  # processed images can be treated the same way
+            for i,im_pro in enumerate(self.im_pro):
+                self.im_pro[i] = self.im_pro[i][:artificialstop_imidx,:,:,:]
+
+        # truncate cell data
+        self.Cell_timesers0 = self.Cell_timesers0[:,artificialstop_imidx:]
+        self.Cell_baseline1 = self.Cell_baseline1[:,artificialstop_imidx:]
+        self.Cell_timesers1 = self.Cell_timesers1[:,artificialstop_imidx:]                
+        
+        # truncate component data (not necessarily included in all analysis)
+        try: self.H0 = self.H0[:,artificialstop_imidx:]
+        except: pass
         try: self.H1 = self.H1[:,artificialstop_imidx:]
         except: pass
 
-        self.Cell_timesers0 = self.Cell_timesers0[:,artificialstop_imidx:]
-        self.Cell_baseline1 = self.Cell_baseline1[:,artificialstop_imidx:]
-        self.Cell_timesers1 = self.Cell_timesers1[:,artificialstop_imidx:]
+        # truncate ephys data
+        artificialstop_ephysidx = self.image_starttimes[artificialstop_imidx]
+        self.ep.replace_ephys(self.ep.ep[:,artificialstop_ephysidx:])
 
-        if self.ephys_file:
-            # truncate ephys data
-            artificialstop_ephysidx = self.image_starttimes[artificialstop_imidx]
-            self.ep.replace_ephys(self.ep.ep[:,artificialstop_ephysidx:])
-            self.compute_imagingtimes(debug=self.debug)
+        # recalculate imaging times and check for alignment
+        self.compute_imagingtimes(debug=self.debug)
+        self.aligned = self.check_align()
 
-            aligned = self.check_align()
 
-            if np.logical_not(aligned):
+    def cleanup_artefacts_segments(self, debug=False):
 
-                n_imdiff = self.image_starts.sum() - self.Cell_timesers1.shape[1]
+        t = self.Cell_timesers1.shape[1]
 
-                if n_imdiff > 0:  ## there are more images in ephys -> truncate ephys
+        self.cleanup_artefacts(t)
 
-                    diff_idx  = self.image_starttimes[-n_imdiff]
-                    self.ep.replace_ephys(self.ep.ep[:,:diff_idx])
-                    self.compute_imagingtimes(debug=self.debug)
-                    
-
-                elif n_imdiff < 0:  ## there are more images in imaging -> truncate imaging
-
-                    self.H0 = self.H0[:,:-n_imdiff]
-                    try: self.H1 = self.H1[:,:-n_imdiff]
-                    except: pass
-
-                    self.Cell_timesers0 = self.Cell_timesers0[:,:-n_imdiff]
-                    self.Cell_baseline1 = self.Cell_baseline1[:,:-n_imdiff]
-                    self.Cell_timesers1 = self.Cell_timesers1[:,:-n_imdiff]
-
-            else:  ## even if aligned, remove last frame from both
-                
-                self.H0 = self.H0[:,:-1]
-                try: self.H1 = self.H1[:,:-1]
-                except: pass
-
-                self.Cell_timesers0 = self.Cell_timesers0[:,:-1]
-                self.Cell_baseline1 = self.Cell_baseline1[:,:-1]
-                self.Cell_timesers1 = self.Cell_timesers1[:,:-1]
-
-                diff_idx  = self.image_starttimes[-1]
-                self.ep.replace_ephys(self.ep.ep[:,:diff_idx])
-                self.compute_imagingtimes(debug=self.debug)
-
-            aligned = self.check_align()
-            
-        
-
-    def set_swims(self, channel):
-
-        from fish.ephys.ephys import load, windowed_variance, estimate_swims
-
-        self.swim = channel
-        self.swim_power = windowed_variance(channel)[0]
-        self.swim_starts = estimate_swims(self.swim_power, scaling=2.1)[0]
-        self.swim_stops = estimate_swims(self.swim_power, scaling=2.1)[1]
-
-        
-    def compute_max_imintvl(self, show_stats=False):
-
-        max_interval = np.max(self.im_intervals)
-
-        self.downsample_factor = max_interval
-
-        if show_stats:
-
-            from utils import unique
-
-            print("Imaging intervals: %s" % str(unique(self.im_intervals)))
-            print("Bins of Imaging intervals: %s" % np.histogram(self.im_intervals)[0])
-            print("Imaging histo counts: %s" % np.histogram(self.im_intervals)[1])
-            print('Largest interval: %i' % max_interval)
-
-            imtint_fig, imtint_ax= plt.subplots(2, 1, figsize=(9,6), facecolor='w',gridspec_kw={'height_ratios':[1,3]})
-            imtint_ax[0].plot(self.image_starttimes[0:-1]/self.ephys_rate, self.im_intervals)
-            imtint_ax[0].set_ylabel('Intervals')
-            imtint_ax[0].set_xlabel('Time (s)')
-            imtint_ax[0].set_xlim([0,10])
-
-            imtint_ax[1].hist(self.im_intervals,align='left')
-            imtint_ax[1].set_yscale('log', nonposy='clip')
-            imtint_ax[1].set_ylabel('log(count)')
-            imtint_ax[1].set_xlabel('Intervals')
-
-            imtint_fig.tight_layout()
-
-    def chop_ephys(self, timeseries):
-
-        chopped_series = np.zeros([self.nstacks,self.downsample_factor])
-        
-        for i in range(0, self.nstacks):  # range from 0 to nstack-1
-
-            start = self.image_starttimes[i]
     
-            final_frame = self.ep.ep.shape[1] - 1
-    
-            if i >= len(self.image_starttimes)-1:  # if second last frame
-                
-                if final_frame - start <= self.downsample_factor:
-                    stop = final_frame
-                else:
-                    stop = start + self.downsample_factor
-            
-            else: stop = self.image_starttimes[i+1]
+    def cleanup_artefacts(self, t, debug=False):
+        """
+        _WARNING_
+        Redefined method. Many parts copied from spim.cleanup_artefacts().
+        Remember to update that method whenever you update this one.
+        (Not the best way; think of a better way eventually.)
+        """
 
-            chopped_series[i,:stop-start] = timeseries[start:stop]
+        num_lsim = t
+        num_epim = self.image_starts.sum()
 
-        return chopped_series
+        n_imdiff = num_epim - num_lsim
+        print(f'Number of light sheet images: {num_lsim}')
+        print(f'Number of ephys images: {num_epim}')
 
+        if n_imdiff > 0:
 
-    def downsample_ephys(self):
+            print('More images in ephys. Truncating ephys...')
 
-        if self.downsample_factor is None: self.compute_max_imintvl()
-
-        self.chopped_swim = self.chop_ephys(self.swim)
-        self.chopped_swim_power = self.chop_ephys(self.swim_power)
-        self.chopped_swim_starts = self.chop_ephys(self.swim_starts)
-        self.chopped_swim_stops = self.chop_ephys(self.swim_stops)
-        self.chopped_set = self.chop_ephys(self.ep.channel6)
-
-        self.ds_swimstarts = np.sum(self.chopped_swim_starts,axis=1)
-        self.ds_swimstops = np.sum(self.chopped_swim_stops,axis=1)
-        self.ds_swimpower = np.max(self.chopped_swim_power,axis=1)
-        self.ds_swim = np.max(self.chopped_swim,axis=1)
-
-        self.swimstart_index = self.index_onsets(self.chopped_swim_starts)
-        self.swimstop_index = self.index_onsets(self.chopped_swim_stops)
-
-        self.check_mismatched_timings(self.swimstart_index,self.swimstop_index)
-
-    def check_mismatched_timings(cls, swimstart_index, swimstop_index):
+            diff_idx  = self.image_starttimes[-n_imdiff]
+            self.ep.replace_ephys(self.ep.ep[:,:diff_idx])
+            self.compute_imagingtimes_segments(debug=self.debug)
         
-        import warnings
+
+        elif n_imdiff < 0:
+
+            print('More images in imaging. Truncating imaging...')
+            
+            # truncate imaging data
+            self.im = self.im[:n_imdiff,:,:,:]
+            self.im_raw = self.im_raw[:n_imdiff,:,:,:]
+            if self.im_eq:
+                for i,im_pro in enumerate(self.im_pro):
+                    self.im_pro[i] = self.im_pro[i][:n_imdiff,:,:,:]            
+
+            # truncate cell data
+            self.Cell_timesers0 = self.Cell_timesers0[:,:n_imdiff]
+            self.Cell_baseline1 = self.Cell_baseline1[:,:n_imdiff]
+            self.Cell_timesers1 = self.Cell_timesers1[:,:n_imdiff]
+
+            # truncate component data (not necessarily included in all analysis)
+            try: self.H0 = self.H0[:,:n_imdiff]
+            except: pass
+            try: self.H1 = self.H1[:,:n_imdiff]
+            except: pass
+
+        self.aligned = self.check_align()       
+
+
+    def remove_lastframe(self, debug=False):
+        """
+        There could be the same number of images in both ephys and imaging but
+        the ends are not aligned.
+
+        _WARNING_
+        This method is not inherited but redefined in segmented.remove_lastframe().
+        Remember to update that method whenever you update this one.
+        (Not the best way; think of a better way eventually.)
+        """
+         
+        print('Ephys and imaging aligned; remove last frame from both...')
+
+        # truncate images
+        self.im = self.im[:-1,:,:,:]
+        self.im_raw = self.im_raw[:-1,:,:,:]
+        if self.im_eq:
+            for i,im_pro in enumerate(self.im_pro):
+                self.im_pro[i] = self.im_pro[i][:-1,:,:,:]
+
+        # truncate components
+        try: self.H0 = self.H0[:,:-1]
+        except: pass
+        try: self.H1 = self.H1[:,:-1]
+        except: pass
         
-        if (swimstop_index > swimstart_index).sum() > 0:
-            warnings.warn("Some swim stops happen before their \
-            corresponding swim starts. You might want to check...")
+        # truncate cells
+        self.Cell_timesers0 = self.Cell_timesers0[:,:-1]
+        self.Cell_baseline1 = self.Cell_baseline1[:,:-1]
+        self.Cell_timesers1 = self.Cell_timesers1[:,:-1]                
 
-    def correct_mismatched_timings(self, swimstart_index, swimstop_index):
+        # truncate ephys
+        diff_idx  = self.image_starttimes[-1]
+        self.ep.replace_ephys(self.ep.ep[:,:diff_idx])
+        self.compute_imagingtimes_segments(debug=self.debug)
 
-        swimstart_list = list(self.swimstart_index)
-        swimstop_list = list(self.swimstop_index)
-
-        while len(swimstart_list) - len(swimstop_list) != 0:
-            
-            print('Starts: %i Stops: %i' % (len(swimstart_list), len(swimstop_list)))
-            
-            for i, (start, stop) in enumerate(zip(swimstart_list,swimstop_list)):
-
-                if start > stop:
-                    
-                    print(i,start,stop)
-            
-                    if len(swimstop_list) > len(swimstart_list): del swimstp_list[i]
-                    else: del swimstart_list[i]
- 
-                    print('Restarting... ')
-                    break
-            
-                if i == min(len(swimstart_list),len(swimstop_list))-1:
-            
-                    if len(swimstop_list) > len(swimstart_list):
-                        swimstop_list = swimstop_list[:len(swimstart_list) - len(swimstop_list)]
-                    else:
-                        swimstart_list = swimstart_list[:len(swimstop_list) - len(swimstart_list)]
-
-                    print('Done! ')
-
-            self.check_mismatched_timings(np.array(swimstart_list), np.array(swimstop_list))
-            
-        else:
-            print('Same number of starts and stops!')
-
-        return np.array(swimstart_list), np.array(swimstop_list)
-
-
-    def index_onsets(self, chopped):
-
-        chopped_index = []
-
-        for i, row in enumerate(chopped):
-            n = int(row.sum())
-    
-            for event in range(n):
-                chopped_index.append(i)
-
-        assert np.sum(chopped) == len(chopped_index)
-
-        return np.array(chopped_index)    
+        self.aligned = self.check_align_segments()
     
         
     def find_cell(self, cell_num, mask=False):
