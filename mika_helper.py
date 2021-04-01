@@ -42,16 +42,21 @@ def load_segmented_data(
                           cleaned_file=cleaned_file,
                           component_file=component_file,
                           parameters_file=parameters_file,
-                          mask_file=mask_file):
+                          mask_file=mask_file)
 
-    spim_dset.open_raw_images()
-    spim_dset.load_segmented_files()
+    spim_dset.setup()  ## already done from the imaging class
+    
+    try: spim_dset.open_raw_images()  ## from the spim subclass
+    except: pass
+    
+    spim_dset.load_segmented_files()  ## from the segmented subclass
 
-    if len(impro_dir) != 0: spim_dset.open_processed_images()
+    ## if processed image file path is provided, load processed images
+    if len(impro_dir) != 0: spim_dset.open_processed_images() ## from the spim subclass
 
-    if spim_dset.check_congruence():  ## if it is true
-         if len(ephys_file) != 0:
-             spim_dset.load_and_match_ephys_data()
+    ## if ephys file is provided, load ephys file
+    if len(ephys_file) != 0:
+        spim_dset.load_and_match_ephys_data() ## function of the same name as the spim subclass, but redefined here
 
     return spim_dset
 
@@ -93,7 +98,11 @@ class segmented(spim):
         self.component_file = component_file
         self.parameters_file = parameters_file
         self.mask_file = mask_file
+        
 
+    ###################################################################
+    #                            Data I/O                             #
+    ###################################################################
 
     def load_segmented_files(self, debug=False):
 
@@ -109,7 +118,7 @@ class segmented(spim):
 
         try:
         
-            f = h5py.File(self.path+self.mask_file,'r')
+            f = h5py.File(self.mask_file,'r')
 
             self.background = f['background'][()]
             self.blok_lidx = f['blok_lidx'][()]
@@ -129,7 +138,7 @@ class segmented(spim):
     def load_cell_file(self, debug=False):
 
         try: 
-            f = h5py.File(self.path+self.cell_file,'r')
+            f = h5py.File(self.cell_file,'r')
 
             self.Cmpn_position = f['Cmpn_position'][()]
             self.Cmpn_spcesers = f['Cmpn_spcesers'][()]
@@ -146,7 +155,7 @@ class segmented(spim):
     def load_cleaned_file(self, debug=False):
 
         try: 
-            f = h5py.File(self.path+self.cleaned_file,'r')
+            f = h5py.File(self.cleaned_file,'r')
 
             self.Cell_X = f['Cell_X'][()]
             self.Cell_Y = f['Cell_Y'][()]
@@ -172,7 +181,7 @@ class segmented(spim):
     def load_component_file(self, debug=False):
 
         try: 
-            f = h5py.File(self.path+self.component_file,'r')
+            f = h5py.File(self.component_file,'r')
             
             self.H0 = f['H0'][()]
             self.W0 = f['W0'][()].transpose()
@@ -187,6 +196,11 @@ class segmented(spim):
 
         except: print("Problems loading %s" % self.component_file)
 
+    ###################################################################
+    #                         Preprocessing                           #
+    ###################################################################        
+
+
     def check_congruence(self, debug=False):
         """
         Determine if the segmented data is accurately derived from the
@@ -196,7 +210,8 @@ class segmented(spim):
 
         If segmented data is congruent, rely on that data to make
         calculations for imaging times and for aligning images to ephys
-        data, applying the same treatment to the raw images.
+        data, applying the same treatment to the raw images and
+        processed images.
         
         """
 
@@ -205,27 +220,57 @@ class segmented(spim):
 
         if np.logical_and(nstacks,z): return True
         else: return False
+        
+
+    def load_and_match_ephys_data(self, debug=False):
+
+        """
+        _WARNING: Head_
+        Redefined method. Many parts copied from segmented.load_and_match_ephys_data().
+        Remember to update that method whenever you update this one.
+        (Not the best way; think of a better way eventually.)
+        """
+
+        print("Aligning ephys and im data")
+        print("==========================")        
+
+        self.open_ephys_data()  ## from spim class
+        self.apply_main_image()  ## from spim class
+
+        if self.check_congruence:
+            
+            self.match_ephys_im_data()  ## WARNING 1
+            self.calculate_DFF()
 
 
     def match_ephys_im_data(self, debug=False):
         
         """
-        _WARNING_
+        _WARNING: 1_
         Redefined method. Many parts copied from segmented.match_ephys_im_data().
         Remember to update that method whenever you update this one.
         (Not the best way; think of a better way eventually.)
-        """        
+        """
+
+        print("Aligning ephys and im data")
+        print("==========================")        
 
         self.compute_imagingtimes_segments(debug=self.debug)
 
-        if len(self.cell_file) != 0: self.remove_clipped_values
+        ## remove first segment of experiment (that mika clipped because
+        ## it helps with segmentation)
+        ## Remove values from the START ##
+        if len(self.cell_file) != 0: self.remove_clipped_values()
 
         self.aligned = self.check_align_segments()
 
+        ## Remove values from the END ##
         while np.logical_not(self.aligned):
             self.cleanup_artefacts_segments(debug=self.debug)
 
-        if self.aligned: self.remove_lastframe(debug=self.debug)
+        ## Remove values from the END ##
+        if self.aligned:
+            self.remove_lastframe(debug=self.debug)
 
         ## print out final shapes for sainty check
         print('Main image: %s' % (self.im.shape,))
@@ -263,21 +308,10 @@ class segmented(spim):
         print(list(h5py_file.keys()))
         h5py_file.close()
 
-    def overlay_im_ephys(self):
-
-        overlay_fig, overlay_ax = plt.subplots(figsize=(9,3))
-        overlay_ax.plot(np.linspace(0, self.H0[0].shape[0]/self.im_rate, num=self.H0[0].shape[0]),
-                        self.H0[0])
-        overlay_ax.plot(np.linspace(0, self.H0[0].shape[0]/self.im_rate, num=self.H0[0].shape[0]),
-                        self.H0[0],'.')
-        overlay_ax.plot(np.linspace(0, self.image_starts.shape[0]/self.ephys_rate, num=self.image_starts.shape[0]),
-                        self.image_starts)
-
-        return overlay_fig, overlay_ax
-
 
     def remove_clipped_values(self, debug=False):
         """
+        [Mika segmentation specific]
         Mika: Many recordings have big events at the beginning. These 
         events are hard to correct and can also cause problems with
         downstream component detection. To overcome this problem, I
@@ -309,6 +343,7 @@ class segmented(spim):
             
 
         # truncate imaging data
+        ## !! is this correct? I'm removing stuff from the start !!
         self.im = self.im[:artificialstop_imidx,:,:,:]
         self.im_raw = self.im_raw[:artificialstop_imidx,:,:,:]
         if self.im_eq:  # processed images can be treated the same way
@@ -344,7 +379,7 @@ class segmented(spim):
     
     def cleanup_artefacts(self, t, debug=False):
         """
-        _WARNING_
+        _WARNING: 1A_
         Redefined method. Many parts copied from spim.cleanup_artefacts().
         Remember to update that method whenever you update this one.
         (Not the best way; think of a better way eventually.)
@@ -372,7 +407,10 @@ class segmented(spim):
             
             # truncate imaging data
             self.im = self.im[:n_imdiff,:,:,:]
-            self.im_raw = self.im_raw[:n_imdiff,:,:,:]
+
+            if self.im_raw is not None:
+                self.im_raw = self.im_raw[:n_imdiff,:,:,:]
+                
             if self.im_eq:
                 for i,im_pro in enumerate(self.im_pro):
                     self.im_pro[i] = self.im_pro[i][:n_imdiff,:,:,:]            
@@ -396,7 +434,7 @@ class segmented(spim):
         There could be the same number of images in both ephys and imaging but
         the ends are not aligned.
 
-        _WARNING_
+        _WARNING: 1B_
         This method is not inherited but redefined in segmented.remove_lastframe().
         Remember to update that method whenever you update this one.
         (Not the best way; think of a better way eventually.)
@@ -406,7 +444,10 @@ class segmented(spim):
 
         # truncate images
         self.im = self.im[:-1,:,:,:]
-        self.im_raw = self.im_raw[:-1,:,:,:]
+        
+        if self.im_raw is not None:
+            self.im_raw = self.im_raw[:-1,:,:,:]
+            
         if self.im_eq:
             for i,im_pro in enumerate(self.im_pro):
                 self.im_pro[i] = self.im_pro[i][:-1,:,:,:]
@@ -428,12 +469,27 @@ class segmented(spim):
         self.compute_imagingtimes_segments(debug=self.debug)
 
         self.aligned = self.check_align_segments()
+
+
+    ###################################################################
+    #                            Analysis                             #
+    ###################################################################        
+
+    def overlay_im_ephys(self):
+
+        overlay_fig, overlay_ax = plt.subplots(figsize=(9,3))
+        overlay_ax.plot(np.linspace(0, self.H0[0].shape[0]/self.im_rate, num=self.H0[0].shape[0]),
+                        self.H0[0])
+        overlay_ax.plot(np.linspace(0, self.H0[0].shape[0]/self.im_rate, num=self.H0[0].shape[0]),
+                        self.H0[0],'.')
+        overlay_ax.plot(np.linspace(0, self.image_starts.shape[0]/self.ephys_rate, num=self.image_starts.shape[0]),
+                        self.image_starts)
+
+        return overlay_fig, overlay_ax        
     
         
-    def find_cell(self, cell_num, mask=False):
+    def find_cell(self, cell_num, mask=1):
 
-        import numpy as np
-        
         cell_volume = np.zeros((self.z, self.y, self.x))
     
         for j in range(np.count_nonzero(self.Cell_X[cell_num, :] > 0)):
@@ -441,8 +497,8 @@ class segmented(spim):
             if mask:
                 cell_volume[int(self.Cell_Z[cell_num, j]),
                             int(self.Cell_Y[cell_num, j]),
-                            int(self.Cell_X[cell_num, j])] = 1
-            
+                            int(self.Cell_X[cell_num, j])] = mask
+                
             else:
                 cell_volume[int(self.Cell_Z[cell_num, j]),
                             int(self.Cell_Y[cell_num, j]),
@@ -452,29 +508,135 @@ class segmented(spim):
         return cell_volume
     
 
-    def plot_volume(self, save_name=None):
+    def plot_volume(self, nrows, ncols, save_name=None):
+        
+        """
+        Plot all cells segmented using self.Volume.
 
-        from utils import get_transparent_cm
+        """
+
+        from analysis_toolbox.utils import get_transparent_cm
 
         trans_inferno = get_transparent_cm('hot',tvmax=1,gradient=False)
 
         nplanes = self.Volume.shape[2]
-        vol_fig, vol_ax = plt.subplots(nplanes,1,figsize=(8,nplanes*3),
+
+        assert nrows*ncols >= nplanes
+        
+        vol_fig, vol_ax = plt.subplots(nrows,ncols,figsize=(ncols*4,nrows*3),
                                        squeeze=False)
+
+        vol_ax = vol_ax.flatten()
 
         for nplane in range(nplanes):
     
-            vol_ax[nplane,0].imshow(self.image_mean[nplane,:,:], cmap='gray',
+            vol_ax[nplane].imshow(self.image_mean[nplane,:,:], cmap='gray',
                                   vmin=np.percentile(np.ravel(self.image_mean[nplane,:,:]),1),
                                   vmax=np.percentile(np.ravel(self.image_mean[nplane,:,:]),99.9))
 
 
-            vax = vol_ax[nplane,0].imshow(self.Volume[:,:,nplane].transpose(),
-                                        vmax=np.percentile(np.ravel(self.Volume[:,:,:]),99.9), cmap=trans_inferno)
-            vol_fig.colorbar(vax,ax=vol_ax[nplane,0])
+            vax = vol_ax[nplane].imshow(self.Volume[:,:,nplane].transpose(),
+                                        vmax=np.percentile(np.ravel(self.Volume[:,:,:]),99.9),
+                                        cmap=trans_inferno)
+            
+            vol_fig.colorbar(vax,ax=vol_ax[nplane])
     
-            vol_ax[nplane,0].set_title('Plane %i' % nplane)
+            vol_ax[nplane].set_title('Plane %i' % nplane)
         
+            vol_fig.tight_layout()
+
+        if save_name:
+            vol_fig.savefig(save_name)
+
+        return vol_fig, vol_ax
+
+    
+
+    def plot_allcells_map(self, label=None, cmap=None, save_name=None, parallelize=False, show_plot=False, alpha=1):
+
+        cells = np.arange(self.n)
+
+        cell_volume, vol_fig, vol_ax = self.plot_cell_map(cells,label=label,
+                                                          cmap=cmap, save_name=save_name,
+                                                          parallelize=parallelize,
+                                                          show_plot=show_plot, alpha=alpha)
+
+        return  cell_volume, vol_fig, vol_ax
+        
+
+
+    def plot_cell_map(self, cells, nrows, ncols, label=None, cmap=None,
+                      save_name=None, parallelize=False,
+                      show_plot=False, alpha=1):
+        
+        """
+
+        """
+        from tqdm import tqdm
+
+        if parallelize:
+
+            import multiprocessing as mp
+
+            num_processes = min(mp.cpu_count(), self.n)
+
+            # divide clusters into all processes
+            cells_list = np.array_split(cells,num_processes)
+            label_list = np.array_split(label,num_processes)
+
+            output=mp.Queue()
+
+            processes = [mp.Process(target=self.collapse_multiple_cells,
+                                    args=(cells_list[proc],label_list[proc]),
+                                    kwargs={"save_name": save_name,
+                                            "output": output}) \
+                         for proc in range(num_processes)]
+
+
+
+            print("Starting %i processes..." % num_processes)
+            for p in processes: p.start()
+            for p in processes: p.join()
+            result = [output.get() for p in processes]
+            
+            cell_volume = result  ## TODO: has to be some combination of result
+
+        else:
+
+            cell_volume = self.collapse_multiple_cells(cells,label,save_name=save_name)
+
+        if show_plot:
+            
+            vol_fig, vol_ax = self.overlay_volume(cell_volume, nrows, ncols, cmap=cmap, alpha=alpha, save_name=save_name)
+
+            return cell_volume, vol_fig, vol_ax 
+
+        else:
+            return cell_volume
+
+    def overlay_volume(self, volume, nrows, ncols, cmap=None, alpha=1, save_name=None):
+
+        nplanes = self.z
+        assert nrows*ncols >= nplanes
+        
+        vol_fig, vol_ax = plt.subplots(nrows, ncols, figsize=(ncols*4,nrows*3),
+                                       squeeze=False)
+
+        vol_ax = vol_ax.flatten()
+
+        for nplane in range(nplanes):
+
+            vol_ax[nplane].imshow(self.image_mean[nplane,:,:], cmap='gray',
+                                  vmin=np.percentile(np.ravel(self.image_mean[nplane,:,:]),1),
+                                  vmax=np.percentile(np.ravel(self.image_mean[nplane,:,:]),99.9))
+
+
+            vax = vol_ax[nplane].imshow(volume[nplane,:,:], cmap=cmap, alpha=alpha)
+
+            vol_fig.colorbar(vax,ax=vol_ax[nplane])
+
+            vol_ax[nplane].set_title('Plane %i' % nplane)
+
             vol_fig.tight_layout()
 
             if save_name:
@@ -482,31 +644,56 @@ class segmented(spim):
 
         return vol_fig, vol_ax
 
-    def plot_cells(self, num_cells=10, mask=False, zoom_pad=25, save_name=None):
 
-        from utils import get_transparent_cm
+    def collapse_multiple_cells(self, cell_list, label_list, save_name=None, output=None):
+
+        from tqdm import tqdm
+        from analysis_toolbox.utils import now_str
+
+        # create empty volume to fill
+        cell_volume = np.zeros(self.Volume.shape).T
+
+        for cell, label in tqdm(zip(cell_list, label_list),total=len(cell_list)):
+            
+
+            volume = self.find_cell(cell, mask=label)
+            
+            zloc, yloc, xloc = np.where(volume != 0)
+            cell_volume[zloc,yloc,xloc] = volume[zloc,yloc,xloc]
+
+        if save_name: np.save(save_name+now_str(), cell_volume)
+
+        if output: output.put(cell_volume)
+        else: return cell_volume
+
+    
+
+    def plot_cells(self, num_cells=10, mask=0, zoom_pad=25, save_name=None):
+
+        from analysis_toolbox.utils import get_transparent_cm
         import random
 
         trans_inferno = get_transparent_cm('hot',tvmax=1,gradient=False)
 
-        ts_fig, ts_ax = plt.subplots(num_cells,2,figsize=(20,num_cells*3),
+        ts_fig, ts_ax = plt.subplots(num_cells,2,figsize=(8.5,num_cells*3),
                                      gridspec_kw = {'width_ratios':[1,3]})
 
         for neuron in range(num_cells):
     
             randcell = random.randint(0,self.n-1)
     
-            try:
-                ts_ax[neuron,0].imshow(self.image_mean.max(0),
-                                       cmap='gray',
-                                       vmax=np.percentile(np.ravel(self.image_mean),99.9))
-            except:
-                pass    
-    
             cell_volume = self.find_cell(randcell, mask=mask)
+            cell_z = np.where(np.any(cell_volume,axis=(1,2)))[0][0]
+
+            try:
+                ts_ax[neuron,0].imshow(self.image_mean[cell_z],
+                                       cmap='gray',
+                                       vmax=np.percentile(np.ravel(self.image_mean),99.0))
+            except:
+                pass            
     
-            cell_im = ts_ax[neuron,0].imshow(cell_volume.max(0),cmap=trans_inferno)
-            ts_ax[neuron,0].set_title('Maximum projection')
+            cell_im = ts_ax[neuron,0].imshow(cell_volume[cell_z],cmap=trans_inferno)
+            ts_ax[neuron,0].set_title(f'Plane {cell_z}')
 
             if zoom_pad:
                 max_X = (self.Cell_X[randcell][self.Cell_X[randcell] > 0]).max()
@@ -621,7 +808,7 @@ class segmented(spim):
     def visualize_component(self, comp_num, comp_timesers, comp_spcesers, \
                             save_name=None, close_fig=False):
 
-        from utils import get_transparent_cm
+        from analysis_toolbox.utils import get_transparent_cm
         trans_inferno = get_transparent_cm('hot',tvmax=1,gradient=False)
 
         clust_volume = self.find_component(comp_spcesers, comp_num)
@@ -926,7 +1113,11 @@ class segmented(spim):
             return result
 
 
-
+    def calculate_DFF(self, bg_multiplier=0.8, debug=False):
+        
+        self.dff = (self.Cell_timesers1 - self.Cell_baseline1) / \
+            (self.Cell_baseline1 - self.background * bg_multiplier)
+        
 
     def check_NMF(self, comp_spcsers, comp_timesers, weight_percentile=99.5, save_name='component_ts'):
 
@@ -938,7 +1129,7 @@ class segmented(spim):
 
         nclust = comp_spcsers.shape[0]
 
-        from utils import get_transparent_cm
+        from analysis_toolbox.utils import get_transparent_cm
         trans_inferno = get_transparent_cm('hot',tvmax=1,gradient=False)
 
         clust_fig, clust_ax = plt.subplots(nclust, 6, figsize=(20,nclust*2),
